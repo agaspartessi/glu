@@ -1,0 +1,200 @@
+body {
+    background-color: #eef4f7;
+    background-image: url([[pix:theme|background_glu]]);
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: cover;
+    color: #545454;
+    font-family: "Lexend Deca", Arial, sans-serif;
+    min-height: 100vh;
+}
+
+/* Deja ver el fondo general del body */
+#page,
+#page.drawers {
+    background: transparent;
+}
+
+/* Títulos */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.page-header-headings h1,
+.block .card-title,
+.dashboard-card .multiline,
+.coursebox .coursename {
+    color: #0D445D;
+    font-family: "Oswald", Arial, sans-serif;
+    letter-spacing: 0.02em;
+}
+
+/* Links */
+a {
+    color: #CD0A30;
+    text-decoration: none;
+}
+
+a:hover,
+a:focus {
+    color: #0D445D;
+    text-decoration: underline;
+}
+
+/* Navbar superior */
+.navbar.fixed-top {
+    background-color: rgba(255, 255, 255, 0.96);
+    border-bottom: 4px solid #CD0A30;
+    box-shadow: none;
+}
+
+.navbar .nav-link,
+.navbar .dropdown-toggle,
+.navbar .usermenu .login,
+.navbar .usermenu .btn {
+    color: #0D445D;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link:focus,
+.navbar .dropdown-toggle:hover,
+.navbar .dropdown-toggle:focus {
+    color: #CD0A30;
+}
+
+/* Tab principal superior */
+.primary-navigation .navigation .nav-link {
+    color: #0D445D;
+    border-bottom: 3px solid transparent;
+}
+
+.primary-navigation .navigation .nav-link:hover,
+.primary-navigation .navigation .nav-link:focus {
+    color: #CD0A30;
+    border-bottom-color: #CD0A30;
+}
+
+.primary-navigation .navigation .nav-link.active {
+    color: #CD0A30;
+    border-bottom-color: #CD0A30;
+}
+
+/* Tabs secundarios */
+.secondary-navigation .navigation .nav-link {
+    color: #0D445D;
+    border-bottom: 3px solid transparent;
+    border-radius: 0;
+}
+
+.secondary-navigation .navigation .nav-link:hover,
+.secondary-navigation .navigation .nav-link:focus {
+    color: #CD0A30;
+    border-bottom-color: #CD0A30;
+    background-color: transparent;
+}
+
+.secondary-navigation .navigation .nav-link.active {
+    color: #CD0A30;
+    border-bottom-color: #CD0A30;
+    background-color: transparent;
+}
+
+/* Botones */
+.btn-primary {
+    background-color: #CD0A30 !important;
+    border-color: #CD0A30 !important;
+    color: #ffffff !important;
+    font-family: "Oswald", Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: #a60827 !important;
+    border-color: #a60827 !important;
+    color: #ffffff !important;
+}
+
+.btn-secondary,
+.btn-outline-secondary:hover {
+    background-color: #0D445D !important;
+    border-color: #0D445D !important;
+    color: #ffffff !important;
+}
+
+/* Buscador */
+.input-group-text,
+.search-icon {
+    background-color: #CD0A30;
+    border-color: #CD0A30;
+    color: #ffffff;
+}
+
+/* Cards y bloques */
+.card,
+.block,
+.dashboard-card,
+.coursebox,
+#region-main {
+    background-color: rgba(255, 255, 255, 0.94);
+    border: 1px solid #d7e1e6;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.card-header,
+.block .card-header {
+    background-color: rgba(255, 255, 255, 0.96);
+    border-bottom: 1px solid #d7e1e6;
+}
+
+/* Drawer y course index */
+.drawer,
+.courseindex {
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+.courseindex .courseindex-link,
+.courseindex .courseindex-item .courseindex-link {
+    color: #0D445D;
+}
+
+.courseindex .courseindex-link:hover,
+.courseindex .courseindex-item .courseindex-link:hover {
+    color: #CD0A30;
+}
+
+/* Formularios */
+.form-control:focus,
+.form-select:focus,
+.custom-select:focus {
+    border-color: #CD0A30;
+    box-shadow: 0 0 0 0.2rem rgba(205, 10, 48, 0.12);
+}
+
+/* Alerts */
+.alert-info {
+    color: #0D445D;
+    background-color: #d9eef5;
+    border-color: #b8dfe9;
+}
+
+/* Footer */
+#page-footer {
+    background-color: #0D445D;
+    color: #ffffff;
+    border-top: 4px solid #CD0A30;
+}
+
+#page-footer a {
+    color: #F7B713;
+}
+
+#page-footer a:hover,
+#page-footer a:focus {
+    color: #ffffff;
+}
