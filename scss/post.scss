@@ -404,7 +404,7 @@ body.pagelayout-login::before {
     pointer-events: none;
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.05) 100%),
-        url([[pix:theme|background_glu2]]) center center / cover no-repeat;
+        url([[pix:theme|background_glu]]) center center / cover repeat;
 }
 
 body.path-login::after,
