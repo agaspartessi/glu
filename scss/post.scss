@@ -381,3 +381,126 @@ body#page-site-index hr {
         text-align: center;
     }
 }
+
+/* =========================================
+   LOGIN GLU
+========================================= */
+
+body.path-login,
+body.pagelayout-login {
+    background-color: #e8edf1;
+    position: relative;
+    min-height: 100vh;
+}
+
+/* Fondo del login */
+body.path-login::before,
+body.pagelayout-login::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background:
+        linear-gradient(180deg,
+            rgba(255, 255, 255, 0.18) 0%,
+            rgba(255, 255, 255, 0.08) 100%),
+        url([[pix:theme|background_glu2]]) center center / cover no-repeat;
+}
+
+/* Capa suave para mejorar legibilidad */
+body.path-login::after,
+body.pagelayout-login::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: rgba(255, 255, 255, 0.14);
+}
+
+/* Que el layout deje ver el fondo */
+body.path-login #page,
+body.path-login #page-wrapper,
+body.pagelayout-login #page,
+body.pagelayout-login #page-wrapper {
+    background: transparent !important;
+}
+
+/* Caja del login */
+body.path-login .login-container .card,
+body.pagelayout-login .login-container .card {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(13, 68, 93, 0.08);
+    border-radius: 28px;
+    box-shadow: 0 20px 50px rgba(13, 68, 93, 0.10);
+    overflow: hidden;
+}
+
+/* Logo */
+body.path-login .login-container .card::before,
+body.pagelayout-login .login-container .card::before {
+    content: "";
+    display: block;
+    height: 190px;
+    background:
+        url([[pix:theme|glu-logo-full]]) center 26px / 150px auto no-repeat;
+}
+
+/* Inputs */
+body.path-login .form-control,
+body.pagelayout-login .form-control {
+    border-radius: 14px;
+    min-height: 48px;
+}
+
+/* Botón principal login */
+body.path-login .btn-primary,
+body.pagelayout-login .btn-primary {
+    border-radius: 999px;
+    min-height: 48px;
+    padding-inline: 1.2rem;
+}
+
+/* Links del login */
+body.path-login a,
+body.pagelayout-login a {
+    color: #CD0A30;
+}
+
+body.path-login a:hover,
+body.path-login a:focus,
+body.pagelayout-login a:hover,
+body.pagelayout-login a:focus {
+    color: #0D445D;
+}
+
+/* Social login buttons */
+body.path-login .potentialidplist .btn,
+body.pagelayout-login .potentialidplist .btn {
+    border-radius: 999px;
+}
+
+/* Mobile */
+@media (max-width: 575.98px) {
+
+    body.path-login::before,
+    body.pagelayout-login::before {
+        background-position: center top;
+        background-size: cover;
+    }
+
+    body.path-login .login-container .card,
+    body.pagelayout-login .login-container .card {
+        border-radius: 20px;
+    }
+
+    body.path-login .login-container .card::before,
+    body.pagelayout-login .login-container .card::before {
+        height: 165px;
+        background-size: 125px auto;
+        background-position: center 24px;
+    }
+}
