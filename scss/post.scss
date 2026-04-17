@@ -198,3 +198,186 @@ a:focus {
 #page-footer a:focus {
     color: #ffffff;
 }
+
+/* =========================================
+   HOME / FRONTPAGE GLU
+   Agregar al final de post.scss
+========================================= */
+
+body#page-site-index,
+body#page-site-index #page,
+body#page-site-index #page.drawers,
+body#page-site-index #page-wrapper {
+    background: transparent;
+}
+
+body#page-site-index {
+    background-color: #e8edf1;
+    position: relative;
+}
+
+/* Fondo general de la home */
+body#page-site-index::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background:
+        linear-gradient(180deg,
+            rgba(255, 255, 255, 0.48) 0%,
+            rgba(255, 255, 255, 0.20) 100%),
+        url([[pix:theme|background_glu2]]) center top / cover no-repeat;
+}
+
+/* Capa suave para que el texto no se pierda */
+body#page-site-index::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        linear-gradient(90deg,
+            rgba(255, 255, 255, 0.22) 0%,
+            rgba(255, 255, 255, 0.05) 45%,
+            rgba(255, 255, 255, 0.14) 100%);
+}
+
+/* Caja principal tipo panel */
+body#page-site-index #region-main-box {
+    max-width: 1320px;
+    margin: 2rem auto 4rem;
+    padding: 0 1rem;
+    background: transparent;
+}
+
+body#page-site-index #region-main {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(13, 68, 93, 0.08);
+    border-radius: 30px;
+    box-shadow: 0 20px 50px rgba(13, 68, 93, 0.08);
+    padding: clamp(1.25rem, 2vw, 2.6rem);
+}
+
+/* Encabezado de la home */
+body#page-site-index .page-context-header,
+body#page-site-index .page-header-headings {
+    margin-bottom: 0.75rem;
+}
+
+body#page-site-index .page-header-headings h1 {
+    font-size: clamp(2.2rem, 5vw, 4.8rem);
+    line-height: 0.95;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    max-width: 10ch;
+    margin-bottom: 0.75rem;
+    color: #0D445D;
+}
+
+/* Navegación secundaria más tipo pill */
+body#page-site-index .secondary-navigation {
+    margin-bottom: 1.5rem;
+    border: 0;
+}
+
+body#page-site-index .secondary-navigation .navigation {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    padding: 0.4rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.68);
+    border: 1px solid rgba(13, 68, 93, 0.08);
+}
+
+body#page-site-index .secondary-navigation .nav-link {
+    border: 0;
+    border-radius: 999px;
+    padding: 0.65rem 1rem;
+}
+
+body#page-site-index .secondary-navigation .nav-link:hover,
+body#page-site-index .secondary-navigation .nav-link:focus,
+body#page-site-index .secondary-navigation .nav-link.active {
+    background: #CD0A30;
+    color: #ffffff;
+    border: 0;
+}
+
+/* Lista / caja de cursos */
+body#page-site-index #frontpage-available-course-list,
+body#page-site-index .coursebox,
+body#page-site-index .frontpage-course-list-all,
+body#page-site-index .courses.frontpage-course-list-enrolled {
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(13, 68, 93, 0.08);
+    border-radius: 24px;
+    padding: 1rem 1.25rem;
+    box-shadow: none;
+}
+
+/* Botones más redondeados sólo en la home */
+body#page-site-index .btn,
+body#page-site-index .singlebutton .btn,
+body#page-site-index .buttons .btn {
+    border-radius: 999px;
+    min-height: 48px;
+    padding-inline: 1.2rem;
+}
+
+/* Para que no se vea tan duro el borde inferior de algunos bloques */
+body#page-site-index hr {
+    border-top-color: rgba(13, 68, 93, 0.12);
+}
+
+/* Responsive */
+@media (max-width: 991.98px) {
+    body#page-site-index::before {
+        background-position: center top;
+        background-size: cover;
+    }
+
+    body#page-site-index #region-main-box {
+        margin: 1.25rem auto 2.5rem;
+    }
+
+    body#page-site-index #region-main {
+        border-radius: 24px;
+        padding: 1.25rem;
+    }
+
+    body#page-site-index .page-header-headings h1 {
+        font-size: clamp(1.9rem, 7vw, 3.2rem);
+        max-width: none;
+    }
+
+    body#page-site-index .secondary-navigation .navigation {
+        display: flex;
+        width: 100%;
+        border-radius: 20px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    body#page-site-index::before {
+        background-position: 62% top;
+    }
+
+    body#page-site-index #region-main-box {
+        padding: 0 0.65rem;
+    }
+
+    body#page-site-index #region-main {
+        border-radius: 18px;
+        padding: 1rem;
+    }
+
+    body#page-site-index .secondary-navigation .nav-link {
+        width: 100%;
+        text-align: center;
+    }
+}
