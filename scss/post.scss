@@ -382,9 +382,10 @@ body#page-site-index hr {
     }
 }
 
-/* =========================================
-   LOGIN GLU
-========================================= */
+/* =========================================================
+   LOGIN GLU - SOLO LOGIN
+   Moodle 5.1
+========================================================= */
 
 body.path-login,
 body.pagelayout-login {
@@ -393,7 +394,7 @@ body.pagelayout-login {
     min-height: 100vh;
 }
 
-/* Fondo del login */
+/* Fondo */
 body.path-login::before,
 body.pagelayout-login::before {
     content: "";
@@ -402,13 +403,10 @@ body.pagelayout-login::before {
     z-index: -2;
     pointer-events: none;
     background:
-        linear-gradient(180deg,
-            rgba(255, 255, 255, 0.18) 0%,
-            rgba(255, 255, 255, 0.08) 100%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.05) 100%),
         url([[pix:theme|background_glu2]]) center center / cover no-repeat;
 }
 
-/* Capa suave para mejorar legibilidad */
 body.path-login::after,
 body.pagelayout-login::after {
     content: "";
@@ -416,10 +414,10 @@ body.pagelayout-login::after {
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    background: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.06);
 }
 
-/* Que el layout deje ver el fondo */
+/* Dejar ver el fondo */
 body.path-login #page,
 body.path-login #page-wrapper,
 body.pagelayout-login #page,
@@ -427,44 +425,103 @@ body.pagelayout-login #page-wrapper {
     background: transparent !important;
 }
 
-/* Caja del login */
+/* Contenedor general */
+body.path-login .login-container,
+body.pagelayout-login .login-container {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+}
+
+/* Tarjeta */
 body.path-login .login-container .card,
 body.pagelayout-login .login-container .card {
-    background: rgba(255, 255, 255, 0.88);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    max-width: 480px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.86);
     border: 1px solid rgba(13, 68, 93, 0.08);
-    border-radius: 28px;
-    box-shadow: 0 20px 50px rgba(13, 68, 93, 0.10);
+    border-radius: 32px;
+    box-shadow: 0 28px 70px rgba(13, 68, 93, 0.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     overflow: hidden;
 }
 
-/* Logo */
+/* Cuerpo interno */
+body.path-login .login-container .card-body,
+body.pagelayout-login .login-container .card-body {
+    padding: 2rem 2.2rem 2rem;
+}
+
+/* Logo arriba */
 body.path-login .login-container .card::before,
 body.pagelayout-login .login-container .card::before {
     content: "";
     display: block;
-    height: 190px;
+    height: 210px;
     background:
-        url([[pix:theme|glu-logo-full]]) center 26px / 150px auto no-repeat;
+        url([[pix:theme|glu-logo-full]]) center 34px / 160px auto no-repeat;
+}
+
+/* Si aparece heading textual, ocultarlo */
+body.path-login .login-heading,
+body.pagelayout-login .login-heading,
+body.path-login h2.login-heading,
+body.pagelayout-login h2.login-heading {
+    display: none !important;
+}
+
+/* Labels / textos */
+body.path-login .loginform label,
+body.pagelayout-login .loginform label,
+body.path-login .forgetpass a,
+body.pagelayout-login .forgetpass a {
+    color: #545454;
 }
 
 /* Inputs */
 body.path-login .form-control,
 body.pagelayout-login .form-control {
-    border-radius: 14px;
-    min-height: 48px;
+    min-height: 54px;
+    border-radius: 18px;
+    border: 1px solid rgba(13, 68, 93, 0.22);
+    background: rgba(255, 255, 255, 0.92);
+    padding-inline: 1rem;
+    font-size: 1.05rem;
+    box-shadow: none;
 }
 
-/* Botón principal login */
+body.path-login .form-control:focus,
+body.pagelayout-login .form-control:focus {
+    border-color: #CD0A30;
+    box-shadow: 0 0 0 0.22rem rgba(205, 10, 48, 0.12);
+}
+
+/* Botón principal */
 body.path-login .btn-primary,
 body.pagelayout-login .btn-primary {
+    min-height: 54px;
     border-radius: 999px;
-    min-height: 48px;
-    padding-inline: 1.2rem;
+    background: #CD0A30 !important;
+    border-color: #CD0A30 !important;
+    color: #ffffff !important;
+    font-family: "Oswald", Arial, sans-serif;
+    font-size: 1.02rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding-inline: 1.4rem;
+    box-shadow: 0 10px 24px rgba(205, 10, 48, 0.18);
 }
 
-/* Links del login */
+body.path-login .btn-primary:hover,
+body.path-login .btn-primary:focus,
+body.pagelayout-login .btn-primary:hover,
+body.pagelayout-login .btn-primary:focus {
+    background: #a60827 !important;
+    border-color: #a60827 !important;
+    color: #ffffff !important;
+}
+
+/* Links */
 body.path-login a,
 body.pagelayout-login a {
     color: #CD0A30;
@@ -477,30 +534,75 @@ body.pagelayout-login a:focus {
     color: #0D445D;
 }
 
-/* Social login buttons */
-body.path-login .potentialidplist .btn,
-body.pagelayout-login .potentialidplist .btn {
-    border-radius: 999px;
+/* Separadores */
+body.path-login hr,
+body.pagelayout-login hr {
+    border-top-color: rgba(13, 68, 93, 0.10);
 }
 
-/* Mobile */
-@media (max-width: 575.98px) {
+/* Login social */
+body.path-login .potentialidplist .btn,
+body.pagelayout-login .potentialidplist .btn {
+    min-height: 46px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(13, 68, 93, 0.14);
+    color: #0D445D;
+    box-shadow: none;
+}
 
-    body.path-login::before,
-    body.pagelayout-login::before {
-        background-position: center top;
-        background-size: cover;
+body.path-login .potentialidplist .btn:hover,
+body.pagelayout-login .potentialidplist .btn:hover {
+    border-color: #CD0A30;
+    color: #CD0A30;
+    background: #ffffff;
+}
+
+/* Fila inferior idioma / cookies */
+body.path-login .login-languagemenu,
+body.pagelayout-login .login-languagemenu {
+    margin-top: 0.75rem;
+}
+
+body.path-login .login-container .btn-secondary,
+body.pagelayout-login .login-container .btn-secondary {
+    border-radius: 999px;
+    background: #0D445D !important;
+    border-color: #0D445D !important;
+    color: #ffffff !important;
+}
+
+/* Responsive */
+@media (max-width: 767.98px) {
+
+    body.path-login .login-container,
+    body.pagelayout-login .login-container {
+        padding-top: 1.25rem;
+        padding-bottom: 1.25rem;
     }
 
     body.path-login .login-container .card,
     body.pagelayout-login .login-container .card {
-        border-radius: 20px;
+        max-width: 94%;
+        border-radius: 24px;
     }
 
     body.path-login .login-container .card::before,
     body.pagelayout-login .login-container .card::before {
-        height: 165px;
-        background-size: 125px auto;
-        background-position: center 24px;
+        height: 180px;
+        background-size: 130px auto;
+        background-position: center 28px;
+    }
+
+    body.path-login .login-container .card-body,
+    body.pagelayout-login .login-container .card-body {
+        padding: 1.2rem 1rem 1.4rem;
+    }
+
+    body.path-login .form-control,
+    body.pagelayout-login .form-control,
+    body.path-login .btn-primary,
+    body.pagelayout-login .btn-primary {
+        min-height: 50px;
     }
 }
