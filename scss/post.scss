@@ -647,3 +647,195 @@ body.pagelayout-login .login-languagemenu {
         min-height: 48px;
     }
 }
+
+/* =========================================
+   GLU FOOTER
+========================================= */
+
+#page-footer.glu-footer {
+    margin-top: 4rem;
+    padding: clamp(3rem, 5vw, 5rem) clamp(1.25rem, 4vw, 4rem) 2rem;
+    background: #0D445D;
+    color: #ffffff;
+    border-top: 4px solid #CD0A30;
+}
+
+.glu-footer__inner {
+    max-width: 1320px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(240px, 1.1fr) minmax(180px, 0.7fr) minmax(260px, 1fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+}
+
+.glu-footer__brand {
+    max-width: 360px;
+}
+
+.glu-footer__logo {
+    display: block;
+    width: min(100%, 270px);
+    height: auto;
+    margin-bottom: 1.2rem;
+    filter: none;
+}
+
+.glu-footer__tagline {
+    margin: 0;
+    max-width: 300px;
+    color: rgba(255, 255, 255, 0.78);
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.glu-footer__title {
+    margin: 0 0 1.1rem;
+    color: #ffffff;
+    font-family: "Oswald", Arial, sans-serif;
+    font-size: 1.1rem;
+    line-height: 1;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.glu-footer__links,
+.glu-footer__contact {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.glu-footer a {
+    color: #ffffff;
+    text-decoration: none;
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-weight: 600;
+}
+
+.glu-footer a:hover,
+.glu-footer a:focus {
+    color: #F7B713;
+    text-decoration: none;
+}
+
+.glu-footer__links a {
+    margin-bottom: 0.45rem;
+}
+
+.glu-footer__spacer {
+    display: block;
+    height: 0.9rem;
+}
+
+.glu-footer__contact p {
+    margin: 0 0 1.35rem;
+    color: rgba(255, 255, 255, 0.72);
+    font-family: "Lexend Deca", Arial, sans-serif;
+    line-height: 1.5;
+}
+
+.glu-footer__contact p span {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: rgba(255, 255, 255, 0.68);
+    font-weight: 400;
+}
+
+.glu-footer__contact p a {
+    display: inline-block;
+    word-break: break-word;
+}
+
+.glu-footer__social {
+    margin-top: 0.5rem;
+}
+
+.glu-footer__socialicons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    align-items: center;
+}
+
+.glu-footer__socialicons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    height: 38px;
+    padding: 0 0.45rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.06);
+    color: #ffffff;
+    font-family: "Oswald", Arial, sans-serif;
+    font-size: 0.95rem;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.glu-footer__socialicons a:hover,
+.glu-footer__socialicons a:focus {
+    background: #ffffff;
+    border-color: #ffffff;
+    color: #0D445D;
+}
+
+/* Información técnica de Moodle: queda disponible pero no protagonista */
+.glu-footer__system {
+    max-width: 1320px;
+    margin: 2.5rem auto 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.85rem;
+}
+
+.glu-footer__system a {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.glu-footer__system a:hover,
+.glu-footer__system a:focus {
+    color: #F7B713;
+}
+
+/* Responsive */
+@media (max-width: 991.98px) {
+    .glu-footer__inner {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .glu-footer__brand {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 575.98px) {
+    #page-footer.glu-footer {
+        padding: 2.5rem 1.1rem 1.5rem;
+        margin-top: 2.5rem;
+    }
+
+    .glu-footer__inner {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .glu-footer__logo {
+        width: min(100%, 230px);
+    }
+
+    .glu-footer__tagline {
+        font-size: 0.82rem;
+        letter-spacing: 0.14em;
+    }
+
+    .glu-footer__socialicons a {
+        min-width: 36px;
+        height: 36px;
+    }
+}
