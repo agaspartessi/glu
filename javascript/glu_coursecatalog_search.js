@@ -16,16 +16,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    /*
-     * Estructura real del plugin Course Catalog:
-     * - cada curso se imprime como .card
-     * - el link principal tiene .stretched-link
-     * - el título suele estar en .card-title
-     * - el resumen suele estar en .card-text
-     * - la imagen suele ser .card-img-top
-     *
-     * Esto funciona tanto en vista grid como en vista list.
-     */
     function getCourseCards() {
         return Array.from(main.querySelectorAll('.card')).filter(function (card) {
             return card.querySelector('.stretched-link');
@@ -33,10 +23,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function getCardWrapper(card) {
-        /*
-         * En grid, la card está dentro de un .col.
-         * En list, la card suele ser el bloque completo.
-         */
         var parentCol = card.parentElement && card.parentElement.classList.contains('col')
             ? card.parentElement
             : null;
@@ -57,27 +43,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         cards.forEach(function (card) {
             card.classList.add('glu-catalog-card');
-
-            var image = card.querySelector('.card-img-top');
-
-            if (image) {
-                var imageParent = image.parentElement || card;
-                imageParent.classList.add('glu-catalog-card__imagewrap');
-
-                if (!card.querySelector('.glu-catalog-card__lang')) {
-                    var langBadge = document.createElement('span');
-                    langBadge.className = 'glu-catalog-card__badge glu-catalog-card__lang';
-                    langBadge.textContent = 'EN';
-                    card.appendChild(langBadge);
-                }
-
-                if (!card.querySelector('.glu-catalog-card__free')) {
-                    var freeBadge = document.createElement('span');
-                    freeBadge.className = 'glu-catalog-card__badge glu-catalog-card__free';
-                    freeBadge.textContent = 'FREE';
-                    card.appendChild(freeBadge);
-                }
-            }
 
             var buttons = card.querySelectorAll('.btn');
 
@@ -128,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var visible = 0;
 
         cards.forEach(function (card) {
-            var title = card.querySelector('.card-title')
+            var titleText = card.querySelector('.card-title')
                 ? card.querySelector('.card-title').textContent
                 : '';
 
@@ -140,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 ? card.querySelector('img').getAttribute('alt')
                 : '';
 
-            var allText = normalize(title + ' ' + description + ' ' + imageAlt);
+            var allText = normalize(titleText + ' ' + description + ' ' + imageAlt);
             var match = !query || allText.indexOf(query) !== -1;
 
             var wrapper = getCardWrapper(card);
