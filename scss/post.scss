@@ -839,3 +839,124 @@ body.pagelayout-login .login-languagemenu {
         height: 36px;
     }
 }
+
+
+/* =========================================
+   COURSE CATALOG - Search courses
+========================================= */
+
+body.path-local-coursecatalog .glu-catalog-search,
+body#page-local-coursecatalog-view .glu-catalog-search,
+body[id*="page-local-coursecatalog"] .glu-catalog-search {
+    max-width: 620px;
+    margin: 0 auto 2rem;
+    text-align: center;
+}
+
+body.path-local-coursecatalog .glu-catalog-search__eyebrow,
+body#page-local-coursecatalog-view .glu-catalog-search__eyebrow,
+body[id*="page-local-coursecatalog"] .glu-catalog-search__eyebrow {
+    margin: 0 0 0.85rem;
+    color: rgba(84, 84, 84, 0.72);
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+body.path-local-coursecatalog .glu-catalog-search__form,
+body#page-local-coursecatalog-view .glu-catalog-search__form,
+body[id*="page-local-coursecatalog"] .glu-catalog-search__form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.35rem;
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 14px 34px rgba(13, 68, 93, 0.08);
+}
+
+body.path-local-coursecatalog .glu-catalog-search__input,
+body#page-local-coursecatalog-view .glu-catalog-search__input,
+body[id*="page-local-coursecatalog"] .glu-catalog-search__input {
+    flex: 1;
+    min-height: 52px;
+    border: 0;
+    outline: 0;
+    box-shadow: none;
+    background: transparent;
+    padding: 0 1.25rem;
+    border-radius: 999px;
+    color: #0D445D;
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 1rem;
+}
+
+body.path-local-coursecatalog .glu-catalog-search__input::placeholder,
+body#page-local-coursecatalog-view .glu-catalog-search__input::placeholder,
+body[id*="page-local-coursecatalog"] .glu-catalog-search__input::placeholder {
+    color: rgba(84, 84, 84, 0.65);
+}
+
+body.path-local-coursecatalog .glu-catalog-search__button,
+body#page-local-coursecatalog-view .glu-catalog-search__button,
+body[id*="page-local-coursecatalog"] .glu-catalog-search__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    min-width: 54px;
+    height: 54px;
+    border: 0;
+    border-radius: 999px;
+    background: #CD0A30;
+    color: #ffffff;
+    font-size: 1.05rem;
+    cursor: pointer;
+    box-shadow: 0 10px 24px rgba(205, 10, 48, 0.18);
+}
+
+body.path-local-coursecatalog .glu-catalog-search__button:hover,
+body#page-local-coursecatalog-view .glu-catalog-search__button:hover,
+body[id*="page-local-coursecatalog"] .glu-catalog-search__button:hover {
+    background: #0D445D;
+}
+
+body.path-local-coursecatalog .glu-catalog-search__status,
+body#page-local-coursecatalog-view .glu-catalog-search__status,
+body[id*="page-local-coursecatalog"] .glu-catalog-search__status {
+    min-height: 1.25rem;
+    margin: 0.75rem 0 0;
+    color: #545454;
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 575.98px) {
+
+    body.path-local-coursecatalog .glu-catalog-search,
+    body#page-local-coursecatalog-view .glu-catalog-search,
+    body[id*="page-local-coursecatalog"] .glu-catalog-search {
+        margin-bottom: 1.5rem;
+    }
+
+    body.path-local-coursecatalog .glu-catalog-search__form,
+    body#page-local-coursecatalog-view .glu-catalog-search__form,
+    body[id*="page-local-coursecatalog"] .glu-catalog-search__form {
+        padding: 0.25rem;
+    }
+
+    body.path-local-coursecatalog .glu-catalog-search__input,
+    body#page-local-coursecatalog-view .glu-catalog-search__input,
+    body[id*="page-local-coursecatalog"] .glu-catalog-search__input {
+        min-height: 48px;
+        padding-left: 1rem;
+    }
+
+    body.path-local-coursecatalog .glu-catalog-search__button,
+    body#page-local-coursecatalog-view .glu-catalog-search__button,
+    body[id*="page-local-coursecatalog"] .glu-catalog-search__button {
+        width: 50px;
+        min-width: 50px;
+        height: 50px;
+    }
+}

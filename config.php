@@ -15,3 +15,5 @@ $THEME->hidefromselector = false;
 $THEME->scss = function($theme) {
     return theme_glu_get_main_scss_content($theme);
 };
+
+$THEME->javascripts_footer = ['glu_coursecatalog_search'];
