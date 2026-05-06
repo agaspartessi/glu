@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
         ? M.cfg.wwwroot
         : window.location.origin;
 
-    var catalogUrl = wwwroot + '/local/coursecatalog/view.php?slug=courses&sort=name_asc&view=grid';
+    var catalogUrl = wwwroot + '/local/coursecatalog/view.php?slug=courses&sort=name_asc&view=grid&perpage=100';
 
     function absoluteUrl(url) {
         if (!url) {
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var allCourses = document.createElement('a');
         allCourses.className = 'glu-home-catalog-preview__all';
-        allCourses.href = wwwroot + '/local/coursecatalog/view.php?slug=courses';
+        allCourses.href = wwwroot + '/local/coursecatalog/view.php?slug=courses&sort=name_asc&view=grid&perpage=100';
         allCourses.textContent = 'View all courses';
 
         footer.appendChild(allCourses);
@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             section.innerHTML =
                 '<div class="glu-home-catalog-preview__footer">' +
-                '<a class="glu-home-catalog-preview__all" href="' + wwwroot + '/local/coursecatalog/view.php?slug=courses">' +
+                '<a class="glu-home-catalog-preview__all" href="' + wwwroot + '/local/coursecatalog/view.php?slug=courses&sort=name_asc&view=grid&perpage=100">' +
                 'View all courses' +
                 '</a>' +
                 '</div>';

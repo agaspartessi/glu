@@ -1,3 +1,59 @@
+(function () {
+    var catalogPath = '/local/coursecatalog/view.php';
+
+    function normalizeCatalogUrl(rawUrl) {
+        var url;
+
+        try {
+            url = new URL(rawUrl, window.location.origin);
+        } catch (error) {
+            return rawUrl;
+        }
+
+        if (url.pathname.indexOf(catalogPath) === -1) {
+            return rawUrl;
+        }
+
+        if (url.searchParams.get('slug') !== 'courses') {
+            return rawUrl;
+        }
+
+        url.searchParams.set('perpage', '100');
+
+        if (!url.searchParams.get('sort')) {
+            url.searchParams.set('sort', 'name_asc');
+        }
+
+        if (!url.searchParams.get('view')) {
+            url.searchParams.set('view', 'grid');
+        }
+
+        return url.toString();
+    }
+
+    // Si estoy en Course Catalog sin perpage=100, redirijo.
+    if (window.location.pathname.indexOf(catalogPath) !== -1) {
+        var currentUrl = new URL(window.location.href);
+
+        if (
+            currentUrl.searchParams.get('slug') === 'courses' &&
+            currentUrl.searchParams.get('perpage') !== '100'
+        ) {
+            window.location.replace(normalizeCatalogUrl(window.location.href));
+            return;
+        }
+    }
+
+    // Reescribo links del menú/nav para que apunten directo a la URL completa.
+    document.addEventListener('DOMContentLoaded', function () {
+        var links = document.querySelectorAll('a[href*="/local/coursecatalog/view.php"][href*="slug=courses"]');
+
+        links.forEach(function (link) {
+            link.href = normalizeCatalogUrl(link.href);
+        });
+    });
+})();
+
 document.addEventListener('DOMContentLoaded', function () {
     var isCatalogPage =
         window.location.pathname.indexOf('/local/coursecatalog/view.php') !== -1 ||
