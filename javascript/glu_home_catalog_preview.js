@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var subtitle = document.createElement('p');
         subtitle.className = 'glu-home-catalog-preview__subtitle';
-        subtitle.textContent = 'Browse our academic catalog';
+        subtitle.textContent = 'Browse all courses';
 
         header.appendChild(title);
         header.appendChild(subtitle);

@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
     searchBlock.className = 'glu-catalog-search';
 
     searchBlock.innerHTML =
-        '<p class="glu-catalog-search__eyebrow">Browse our academic catalog</p>' +
+        '<p class="glu-catalog-search__eyebrow">Browse all courses</p>' +
         '<form class="glu-catalog-search__form" role="search">' +
         '<input ' +
         'class="glu-catalog-search__input" ' +
