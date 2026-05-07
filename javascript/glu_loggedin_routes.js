@@ -6,6 +6,10 @@ document.addEventListener('DOMContentLoaded', function () {
     var catalogUrl = wwwroot + '/local/coursecatalog/view.php?slug=courses&sort=name_asc&view=grid&perpage=100';
 
     function isAuthenticatedUser() {
+        if (window.M && M.cfg && Number(M.cfg.userid) > 1) {
+            return true;
+        }
+
         if (document.body.classList.contains('notloggedin')) {
             return false;
         }
@@ -14,81 +18,53 @@ document.addEventListener('DOMContentLoaded', function () {
             return false;
         }
 
-        return true;
+        return Boolean(document.querySelector('.usermenu, [data-region="usermenu"], .userbutton'));
     }
 
-    function isSiteHome() {
-        return document.body.id === 'page-site-index';
-    }
+    function isHomeLink(link) {
+        var text = (link.textContent || '').trim().toLowerCase();
+        var href = link.getAttribute('href') || '';
 
-    function isRedirectDisabled() {
-        var url = new URL(window.location.href);
+        if (text !== 'home') {
+            return false;
+        }
+
+        var url;
+
+        try {
+            url = new URL(href, wwwroot);
+        } catch (error) {
+            return false;
+        }
 
         return (
-            url.searchParams.get('glu_no_redirect') === '1' ||
-            url.searchParams.get('edit') === 'on' ||
-            document.body.classList.contains('editing')
+            url.origin === window.location.origin &&
+            (
+                url.pathname === '/' ||
+                url.pathname === '/index.php'
+            )
         );
     }
 
-    function hideLoggedInHomeLink() {
+    function rewriteHomeLink() {
         if (!isAuthenticatedUser()) {
             return;
         }
 
-        var links = document.querySelectorAll('.primary-navigation a, .navbar-nav a, a.nav-link');
+        var links = document.querySelectorAll(
+            '.primary-navigation a, .navbar-nav a, nav.navbar a, header a.nav-link'
+        );
 
         links.forEach(function (link) {
-            var text = (link.textContent || '').trim().toLowerCase();
-            var href = link.getAttribute('href') || '';
-
-            var url;
-
-            try {
-                url = new URL(href, wwwroot);
-            } catch (error) {
-                return;
-            }
-
-            var isHomeLink =
-                (text === 'home' || text === 'site home') &&
-                url.origin === window.location.origin &&
-                (
-                    url.pathname === '/' ||
-                    url.pathname === '/index.php' ||
-                    url.pathname === '/?redirect=0'
-                );
-
-            if (isHomeLink) {
-                var item = link.closest('li.nav-item') || link.closest('.nav-item') || link.parentElement;
-
-                if (item) {
-                    item.style.display = 'none';
-                } else {
-                    link.style.display = 'none';
-                }
+            if (isHomeLink(link)) {
+                link.href = catalogUrl;
+                link.setAttribute('title', 'All courses');
             }
         });
     }
 
-    function normalizeAllCoursesLinks() {
-        var links = document.querySelectorAll('a[href*="/local/coursecatalog/view.php"][href*="slug=courses"]');
+    rewriteHomeLink();
 
-        links.forEach(function (link) {
-            link.href = catalogUrl;
-
-            var text = (link.textContent || '').trim().toLowerCase();
-
-            if (text === 'courses') {
-                link.textContent = 'All courses';
-            }
-        });
-    }
-
-    hideLoggedInHomeLink();
-    normalizeAllCoursesLinks();
-
-    if (isSiteHome() && isAuthenticatedUser() && !isRedirectDisabled()) {
-        window.location.replace(catalogUrl);
-    }
+    // Por si Moodle termina de renderizar algo después.
+    setTimeout(rewriteHomeLink, 500);
 });
