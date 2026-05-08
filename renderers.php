@@ -8,6 +8,21 @@ require_once($CFG->dirroot . '/course/renderer.php');
 class theme_glu_core_course_renderer extends core_course_renderer {
 
     /**
+     * Agrega una tira de docentes arriba del nombre del curso,
+     * sólo en /enrol/index.php?id=XX.
+     */
+    public function enrolment_options(stdClass $course, array $widgets, ?\core\url $returnurl = null) {
+        if ($this->page->pagetype !== 'enrol-index') {
+            return parent::enrolment_options($course, $widgets, $returnurl);
+        }
+
+        $courselistitem = new core_course_list_element($course);
+        $teamstrip = $this->render_glu_course_team_strip($courselistitem);
+
+        return $teamstrip . parent::enrolment_options($course, $widgets, $returnurl);
+    }
+
+    /**
      * Reemplaza los course contacts nativos sólo en /enrol/index.php.
      * En el resto del sitio deja el comportamiento original de Moodle.
      */
@@ -16,16 +31,102 @@ class theme_glu_core_course_renderer extends core_course_renderer {
             return parent::course_contacts($course);
         }
 
-        $contacts = $course->get_course_contacts();
+        $contactsdata = $this->get_glu_course_contacts_data($course);
 
-        if (empty($contacts)) {
+        if (empty($contactsdata)) {
             return '';
         }
 
-        $coursecontext = context_course::instance($course->id);
+        $content = html_writer::start_tag('section', [
+            'class' => 'glu-enrol-trainers',
+            'aria-labelledby' => 'glu-enrol-trainers-title',
+        ]);
 
-        $trainerlinks = [];
-        $trainercards = [];
+        $content .= html_writer::start_tag('div', [
+            'class' => 'glu-enrol-trainers__header',
+        ]);
+
+        $content .= html_writer::tag('p', 'Course team', [
+            'class' => 'glu-enrol-trainers__eyebrow',
+        ]);
+
+        $content .= html_writer::tag('h2', 'Course instructors', [
+            'id' => 'glu-enrol-trainers-title',
+            'class' => 'glu-enrol-trainers__title',
+        ]);
+
+        $content .= html_writer::end_tag('div');
+
+        $content .= html_writer::start_tag('div', [
+            'class' => 'glu-enrol-trainers__grid',
+        ]);
+
+        foreach ($contactsdata as $contactdata) {
+            $content .= $this->render_glu_trainer_card(
+                $contactdata['user'],
+                $contactdata['roletext'],
+                $contactdata['profileurl']
+            );
+        }
+
+        $content .= html_writer::end_tag('div');
+        $content .= html_writer::end_tag('section');
+
+        return $content;
+    }
+
+    /**
+     * Tira superior con nombres separados por coma.
+     */
+    private function render_glu_course_team_strip(core_course_list_element $course): string {
+        $contactsdata = $this->get_glu_course_contacts_data($course);
+
+        if (empty($contactsdata)) {
+            return '';
+        }
+
+        $links = [];
+
+        foreach ($contactsdata as $contactdata) {
+            $user = $contactdata['user'];
+
+            $links[] = html_writer::link(
+                $contactdata['profileurl'],
+                s(fullname($user)),
+                ['class' => 'glu-enrol-course-team-strip__link']
+            );
+        }
+
+        $content = html_writer::start_tag('section', [
+            'class' => 'glu-enrol-course-team-strip',
+            'aria-label' => 'Course team',
+        ]);
+
+        $content .= html_writer::tag('p', 'Course team', [
+            'class' => 'glu-enrol-course-team-strip__eyebrow',
+        ]);
+
+        $content .= html_writer::tag('p', implode(', ', $links), [
+            'class' => 'glu-enrol-course-team-strip__names',
+        ]);
+
+        $content .= html_writer::end_tag('section');
+
+        return $content;
+    }
+
+    /**
+     * Centraliza la obtención dinámica de docentes/contactos del curso.
+     */
+    private function get_glu_course_contacts_data(core_course_list_element $course): array {
+        $contacts = $course->get_course_contacts();
+
+        if (empty($contacts)) {
+            return [];
+        }
+
+        $coursecontext = context_course::instance($course->id);
+        $contactsdata = [];
         $printedusers = [];
 
         foreach ($contacts as $coursecontact) {
@@ -72,53 +173,14 @@ class theme_glu_core_course_renderer extends core_course_renderer {
                 'course' => $course->id,
             ]);
 
-            $fullname = fullname($user);
-
-            $trainerlinks[] = html_writer::link($profileurl, s($fullname), [
-                'class' => 'glu-enrol-trainers__list-link',
-            ]);
-
-            $trainercards[] = $this->render_glu_trainer_card($user, $roletext, $profileurl);
+            $contactsdata[] = [
+                'user' => $user,
+                'roletext' => $roletext,
+                'profileurl' => $profileurl,
+            ];
         }
 
-        if (empty($trainercards)) {
-            return '';
-        }
-
-        $content = html_writer::start_tag('section', [
-            'class' => 'glu-enrol-trainers',
-            'aria-labelledby' => 'glu-enrol-trainers-title',
-        ]);
-
-        $content .= html_writer::start_tag('div', [
-            'class' => 'glu-enrol-trainers__header',
-        ]);
-
-        $content .= html_writer::tag('p', 'Course team', [
-            'class' => 'glu-enrol-trainers__eyebrow',
-        ]);
-
-        $content .= html_writer::tag('p', implode(', ', $trainerlinks), [
-            'class' => 'glu-enrol-trainers__list',
-        ]);
-
-        $content .= html_writer::tag('h2', 'Course instructors', [
-            'id' => 'glu-enrol-trainers-title',
-            'class' => 'glu-enrol-trainers__title',
-        ]);
-
-        $content .= html_writer::end_tag('div');
-
-        $content .= html_writer::start_tag('div', [
-            'class' => 'glu-enrol-trainers__grid',
-        ]);
-
-        $content .= implode('', $trainercards);
-
-        $content .= html_writer::end_tag('div');
-        $content .= html_writer::end_tag('section');
-
-        return $content;
+        return $contactsdata;
     }
 
     /**

@@ -2221,6 +2221,46 @@ a.navbar-brand img,
    Contexto: /enrol/index.php?id=XX
 ========================================= */
 
+/* Tira superior: docentes arriba del nombre del curso */
+body#page-enrol-index .glu-enrol-course-team-strip {
+    max-width: 900px;
+    margin: 0 auto 1rem;
+    padding: 0 1rem;
+}
+
+body#page-enrol-index .glu-enrol-course-team-strip__eyebrow {
+    margin: 0 0 0.25rem;
+    color: #CD0A30;
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+body#page-enrol-index .glu-enrol-course-team-strip__names {
+    max-width: 900px;
+    margin: 0;
+    color: #5C8A12;
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+    font-weight: 800;
+    line-height: 1.45;
+}
+
+body#page-enrol-index .glu-enrol-course-team-strip__link {
+    color: #5C8A12;
+    text-decoration: none;
+}
+
+body#page-enrol-index .glu-enrol-course-team-strip__link:hover,
+body#page-enrol-index .glu-enrol-course-team-strip__link:focus {
+    color: #CD0A30;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+}
+
+/* Bloque inferior: cards de instructores */
 body#page-enrol-index .glu-enrol-trainers {
     margin: 2.5rem 0 1.5rem;
     padding: clamp(1.25rem, 2.5vw, 2rem);
@@ -2242,28 +2282,6 @@ body#page-enrol-index .glu-enrol-trainers__eyebrow {
     font-weight: 800;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-}
-
-body#page-enrol-index .glu-enrol-trainers__list {
-    max-width: 900px;
-    margin: 0 0 0.9rem;
-    color: #5C8A12;
-    font-family: "Lexend Deca", Arial, sans-serif;
-    font-size: clamp(0.95rem, 1.35vw, 1.15rem);
-    font-weight: 800;
-    line-height: 1.45;
-}
-
-body#page-enrol-index .glu-enrol-trainers__list-link {
-    color: #5C8A12;
-    text-decoration: none;
-}
-
-body#page-enrol-index .glu-enrol-trainers__list-link:hover,
-body#page-enrol-index .glu-enrol-trainers__list-link:focus {
-    color: #CD0A30;
-    text-decoration: underline;
-    text-underline-offset: 0.18em;
 }
 
 body#page-enrol-index .glu-enrol-trainers__title {
@@ -2366,14 +2384,19 @@ body#page-enrol-index .box.generalbox {
 
 /* Mobile */
 @media (max-width: 575.98px) {
+    body#page-enrol-index .glu-enrol-course-team-strip {
+        padding: 0 0.25rem;
+        margin-bottom: 0.85rem;
+    }
+
+    body#page-enrol-index .glu-enrol-course-team-strip__names {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
     body#page-enrol-index .glu-enrol-trainers {
         padding: 1rem;
         border-radius: 18px;
-    }
-
-    body#page-enrol-index .glu-enrol-trainers__list {
-        font-size: 0.95rem;
-        line-height: 1.5;
     }
 
     body#page-enrol-index .glu-enrol-trainer {
