@@ -3,66 +3,72 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    const subsectionSelectors = [
-        '.activity.subsection .course-section.delegated-section',
-        '.activity.subsection li.section.course-section',
-        '.modtype_subsection .course-section.delegated-section',
-        '.modtype_subsection li.section.course-section'
-    ];
-
-    const subsections = Array.from(
-        document.querySelectorAll(subsectionSelectors.join(', '))
-    ).filter(function (section) {
-        return !section.classList.contains('glu-subsection-tab');
-    });
+    /*
+     * Subsections / delegated sections.
+     * Estructura real observada:
+     * li.section.course-section.main.clearfix.delegated-section
+     *   div.section-item
+     *     div.course-section-header
+     *     div.content#coursecontentcollapse...
+     */
+    var subsections = Array.from(document.querySelectorAll(
+        'body#page-course-view-onetopic li.course-section.delegated-section, ' +
+        'body#page-course-view-onetopic .course-section.delegated-section'
+    ));
 
     subsections.forEach(function (section) {
-        const header =
-            section.querySelector(':scope > .section-item') ||
-            section.querySelector(':scope > .content > .sectionname') ||
-            section.querySelector(':scope .sectionname') ||
-            section.querySelector(':scope h3, :scope h4');
-
-        if (!header) {
+        if (section.dataset.gluSubsectionReady === '1') {
             return;
         }
 
-        section.classList.add('glu-subsection-tab');
+        var sectionItem = section.querySelector(':scope > .section-item');
+        if (!sectionItem) {
+            return;
+        }
 
+        var header =
+            sectionItem.querySelector(':scope > .course-section-header') ||
+            sectionItem.querySelector(':scope > .sectionname') ||
+            sectionItem.querySelector(':scope > h3, :scope > h4');
+
+        var content =
+            sectionItem.querySelector(':scope > .content[id^="coursecontentcollapse"]') ||
+            sectionItem.querySelector(':scope > .content');
+
+        if (!header || !content) {
+            return;
+        }
+
+        section.dataset.gluSubsectionReady = '1';
+
+        section.classList.add('glu-subsection-tab');
         header.classList.add('glu-subsection-tab__header');
+        content.classList.add('glu-subsection-tab__content');
+
         header.setAttribute('role', 'button');
         header.setAttribute('tabindex', '0');
         header.setAttribute('aria-expanded', 'false');
 
-        const content = document.createElement('div');
-        content.className = 'glu-subsection-tab__content';
-
-        while (header.nextSibling) {
-            content.appendChild(header.nextSibling);
-        }
-
-        section.appendChild(content);
-
-        const toggle = function (event) {
+        function toggleSubsection(event) {
             if (
                 event &&
                 event.target.closest(
-                    'a, button, input, select, textarea, .dropdown, .dropdown-menu, .action-menu, [data-toggle], [data-bs-toggle]'
+                    'button, input, select, textarea, .dropdown, .dropdown-menu, .action-menu, [data-toggle], [data-bs-toggle], .editing_move, .commands'
                 )
             ) {
                 return;
             }
 
-            const isOpen = section.classList.toggle('glu-subsection-is-open');
+            var isOpen = section.classList.toggle('glu-subsection-is-open');
             header.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-        };
+        }
 
-        header.addEventListener('click', toggle);
+        header.addEventListener('click', toggleSubsection);
 
         header.addEventListener('keydown', function (event) {
             if (event.key === 'Enter' || event.key === ' ') {
                 event.preventDefault();
-                toggle(event);
+                toggleSubsection(event);
             }
         });
     });

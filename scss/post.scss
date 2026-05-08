@@ -2406,170 +2406,196 @@ body#page-enrol-index .box.generalbox {
 }
 
 /* =========================================
-   GLU - Course navigation / OneTopic
-   Padres verticales + hijas horizontales
-   Subsections tipo pestaña colapsable
+   GLU - OneTopic course navigation
+   Padre vertical + hijas horizontales
+   Subsections colapsables
 ========================================= */
 
-/* Hijas del OneTopic como tabs horizontales */
-body#page-course-view-onetopic #tabs-tree-start.verticaltabs .format_onetopic-tabs {
-    gap: 0.35rem;
+/* -----------------------------------------
+   Pestañas hijas horizontales
+----------------------------------------- */
+
+body#page-course-view-onetopic #tabs-tree-start.verticaltabs .onetopic-tab-body .format_onetopic-tabs {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: stretch !important;
+    gap: 0.45rem !important;
+    width: 100% !important;
+    margin: 0 0 1rem !important;
+    padding: 0 0 0.75rem !important;
+    border-bottom: 1px solid rgba(13, 68, 93, 0.10) !important;
 }
 
-body#page-course-view-onetopic #tabs-tree-start.verticaltabs .format_onetopic-tabs li.tab_level_1.subtopic {
-    display: inline-flex !important;
+body#page-course-view-onetopic #tabs-tree-start.verticaltabs .onetopic-tab-body .format_onetopic-tabs>li.nav-item.tab_level_1.subtopic {
+    display: flex !important;
     width: auto !important;
     max-width: none !important;
-    margin: 0 0.35rem 0.45rem 0 !important;
+    flex: 0 1 auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-body#page-course-view-onetopic #tabs-tree-start.verticaltabs .format_onetopic-tabs li.tab_level_1.subtopic .nav-link {
-    display: inline-flex;
-    align-items: center;
-    min-height: 42px;
-    padding: 0.6rem 1rem !important;
+body#page-course-view-onetopic #tabs-tree-start.verticaltabs .onetopic-tab-body .format_onetopic-tabs>li.nav-item.tab_level_1.subtopic>.nav-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 44px !important;
+    max-width: 260px !important;
+    padding: 0.65rem 1rem !important;
     border: 0 !important;
-    border-bottom: 3px solid transparent !important;
-    border-radius: 14px 14px 0 0 !important;
-    background: transparent !important;
+    border-radius: 999px !important;
+    background: rgba(13, 68, 93, 0.05) !important;
     color: #0D445D !important;
-    font-family: "Lexend Deca", Arial, sans-serif;
-    font-weight: 600;
-    white-space: nowrap;
+    font-family: "Lexend Deca", Arial, sans-serif !important;
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
 }
 
-body#page-course-view-onetopic #tabs-tree-start.verticaltabs .format_onetopic-tabs li.tab_level_1.subtopic .nav-link:hover,
-body#page-course-view-onetopic #tabs-tree-start.verticaltabs .format_onetopic-tabs li.tab_level_1.subtopic .nav-link:focus {
-    background: rgba(13, 68, 93, 0.06) !important;
+body#page-course-view-onetopic #tabs-tree-start.verticaltabs .onetopic-tab-body .format_onetopic-tabs>li.nav-item.tab_level_1.subtopic>.nav-link:hover,
+body#page-course-view-onetopic #tabs-tree-start.verticaltabs .onetopic-tab-body .format_onetopic-tabs>li.nav-item.tab_level_1.subtopic>.nav-link:focus {
+    background: rgba(205, 10, 48, 0.08) !important;
     color: #CD0A30 !important;
 }
 
-body#page-course-view-onetopic #tabs-tree-start.verticaltabs .format_onetopic-tabs li.tab_level_1.subtopic .nav-link.active {
+body#page-course-view-onetopic #tabs-tree-start.verticaltabs .onetopic-tab-body .format_onetopic-tabs>li.nav-item.tab_level_1.subtopic>.nav-link.active {
     background: #ffffff !important;
     color: #5D821A !important;
-    border-bottom-color: #5D821A !important;
-    font-weight: 800;
+    box-shadow: inset 0 -3px 0 #5D821A, 0 8px 18px rgba(13, 68, 93, 0.08) !important;
 }
 
-/* Responsive: hijas scrolleables horizontalmente */
+/* Mobile: las hijas quedan como carrusel horizontal */
 @media (max-width: 767.98px) {
-    body#page-course-view-onetopic #tabs-tree-start.verticaltabs .format_onetopic-tabs {
-        display: flex !important;
+    body#page-course-view-onetopic #tabs-tree-start.verticaltabs .onetopic-tab-body .format_onetopic-tabs {
         flex-wrap: nowrap !important;
-        overflow-x: auto;
-        overflow-y: hidden;
-        padding-bottom: 0.35rem;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        padding-bottom: 0.6rem !important;
         scrollbar-width: thin;
     }
 
-    body#page-course-view-onetopic #tabs-tree-start.verticaltabs .format_onetopic-tabs li.tab_level_1.subtopic {
-        flex: 0 0 auto;
+    body#page-course-view-onetopic #tabs-tree-start.verticaltabs .onetopic-tab-body .format_onetopic-tabs>li.nav-item.tab_level_1.subtopic {
+        flex: 0 0 auto !important;
     }
 
-    body#page-course-view-onetopic #tabs-tree-start.verticaltabs .format_onetopic-tabs li.tab_level_1.subtopic .nav-link {
-        max-width: 260px;
-        overflow: hidden;
-        text-overflow: ellipsis;
+    body#page-course-view-onetopic #tabs-tree-start.verticaltabs .onetopic-tab-body .format_onetopic-tabs>li.nav-item.tab_level_1.subtopic>.nav-link {
+        max-width: 230px !important;
     }
 }
 
-/* =========================================
-   Subsections como tabs / accordion
-========================================= */
+/* -----------------------------------------
+   Subsections como pestañas colapsables
+----------------------------------------- */
 
-body#page-course-view-onetopic .glu-subsection-tab {
-    margin: 1rem 0 !important;
+body#page-course-view-onetopic .course-section.delegated-section.glu-subsection-tab {
+    margin: 0.9rem 0 !important;
+    padding: 0 !important;
     border: 0 !important;
     background: transparent !important;
 }
 
-body#page-course-view-onetopic .glu-subsection-tab>.section-item,
-body#page-course-view-onetopic .glu-subsection-tab__header {
-    position: relative;
+body#page-course-view-onetopic .course-section.delegated-section.glu-subsection-tab>.section-item {
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+}
+
+/* Header clickeable de la subsection */
+body#page-course-view-onetopic .course-section.delegated-section.glu-subsection-tab .glu-subsection-tab__header {
     display: flex !important;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    width: 100%;
-    min-height: 56px;
-    padding: 0.9rem 1.25rem !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 1rem !important;
+    width: 100% !important;
+    min-height: 58px !important;
+    padding: 0.85rem 1.15rem !important;
     border: 1px solid rgba(13, 68, 93, 0.10) !important;
     border-left: 6px solid #CD0A30 !important;
     border-radius: 18px !important;
     background: #ffffff !important;
-    box-shadow: 0 10px 24px rgba(13, 68, 93, 0.06);
     color: #0D445D !important;
-    cursor: pointer;
+    box-shadow: 0 10px 24px rgba(13, 68, 93, 0.06) !important;
+    cursor: pointer !important;
 }
 
-body#page-course-view-onetopic .glu-subsection-tab>.section-item:hover,
-body#page-course-view-onetopic .glu-subsection-tab__header:hover {
-    background: #f8fbfc !important;
+/* Limpia un poco el título interno */
+body#page-course-view-onetopic .course-section.delegated-section.glu-subsection-tab .glu-subsection-tab__header .sectionname,
+body#page-course-view-onetopic .course-section.delegated-section.glu-subsection-tab .glu-subsection-tab__header h3,
+body#page-course-view-onetopic .course-section.delegated-section.glu-subsection-tab .glu-subsection-tab__header h4 {
+    margin: 0 !important;
+    color: #0D445D !important;
+    font-family: "Lexend Deca", Arial, sans-serif !important;
+    font-size: 1.05rem !important;
+    font-weight: 800 !important;
 }
 
-body#page-course-view-onetopic .glu-subsection-tab>.section-item::after,
-body#page-course-view-onetopic .glu-subsection-tab__header::after {
-    content: "+";
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 34px;
-    min-width: 34px;
-    height: 34px;
-    border-radius: 999px;
-    background: rgba(205, 10, 48, 0.08);
-    color: #CD0A30;
-    font-size: 1.35rem;
-    font-weight: 700;
-    line-height: 1;
+/* Botón + / - */
+body#page-course-view-onetopic .course-section.delegated-section.glu-subsection-tab .glu-subsection-tab__header::after {
+    content: "+" !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 34px !important;
+    min-width: 34px !important;
+    height: 34px !important;
+    margin-left: auto !important;
+    border-radius: 999px !important;
+    background: rgba(205, 10, 48, 0.08) !important;
+    color: #CD0A30 !important;
+    font-size: 1.35rem !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
 }
 
-body#page-course-view-onetopic .glu-subsection-tab.glu-subsection-is-open>.section-item::after,
-body#page-course-view-onetopic .glu-subsection-tab.glu-subsection-is-open .glu-subsection-tab__header::after {
-    content: "–";
-    background: #CD0A30;
-    color: #ffffff;
+body#page-course-view-onetopic .course-section.delegated-section.glu-subsection-tab.glu-subsection-is-open .glu-subsection-tab__header::after {
+    content: "–" !important;
+    background: #CD0A30 !important;
+    color: #ffffff !important;
 }
 
-body#page-course-view-onetopic .glu-subsection-tab__content {
-    display: none;
-    margin-top: 0.75rem;
-    padding: 1rem;
-    border: 1px solid rgba(13, 68, 93, 0.08);
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.78);
+/* Contenido cerrado por defecto */
+body#page-course-view-onetopic .course-section.delegated-section.glu-subsection-tab:not(.glu-subsection-is-open)>.section-item>.glu-subsection-tab__content {
+    display: none !important;
 }
 
-body#page-course-view-onetopic .glu-subsection-tab.glu-subsection-is-open .glu-subsection-tab__content {
-    display: block;
+/* Contenido abierto */
+body#page-course-view-onetopic .course-section.delegated-section.glu-subsection-tab.glu-subsection-is-open>.section-item>.glu-subsection-tab__content {
+    display: block !important;
+    margin-top: 0.75rem !important;
+    padding: 1rem !important;
+    border: 1px solid rgba(13, 68, 93, 0.08) !important;
+    border-radius: 18px !important;
+    background: rgba(255, 255, 255, 0.82) !important;
 }
 
-/* Actividades dentro de la subsection */
-body#page-course-view-onetopic .glu-subsection-tab__content .activity-item,
-body#page-course-view-onetopic .glu-subsection-tab__content .activity {
-    border-radius: 16px;
+/* Actividades adentro */
+body#page-course-view-onetopic .course-section.delegated-section.glu-subsection-tab .glu-subsection-tab__content .activity,
+body#page-course-view-onetopic .course-section.delegated-section.glu-subsection-tab .glu-subsection-tab__content .activity-item {
+    border-radius: 16px !important;
 }
 
 /* Mobile */
 @media (max-width: 575.98px) {
-
-    body#page-course-view-onetopic .glu-subsection-tab>.section-item,
-    body#page-course-view-onetopic .glu-subsection-tab__header {
-        min-height: 52px;
+    body#page-course-view-onetopic .course-section.delegated-section.glu-subsection-tab .glu-subsection-tab__header {
+        min-height: 52px !important;
         padding: 0.8rem 1rem !important;
         border-radius: 15px !important;
     }
 
-    body#page-course-view-onetopic .glu-subsection-tab>.section-item::after,
-    body#page-course-view-onetopic .glu-subsection-tab__header::after {
-        width: 30px;
-        min-width: 30px;
-        height: 30px;
-        font-size: 1.2rem;
+    body#page-course-view-onetopic .course-section.delegated-section.glu-subsection-tab .glu-subsection-tab__header::after {
+        width: 30px !important;
+        min-width: 30px !important;
+        height: 30px !important;
+        font-size: 1.15rem !important;
     }
 
-    body#page-course-view-onetopic .glu-subsection-tab__content {
-        padding: 0.75rem;
-        border-radius: 15px;
+    body#page-course-view-onetopic .course-section.delegated-section.glu-subsection-tab.glu-subsection-is-open>.section-item>.glu-subsection-tab__content {
+        padding: 0.75rem !important;
+        border-radius: 15px !important;
     }
 }
