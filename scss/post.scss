@@ -2215,3 +2215,165 @@ a.navbar-brand img,
         max-height: 36px;
     }
 }
+
+/* =========================================
+   ENROL PAGE - DYNAMIC COURSE TRAINERS
+   Contexto: /enrol/index.php?id=XX
+========================================= */
+
+body#page-enrol-index .glu-enrol-trainers {
+    margin: 2.5rem 0 1.5rem;
+    padding: clamp(1.25rem, 2.5vw, 2rem);
+    border-radius: 24px;
+    background: #f4f8fa;
+    border: 1px solid rgba(13, 68, 93, 0.10);
+    box-shadow: 0 16px 34px rgba(13, 68, 93, 0.06);
+}
+
+body#page-enrol-index .glu-enrol-trainers__header {
+    margin-bottom: 1.25rem;
+}
+
+body#page-enrol-index .glu-enrol-trainers__eyebrow {
+    margin: 0 0 0.25rem;
+    color: #CD0A30;
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+body#page-enrol-index .glu-enrol-trainers__title {
+    margin: 0;
+    color: #0D445D;
+    font-family: "Oswald", Arial, sans-serif;
+    font-size: clamp(1.8rem, 3vw, 2.7rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+body#page-enrol-index .glu-enrol-trainers__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+body#page-enrol-index .glu-enrol-trainer {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 18px;
+    background: #ffffff;
+    border: 1px solid rgba(13, 68, 93, 0.08);
+}
+
+body#page-enrol-index .glu-enrol-trainer__avatar {
+    width: 96px;
+    height: 96px;
+}
+
+body#page-enrol-index .glu-enrol-trainer__photo,
+body#page-enrol-index .glu-enrol-trainer__avatar img {
+    width: 96px;
+    height: 96px;
+    display: block;
+    object-fit: cover;
+    border-radius: 18px;
+    border: 3px solid #ffffff;
+    box-shadow: 0 10px 22px rgba(13, 68, 93, 0.14);
+}
+
+body#page-enrol-index .glu-enrol-trainer__name {
+    margin: 0 0 0.2rem;
+    color: #0D445D;
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+body#page-enrol-index .glu-enrol-trainer__name a,
+body#page-enrol-index .glu-enrol-trainer__name-link {
+    color: #0D445D;
+    text-decoration: none;
+}
+
+body#page-enrol-index .glu-enrol-trainer__name a:hover,
+body#page-enrol-index .glu-enrol-trainer__name-link:hover {
+    color: #CD0A30;
+    text-decoration: none;
+}
+
+body#page-enrol-index .glu-enrol-trainer__role {
+    margin: 0 0 0.45rem;
+    color: #CD0A30;
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+body#page-enrol-index .glu-enrol-trainer__bio {
+    margin: 0;
+    color: #545454;
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 0.92rem;
+    line-height: 1.55;
+}
+
+body#page-enrol-index .glu-enrol-trainer__bio p {
+    margin: 0 0 0.5rem;
+}
+
+body#page-enrol-index .glu-enrol-trainer__bio p:last-child {
+    margin-bottom: 0;
+}
+
+/* Ajuste general de la caja del curso en enrol */
+body#page-enrol-index .generalbox,
+body#page-enrol-index .box.generalbox {
+    border-radius: 22px;
+    border-color: rgba(13, 68, 93, 0.10);
+}
+
+/* Mobile */
+@media (max-width: 575.98px) {
+    body#page-enrol-index .glu-enrol-trainers {
+        padding: 1rem;
+        border-radius: 18px;
+    }
+
+    body#page-enrol-index .glu-enrol-trainer {
+        grid-template-columns: 72px minmax(0, 1fr);
+        gap: 0.85rem;
+        align-items: start;
+        padding: 0.85rem;
+        border-radius: 16px;
+    }
+
+    body#page-enrol-index .glu-enrol-trainer__avatar,
+    body#page-enrol-index .glu-enrol-trainer__photo,
+    body#page-enrol-index .glu-enrol-trainer__avatar img {
+        width: 72px;
+        height: 72px;
+        border-radius: 14px;
+    }
+
+    body#page-enrol-index .glu-enrol-trainer__name {
+        font-size: 0.98rem;
+    }
+
+    body#page-enrol-index .glu-enrol-trainer__role {
+        font-size: 0.76rem;
+    }
+
+    body#page-enrol-index .glu-enrol-trainer__bio {
+        font-size: 0.86rem;
+    }
+}
