@@ -18,3 +18,4 @@ function theme_glu_get_main_scss_content($theme): string {
 
     return $scss;
 }
+

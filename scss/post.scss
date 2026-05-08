@@ -2404,3 +2404,172 @@ body#page-enrol-index .box.generalbox {
         font-size: 0.86rem;
     }
 }
+
+/* =========================================
+   GLU - Course navigation / OneTopic
+   Padres verticales + hijas horizontales
+   Subsections tipo pestaña colapsable
+========================================= */
+
+/* Hijas del OneTopic como tabs horizontales */
+body#page-course-view-onetopic #tabs-tree-start.verticaltabs .format_onetopic-tabs {
+    gap: 0.35rem;
+}
+
+body#page-course-view-onetopic #tabs-tree-start.verticaltabs .format_onetopic-tabs li.tab_level_1.subtopic {
+    display: inline-flex !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 0.35rem 0.45rem 0 !important;
+}
+
+body#page-course-view-onetopic #tabs-tree-start.verticaltabs .format_onetopic-tabs li.tab_level_1.subtopic .nav-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 42px;
+    padding: 0.6rem 1rem !important;
+    border: 0 !important;
+    border-bottom: 3px solid transparent !important;
+    border-radius: 14px 14px 0 0 !important;
+    background: transparent !important;
+    color: #0D445D !important;
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+body#page-course-view-onetopic #tabs-tree-start.verticaltabs .format_onetopic-tabs li.tab_level_1.subtopic .nav-link:hover,
+body#page-course-view-onetopic #tabs-tree-start.verticaltabs .format_onetopic-tabs li.tab_level_1.subtopic .nav-link:focus {
+    background: rgba(13, 68, 93, 0.06) !important;
+    color: #CD0A30 !important;
+}
+
+body#page-course-view-onetopic #tabs-tree-start.verticaltabs .format_onetopic-tabs li.tab_level_1.subtopic .nav-link.active {
+    background: #ffffff !important;
+    color: #5D821A !important;
+    border-bottom-color: #5D821A !important;
+    font-weight: 800;
+}
+
+/* Responsive: hijas scrolleables horizontalmente */
+@media (max-width: 767.98px) {
+    body#page-course-view-onetopic #tabs-tree-start.verticaltabs .format_onetopic-tabs {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding-bottom: 0.35rem;
+        scrollbar-width: thin;
+    }
+
+    body#page-course-view-onetopic #tabs-tree-start.verticaltabs .format_onetopic-tabs li.tab_level_1.subtopic {
+        flex: 0 0 auto;
+    }
+
+    body#page-course-view-onetopic #tabs-tree-start.verticaltabs .format_onetopic-tabs li.tab_level_1.subtopic .nav-link {
+        max-width: 260px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+/* =========================================
+   Subsections como tabs / accordion
+========================================= */
+
+body#page-course-view-onetopic .glu-subsection-tab {
+    margin: 1rem 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+}
+
+body#page-course-view-onetopic .glu-subsection-tab>.section-item,
+body#page-course-view-onetopic .glu-subsection-tab__header {
+    position: relative;
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    min-height: 56px;
+    padding: 0.9rem 1.25rem !important;
+    border: 1px solid rgba(13, 68, 93, 0.10) !important;
+    border-left: 6px solid #CD0A30 !important;
+    border-radius: 18px !important;
+    background: #ffffff !important;
+    box-shadow: 0 10px 24px rgba(13, 68, 93, 0.06);
+    color: #0D445D !important;
+    cursor: pointer;
+}
+
+body#page-course-view-onetopic .glu-subsection-tab>.section-item:hover,
+body#page-course-view-onetopic .glu-subsection-tab__header:hover {
+    background: #f8fbfc !important;
+}
+
+body#page-course-view-onetopic .glu-subsection-tab>.section-item::after,
+body#page-course-view-onetopic .glu-subsection-tab__header::after {
+    content: "+";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    background: rgba(205, 10, 48, 0.08);
+    color: #CD0A30;
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+body#page-course-view-onetopic .glu-subsection-tab.glu-subsection-is-open>.section-item::after,
+body#page-course-view-onetopic .glu-subsection-tab.glu-subsection-is-open .glu-subsection-tab__header::after {
+    content: "–";
+    background: #CD0A30;
+    color: #ffffff;
+}
+
+body#page-course-view-onetopic .glu-subsection-tab__content {
+    display: none;
+    margin-top: 0.75rem;
+    padding: 1rem;
+    border: 1px solid rgba(13, 68, 93, 0.08);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.78);
+}
+
+body#page-course-view-onetopic .glu-subsection-tab.glu-subsection-is-open .glu-subsection-tab__content {
+    display: block;
+}
+
+/* Actividades dentro de la subsection */
+body#page-course-view-onetopic .glu-subsection-tab__content .activity-item,
+body#page-course-view-onetopic .glu-subsection-tab__content .activity {
+    border-radius: 16px;
+}
+
+/* Mobile */
+@media (max-width: 575.98px) {
+
+    body#page-course-view-onetopic .glu-subsection-tab>.section-item,
+    body#page-course-view-onetopic .glu-subsection-tab__header {
+        min-height: 52px;
+        padding: 0.8rem 1rem !important;
+        border-radius: 15px !important;
+    }
+
+    body#page-course-view-onetopic .glu-subsection-tab>.section-item::after,
+    body#page-course-view-onetopic .glu-subsection-tab__header::after {
+        width: 30px;
+        min-width: 30px;
+        height: 30px;
+        font-size: 1.2rem;
+    }
+
+    body#page-course-view-onetopic .glu-subsection-tab__content {
+        padding: 0.75rem;
+        border-radius: 15px;
+    }
+}
