@@ -24,30 +24,8 @@ class theme_glu_core_course_renderer extends core_course_renderer {
 
         $coursecontext = context_course::instance($course->id);
 
-        $content = html_writer::start_tag('section', [
-            'class' => 'glu-enrol-trainers',
-            'aria-labelledby' => 'glu-enrol-trainers-title',
-        ]);
-
-        $content .= html_writer::start_tag('div', [
-            'class' => 'glu-enrol-trainers__header',
-        ]);
-
-        $content .= html_writer::tag('p', 'Course team', [
-            'class' => 'glu-enrol-trainers__eyebrow',
-        ]);
-
-        $content .= html_writer::tag('h2', 'Course instructors', [
-            'id' => 'glu-enrol-trainers-title',
-            'class' => 'glu-enrol-trainers__title',
-        ]);
-
-        $content .= html_writer::end_tag('div');
-
-        $content .= html_writer::start_tag('div', [
-            'class' => 'glu-enrol-trainers__grid',
-        ]);
-
+        $trainerlinks = [];
+        $trainercards = [];
         $printedusers = [];
 
         foreach ($contacts as $coursecontact) {
@@ -75,7 +53,9 @@ class theme_glu_core_course_renderer extends core_course_renderer {
 
             if (!empty($coursecontact['roles'])) {
                 foreach ($coursecontact['roles'] as $role) {
-                    if (!empty($role->displayname)) {
+                    if (function_exists('role_get_name')) {
+                        $rolenames[] = role_get_name($role, $coursecontext, ROLENAME_ALIAS);
+                    } else if (!empty($role->displayname)) {
                         $rolenames[] = format_string($role->displayname);
                     } else if (!empty($role->name)) {
                         $rolenames[] = format_string($role->name);
@@ -87,8 +67,53 @@ class theme_glu_core_course_renderer extends core_course_renderer {
                 ? implode(', ', $rolenames)
                 : get_string('teacher');
 
-            $content .= $this->render_glu_trainer_card($user, $roletext);
+            $profileurl = new moodle_url('/user/view.php', [
+                'id' => $user->id,
+                'course' => $course->id,
+            ]);
+
+            $fullname = fullname($user);
+
+            $trainerlinks[] = html_writer::link($profileurl, s($fullname), [
+                'class' => 'glu-enrol-trainers__list-link',
+            ]);
+
+            $trainercards[] = $this->render_glu_trainer_card($user, $roletext, $profileurl);
         }
+
+        if (empty($trainercards)) {
+            return '';
+        }
+
+        $content = html_writer::start_tag('section', [
+            'class' => 'glu-enrol-trainers',
+            'aria-labelledby' => 'glu-enrol-trainers-title',
+        ]);
+
+        $content .= html_writer::start_tag('div', [
+            'class' => 'glu-enrol-trainers__header',
+        ]);
+
+        $content .= html_writer::tag('p', 'Course team', [
+            'class' => 'glu-enrol-trainers__eyebrow',
+        ]);
+
+        $content .= html_writer::tag('p', implode(', ', $trainerlinks), [
+            'class' => 'glu-enrol-trainers__list',
+        ]);
+
+        $content .= html_writer::tag('h2', 'Course instructors', [
+            'id' => 'glu-enrol-trainers-title',
+            'class' => 'glu-enrol-trainers__title',
+        ]);
+
+        $content .= html_writer::end_tag('div');
+
+        $content .= html_writer::start_tag('div', [
+            'class' => 'glu-enrol-trainers__grid',
+        ]);
+
+        $content .= implode('', $trainercards);
 
         $content .= html_writer::end_tag('div');
         $content .= html_writer::end_tag('section');
@@ -99,7 +124,7 @@ class theme_glu_core_course_renderer extends core_course_renderer {
     /**
      * Card visual para cada trainer.
      */
-    private function render_glu_trainer_card(stdClass $user, string $roletext): string {
+    private function render_glu_trainer_card(stdClass $user, string $roletext, moodle_url $profileurl): string {
         $content = html_writer::start_tag('article', [
             'class' => 'glu-enrol-trainer',
         ]);
@@ -118,15 +143,9 @@ class theme_glu_core_course_renderer extends core_course_renderer {
 
         $fullname = fullname($user);
 
-        if (isloggedin() && !isguestuser()) {
-            $profileurl = core_user::get_profile_url($user, context_system::instance());
-
-            $namehtml = html_writer::link($profileurl, s($fullname), [
-                'class' => 'glu-enrol-trainer__name-link',
-            ]);
-        } else {
-            $namehtml = s($fullname);
-        }
+        $namehtml = html_writer::link($profileurl, s($fullname), [
+            'class' => 'glu-enrol-trainer__name-link',
+        ]);
 
         $content .= html_writer::tag('h3', $namehtml, [
             'class' => 'glu-enrol-trainer__name',

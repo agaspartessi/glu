@@ -2231,17 +2231,39 @@ body#page-enrol-index .glu-enrol-trainers {
 }
 
 body#page-enrol-index .glu-enrol-trainers__header {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.35rem;
 }
 
 body#page-enrol-index .glu-enrol-trainers__eyebrow {
-    margin: 0 0 0.25rem;
+    margin: 0 0 0.45rem;
     color: #CD0A30;
     font-family: "Lexend Deca", Arial, sans-serif;
     font-size: 0.78rem;
     font-weight: 800;
     letter-spacing: 0.12em;
     text-transform: uppercase;
+}
+
+body#page-enrol-index .glu-enrol-trainers__list {
+    max-width: 900px;
+    margin: 0 0 0.9rem;
+    color: #5C8A12;
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: clamp(0.95rem, 1.35vw, 1.15rem);
+    font-weight: 800;
+    line-height: 1.45;
+}
+
+body#page-enrol-index .glu-enrol-trainers__list-link {
+    color: #5C8A12;
+    text-decoration: none;
+}
+
+body#page-enrol-index .glu-enrol-trainers__list-link:hover,
+body#page-enrol-index .glu-enrol-trainers__list-link:focus {
+    color: #CD0A30;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
 }
 
 body#page-enrol-index .glu-enrol-trainers__title {
@@ -2347,6 +2369,11 @@ body#page-enrol-index .box.generalbox {
     body#page-enrol-index .glu-enrol-trainers {
         padding: 1rem;
         border-radius: 18px;
+    }
+
+    body#page-enrol-index .glu-enrol-trainers__list {
+        font-size: 0.95rem;
+        line-height: 1.5;
     }
 
     body#page-enrol-index .glu-enrol-trainer {
