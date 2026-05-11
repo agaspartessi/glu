@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var params = new URLSearchParams(window.location.search);
 
-    // Fuerza perpage=100 para que no pagine al navegar por tabs o desde el menú.
+    // Fuerza perpage=100 también cuando se llega desde menú o tabs.
     if (params.get('perpage') !== '100') {
         params.set('perpage', '100');
 
@@ -135,6 +135,222 @@ document.addEventListener('DOMContentLoaded', function () {
             .trim();
     }
 
+    function getCourseIdFromCard(card) {
+        var link = card.querySelector('.stretched-link');
+
+        if (!link) {
+            return null;
+        }
+
+        try {
+            var url = new URL(link.getAttribute('href'), wwwroot);
+            return url.searchParams.get('id');
+        } catch (error) {
+            return null;
+        }
+    }
+
+    function absoluteUrl(url) {
+        if (!url) {
+            return '';
+        }
+
+        try {
+            return new URL(url, wwwroot).href;
+        } catch (error) {
+            return url;
+        }
+    }
+
+    function cleanText(text) {
+        return (text || '').replace(/\s+/g, ' ').trim();
+    }
+
+    function uniqueTeachers(teachers) {
+        var seen = {};
+        var result = [];
+
+        teachers.forEach(function (teacher) {
+            var key = normalize(teacher.name);
+
+            if (!key || seen[key]) {
+                return;
+            }
+
+            seen[key] = true;
+            result.push(teacher);
+        });
+
+        return result;
+    }
+
+    function extractTeachersFromEnrolPage(html) {
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        var region = doc.querySelector('#region-main');
+
+        if (!region) {
+            return [];
+        }
+
+        /*
+         * Intenta primero con selectores posibles del bloque custom
+         * que ya muestra Course Instructors en enrol/index.php.
+         */
+        var preferredSelectors = [
+            '.glu-course-instructors a[href*="/user/view.php"]',
+            '.glu-enrol-instructors a[href*="/user/view.php"]',
+            '.glu-instructors a[href*="/user/view.php"]',
+            '.course-instructors a[href*="/user/view.php"]',
+            '.glu-course-team a[href*="/user/view.php"]'
+        ];
+
+        var links = [];
+
+        preferredSelectors.forEach(function (selector) {
+            links = links.concat(Array.from(region.querySelectorAll(selector)));
+        });
+
+        /*
+         * Fallback: si no encuentra por clase custom,
+         * busca links a perfiles dentro del contenido principal.
+         */
+        if (!links.length) {
+            links = Array.from(region.querySelectorAll('a[href*="/user/view.php"]'));
+        }
+
+        var teachers = links.map(function (link) {
+            return {
+                name: cleanText(link.textContent),
+                url: absoluteUrl(link.getAttribute('href'))
+            };
+        }).filter(function (teacher) {
+            return teacher.name &&
+                teacher.name.length > 1 &&
+                teacher.name.length < 80 &&
+                teacher.name.toLowerCase() !== 'view profile';
+        });
+
+        return uniqueTeachers(teachers);
+    }
+
+    function renderTeachersInCard(card, teachers) {
+        if (!teachers.length) {
+            return;
+        }
+
+        card.dataset.gluInstructors = teachers.map(function (teacher) {
+            return teacher.name;
+        }).join(' ');
+
+        var oldTeam = card.querySelector('.glu-catalog-card__team');
+
+        if (oldTeam) {
+            oldTeam.remove();
+        }
+
+        var team = document.createElement('p');
+        team.className = 'glu-catalog-card__team';
+
+        var label = document.createElement('span');
+        label.className = 'glu-catalog-card__team-label';
+        label.textContent = 'Course team: ';
+
+        team.appendChild(label);
+
+        teachers.forEach(function (teacher, index) {
+            var link = document.createElement('a');
+            link.href = teacher.url;
+            link.textContent = teacher.name;
+
+            team.appendChild(link);
+
+            if (index < teachers.length - 1) {
+                team.appendChild(document.createTextNode(', '));
+            }
+        });
+
+        var title = card.querySelector('.card-title');
+        var desc = card.querySelector('.card-text');
+
+        if (desc) {
+            desc.insertAdjacentElement('beforebegin', team);
+        } else if (title) {
+            title.insertAdjacentElement('afterend', team);
+        } else {
+            card.querySelector('.card-body')?.prepend(team);
+        }
+    }
+
+    function loadTeachersForCard(card) {
+        var courseId = getCourseIdFromCard(card);
+
+        if (!courseId) {
+            return Promise.resolve();
+        }
+
+        var cacheKey = 'gluCatalogTeachers:' + courseId;
+        var cached = sessionStorage.getItem(cacheKey);
+
+        if (cached) {
+            try {
+                var cachedTeachers = JSON.parse(cached);
+                renderTeachersInCard(card, cachedTeachers);
+                return Promise.resolve();
+            } catch (error) {
+                sessionStorage.removeItem(cacheKey);
+            }
+        }
+
+        return fetch(wwwroot + '/enrol/index.php?id=' + encodeURIComponent(courseId), {
+            credentials: 'same-origin'
+        })
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error('Could not load enrol page');
+                }
+
+                return response.text();
+            })
+            .then(function (html) {
+                var teachers = extractTeachersFromEnrolPage(html);
+
+                sessionStorage.setItem(cacheKey, JSON.stringify(teachers));
+                renderTeachersInCard(card, teachers);
+            })
+            .catch(function () {
+                // No interrumpimos el catálogo si un curso no devuelve docentes.
+            });
+    }
+
+    function loadTeachersInBatches(cards) {
+        var index = 0;
+        var active = 0;
+        var maxConcurrent = 4;
+
+        return new Promise(function (resolve) {
+            function next() {
+                if (index >= cards.length && active === 0) {
+                    resolve();
+                    return;
+                }
+
+                while (active < maxConcurrent && index < cards.length) {
+                    var card = cards[index];
+                    index++;
+                    active++;
+
+                    loadTeachersForCard(card)
+                        .finally(function () {
+                            active--;
+                            next();
+                        });
+                }
+            }
+
+            next();
+        });
+    }
+
     function prepareCards() {
         var cards = getCourseCards();
 
@@ -147,6 +363,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 button.textContent = 'View course →';
                 button.classList.add('glu-catalog-card__button');
             });
+        });
+
+        loadTeachersInBatches(cards).then(function () {
+            var input = document.querySelector('.glu-catalog-search__input');
+
+            if (input && input.value) {
+                input.dispatchEvent(new Event('input'));
+            }
         });
     }
 
@@ -213,7 +437,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     ? card.querySelector('img').getAttribute('alt')
                     : '';
 
-                var allText = normalize(titleText + ' ' + description + ' ' + imageAlt);
+                var instructors = card.dataset.gluInstructors || '';
+
+                var allText = normalize(
+                    titleText + ' ' + description + ' ' + imageAlt + ' ' + instructors
+                );
+
                 var match = !query || allText.indexOf(query) !== -1;
 
                 var wrapper = getCardWrapper(card);

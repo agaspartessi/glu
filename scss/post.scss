@@ -2680,3 +2680,45 @@ body.glu-coursecatalog-page .glu-catalog-tabs+.glu-catalog-search {
         font-size: 0.88rem;
     }
 }
+
+/* =========================================
+   GLU - Course Catalog course team
+========================================= */
+
+body.glu-coursecatalog-page .glu-catalog-card__team {
+    margin: 0.25rem 0 0.75rem;
+    color: #5D821A;
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.45;
+    font-weight: 700;
+}
+
+body.glu-coursecatalog-page .glu-catalog-card__team-label {
+    color: #CD0A30;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+}
+
+body.glu-coursecatalog-page .glu-catalog-card__team a {
+    color: #5D821A !important;
+    text-decoration: none !important;
+    font-weight: 800;
+}
+
+body.glu-coursecatalog-page .glu-catalog-card__team a:hover,
+body.glu-coursecatalog-page .glu-catalog-card__team a:focus {
+    color: #CD0A30 !important;
+    text-decoration: underline !important;
+}
+
+/* Ajuste visual para que el bloque no rompa cards chicas */
+body.glu-coursecatalog-page .glu-catalog-card .card-title {
+    margin-bottom: 0.35rem;
+}
+
+@media (max-width: 575.98px) {
+    body.glu-coursecatalog-page .glu-catalog-card__team {
+        font-size: 0.84rem;
+    }
+}
