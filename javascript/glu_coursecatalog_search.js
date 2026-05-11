@@ -135,6 +135,22 @@ document.addEventListener('DOMContentLoaded', function () {
             .trim();
     }
 
+    function cleanText(text) {
+        return (text || '').replace(/\s+/g, ' ').trim();
+    }
+
+    function absoluteUrl(url) {
+        if (!url) {
+            return '';
+        }
+
+        try {
+            return new URL(url, wwwroot).href;
+        } catch (error) {
+            return url;
+        }
+    }
+
     function getCourseIdFromCard(card) {
         var link = card.querySelector('.stretched-link');
 
@@ -150,20 +166,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function absoluteUrl(url) {
-        if (!url) {
-            return '';
-        }
+    function looksLikeInitials(text) {
+        var value = cleanText(text);
 
-        try {
-            return new URL(url, wwwroot).href;
-        } catch (error) {
-            return url;
-        }
-    }
-
-    function cleanText(text) {
-        return (text || '').replace(/\s+/g, ' ').trim();
+        // Evita tomar avatares con iniciales como si fueran docentes: GC, MD, GT, etc.
+        return /^[A-ZÁÉÍÓÚÑ]{1,4}$/.test(value);
     }
 
     function uniqueTeachers(teachers) {
@@ -193,8 +200,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         /*
-         * Intenta primero con selectores posibles del bloque custom
-         * que ya muestra Course Instructors en enrol/index.php.
+         * Primero intenta leer el bloque dinámico de Course Instructors
+         * que ya se muestra en enrol/index.php.
          */
         var preferredSelectors = [
             '.glu-course-instructors a[href*="/user/view.php"]',
@@ -227,7 +234,8 @@ document.addEventListener('DOMContentLoaded', function () {
             return teacher.name &&
                 teacher.name.length > 1 &&
                 teacher.name.length < 80 &&
-                teacher.name.toLowerCase() !== 'view profile';
+                teacher.name.toLowerCase() !== 'view profile' &&
+                !looksLikeInitials(teacher.name);
         });
 
         return uniqueTeachers(teachers);
@@ -271,13 +279,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var title = card.querySelector('.card-title');
         var desc = card.querySelector('.card-text');
+        var body = card.querySelector('.card-body');
 
         if (desc) {
             desc.insertAdjacentElement('beforebegin', team);
         } else if (title) {
             title.insertAdjacentElement('afterend', team);
-        } else {
-            card.querySelector('.card-body')?.prepend(team);
+        } else if (body) {
+            body.prepend(team);
         }
     }
 
@@ -288,7 +297,8 @@ document.addEventListener('DOMContentLoaded', function () {
             return Promise.resolve();
         }
 
-        var cacheKey = 'gluCatalogTeachers:' + courseId;
+        // v2 para evitar reutilizar caché viejo que podía traer iniciales tipo GC / MD.
+        var cacheKey = 'gluCatalogTeachers:v2:' + courseId;
         var cached = sessionStorage.getItem(cacheKey);
 
         if (cached) {
@@ -318,7 +328,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 renderTeachersInCard(card, teachers);
             })
             .catch(function () {
-                // No interrumpimos el catálogo si un curso no devuelve docentes.
+                // No interrumpe el catálogo si un curso no devuelve docentes.
             });
     }
 
@@ -336,6 +346,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 while (active < maxConcurrent && index < cards.length) {
                     var card = cards[index];
+
                     index++;
                     active++;
 
