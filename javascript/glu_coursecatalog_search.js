@@ -39,7 +39,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     var catalogTabs = [
-        { label: 'All courses', slug: 'courses' },
         { label: 'Worker rights', slug: 'workerrights' },
         { label: 'Global supply chains', slug: 'globalsupplychains' },
         { label: 'Labour history', slug: 'labourhistory' },
@@ -79,6 +78,27 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         var currentSlug = getCurrentSlug();
+        var isAllCourses = currentSlug === 'courses';
+
+        var wrapper = document.createElement('div');
+        wrapper.className = 'glu-catalog-navigation';
+
+        var allCoursesBox = document.createElement('div');
+        allCoursesBox.className = 'glu-catalog-allcourses';
+
+        var allCoursesLink = document.createElement('a');
+        allCoursesLink.className = 'glu-catalog-allcourses__link';
+        allCoursesLink.href = buildCatalogUrl('courses');
+
+        if (isAllCourses) {
+            allCoursesLink.classList.add('is-active');
+            allCoursesLink.setAttribute('aria-current', 'page');
+            allCoursesLink.textContent = 'Viewing all courses';
+        } else {
+            allCoursesLink.textContent = '← Back to all courses';
+        }
+
+        allCoursesBox.appendChild(allCoursesLink);
 
         var tabsWrapper = document.createElement('nav');
         tabsWrapper.className = 'glu-catalog-tabs';
@@ -104,12 +124,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
         tabsWrapper.appendChild(tabsList);
 
+        wrapper.appendChild(allCoursesBox);
+        wrapper.appendChild(tabsWrapper);
+
         var title = main.querySelector('h1');
 
         if (title) {
-            title.insertAdjacentElement('afterend', tabsWrapper);
+            title.insertAdjacentElement('afterend', wrapper);
         } else {
-            main.prepend(tabsWrapper);
+            main.prepend(wrapper);
         }
     }
 
