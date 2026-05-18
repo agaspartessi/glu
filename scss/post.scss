@@ -2785,3 +2785,12 @@ body.glu-coursecatalog-page .glu-catalog-card .card-title {
         font-size: 0.84rem;
     }
 }
+
+/* =========================================
+   ENROL PAGE - Ocultar título "Enrolment options"
+========================================= */
+
+body#page-enrol-index #region-main div[role="main"]>h2:first-of-type,
+body.path-enrol #region-main div[role="main"]>h2:first-of-type {
+    display: none !important;
+}
