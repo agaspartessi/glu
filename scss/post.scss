@@ -2824,3 +2824,27 @@ body.path-course-view .section-navigation .nextsection a.glu-unit-navigation-lin
     background: #CD0A30;
     color: #ffffff !important;
 }
+
+/* =========================================
+   COURSE INDEX - Evitar recorte de títulos
+========================================= */
+
+body.path-course-view #theme_boost-drawers-courseindex .courseindex .courseindex-link,
+body.path-course-view #theme_boost-drawers-courseindex .courseindex .courseindex-link.text-truncate,
+body.path-course-view #theme_boost-drawers-courseindex .courseindex .text-truncate {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+    line-height: 1.25 !important;
+}
+
+body.path-course-view #theme_boost-drawers-courseindex .courseindex .courseindex-item {
+    align-items: flex-start !important;
+}
+
+body.path-course-view #theme_boost-drawers-courseindex .courseindex .courseindex-link {
+    display: block !important;
+    max-width: 100% !important;
+    padding-top: 0.35rem;
+    padding-bottom: 0.35rem;
+}
