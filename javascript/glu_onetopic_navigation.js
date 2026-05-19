@@ -12,38 +12,37 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
+    function setLinkText(link, text) {
+        if (!link) {
+            return;
+        }
+
+        if (link.textContent.trim() !== text) {
+            link.textContent = text;
+        }
+
+        link.setAttribute('title', text);
+        link.setAttribute('aria-label', text);
+        link.classList.add('glu-unit-navigation-link');
+    }
+
     function renameSectionNavigation() {
-        var previousLinks = document.querySelectorAll('.section-navigation .prevsection a');
-        var nextLinks = document.querySelectorAll('.section-navigation .nextsection a');
+        var previousLinks = document.querySelectorAll(
+            '.section-navigation .prevsection a, .section-navigation .prevsection > a'
+        );
+
+        var nextLinks = document.querySelectorAll(
+            '.section-navigation .nextsection a, .section-navigation .nextsection > a'
+        );
 
         previousLinks.forEach(function (link) {
-            link.textContent = 'Previous Unit';
-            link.setAttribute('title', 'Previous Unit');
-            link.setAttribute('aria-label', 'Previous Unit');
-            link.classList.add('glu-unit-navigation-link');
+            setLinkText(link, 'Previous Unit');
         });
 
         nextLinks.forEach(function (link) {
-            link.textContent = 'Next Unit';
-            link.setAttribute('title', 'Next Unit');
-            link.setAttribute('aria-label', 'Next Unit');
-            link.classList.add('glu-unit-navigation-link');
+            setLinkText(link, 'Next Unit');
         });
     }
 
     renameSectionNavigation();
-
-    // Por si Moodle / OneTopic vuelve a renderizar parte del contenido.
-    var observer = new MutationObserver(function () {
-        renameSectionNavigation();
-    });
-
-    var main = document.querySelector('#region-main');
-
-    if (main) {
-        observer.observe(main, {
-            childList: true,
-            subtree: true
-        });
-    }
 });
