@@ -2794,3 +2794,33 @@ body#page-enrol-index #region-main div[role="main"]>h2:first-of-type,
 body.path-enrol #region-main div[role="main"]>h2:first-of-type {
     display: none !important;
 }
+
+/* =========================================
+   ONETOPIC - Previous / Next Unit links
+========================================= */
+
+body.format-onetopic .section-navigation .prevsection a.glu-unit-navigation-link,
+body.format-onetopic .section-navigation .nextsection a.glu-unit-navigation-link,
+body.path-course-view .section-navigation .prevsection a.glu-unit-navigation-link,
+body.path-course-view .section-navigation .nextsection a.glu-unit-navigation-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.45rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(205, 10, 48, 0.08);
+    color: #CD0A30 !important;
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-decoration: none !important;
+}
+
+body.format-onetopic .section-navigation .prevsection a.glu-unit-navigation-link:hover,
+body.format-onetopic .section-navigation .nextsection a.glu-unit-navigation-link:hover,
+body.path-course-view .section-navigation .prevsection a.glu-unit-navigation-link:hover,
+body.path-course-view .section-navigation .nextsection a.glu-unit-navigation-link:hover {
+    background: #CD0A30;
+    color: #ffffff !important;
+}
