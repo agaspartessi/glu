@@ -58,140 +58,201 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function getCollapseContent(parentSection) {
-        var parentTitle = parentSection.querySelector(
-            '.courseindex-section-title, [data-for="section_title"]'
-        );
-
-        if (!parentTitle) {
+    function getOwnCourseIndexItem(sectionElement) {
+        if (!sectionElement) {
             return null;
         }
 
-        var collapseId = parentTitle.getAttribute('aria-owns');
+        var children = Array.from(sectionElement.children);
 
-        if (collapseId) {
-            return document.getElementById(collapseId);
+        return children.find(function (child) {
+            return child.classList.contains('courseindex-item') ||
+                child.classList.contains('courseindex-section-title') ||
+                child.getAttribute('data-for') === 'section_title';
+        }) || null;
+    }
+
+    function getOwnSectionLink(sectionElement) {
+        var ownItem = getOwnCourseIndexItem(sectionElement);
+
+        if (!ownItem) {
+            return null;
         }
 
-        return parentSection.querySelector(
-            '.courseindex-item-content, .courseindex-sectioncontent, .collapse'
+        return ownItem.querySelector(
+            'a.courseindex-link[href*="/course/view.php"][href*="section="]'
         );
     }
 
-    function getParentSectionLink(parentSection) {
-        return parentSection.querySelector(
-            ':scope > .courseindex-item .courseindex-section-title a.courseindex-link[href*="/course/view.php"][href*="section="], ' +
-            ':scope > .courseindex-item [data-for="section_title"] a.courseindex-link[href*="/course/view.php"][href*="section="], ' +
-            ':scope > .courseindex-section-title a.courseindex-link[href*="/course/view.php"][href*="section="], ' +
-            ':scope > [data-for="section_title"] a.courseindex-link[href*="/course/view.php"][href*="section="]'
-        );
-    }
+    function getDirectContent(sectionElement) {
+        if (!sectionElement) {
+            return null;
+        }
 
-    function getFirstSubsectionLink(parentSection) {
-        var content = getCollapseContent(parentSection);
+        var children = Array.from(sectionElement.children);
+
+        var directContent = children.find(function (child) {
+            return child.classList.contains('courseindex-item-content') ||
+                child.classList.contains('courseindex-sectioncontent') ||
+                child.classList.contains('collapse') ||
+                (child.id && child.id.indexOf('courseindexcollapse') === 0);
+        });
+
+        if (directContent) {
+            return directContent;
+        }
+
+        var ownItem = getOwnCourseIndexItem(sectionElement);
+
+        if (!ownItem) {
+            return null;
+        }
+
+        var toggle = ownItem.querySelector('[aria-controls], [aria-owns], a[href^="#courseindexcollapse"]');
+        var collapseId = null;
+
+        if (toggle) {
+            collapseId =
+                toggle.getAttribute('aria-controls') ||
+                toggle.getAttribute('aria-owns') ||
+                (toggle.getAttribute('href') || '').replace('#', '');
+        }
+
+        if (!collapseId) {
+            return null;
+        }
+
+        var content = document.getElementById(collapseId);
 
         if (!content) {
             return null;
         }
 
-        /*
-         * Busca la primera subsection real dentro del Course Index.
-         * No toma actividades ni recursos: solo links de secciones/subsecciones.
-         */
-        var subsectionLinks = content.querySelectorAll(
-            '.courseindex-section[data-number] .courseindex-section-title a.courseindex-link[href*="/course/view.php"][href*="section="], ' +
-            '.courseindex-section[data-number] [data-for="section_title"] a.courseindex-link[href*="/course/view.php"][href*="section="]'
-        );
-
-        if (!subsectionLinks.length) {
+        if (content.closest('.courseindex-section[data-number]') !== sectionElement) {
             return null;
         }
 
-        return subsectionLinks[0];
+        return content;
     }
 
-    function buildCourseIndexTargets() {
-        var targets = {};
+    function getNearestParentCourseIndexSection(element) {
+        var parent = element.parentElement;
 
-        var parentSections = courseIndex.querySelectorAll(
-            '.courseindex-section[data-number]'
+        while (parent && parent !== courseIndex) {
+            if (parent.classList && parent.classList.contains('courseindex-section')) {
+                return parent;
+            }
+
+            parent = parent.parentElement;
+        }
+
+        return null;
+    }
+
+    function getFirstDirectSubsection(sectionElement) {
+        var content = getDirectContent(sectionElement);
+
+        if (!content) {
+            return null;
+        }
+
+        var candidates = Array.from(
+            content.querySelectorAll('.courseindex-section[data-number]')
         );
 
-        parentSections.forEach(function (parentSection) {
-            var parentNumber = parentSection.getAttribute('data-number');
-
-            if (!parentNumber || parentNumber === '0') {
-                return;
-            }
-
-            var parentLink = getParentSectionLink(parentSection);
-            var firstSubsectionLink = getFirstSubsectionLink(parentSection);
-
-            if (!parentLink || !firstSubsectionLink) {
-                return;
-            }
-
-            var parentSectionNumber = getSectionNumberFromUrl(parentLink.href);
-            var firstSubsectionNumber = getSectionNumberFromUrl(firstSubsectionLink.href);
-
-            if (!parentSectionNumber || !firstSubsectionNumber) {
-                return;
-            }
-
-            if (parentSectionNumber === firstSubsectionNumber) {
-                return;
-            }
-
-            targets[parentSectionNumber] = firstSubsectionLink.href;
+        var directSubsections = candidates.filter(function (candidate) {
+            return getNearestParentCourseIndexSection(candidate) === sectionElement;
         });
 
-        return targets;
+        return directSubsections.length ? directSubsections[0] : null;
     }
 
-    function rewriteCourseIndexParentLinks() {
-        var targets = buildCourseIndexTargets();
+    function getRedirectTargetForSection(sectionElement) {
+        var ownLink = getOwnSectionLink(sectionElement);
+        var firstSubsection = getFirstDirectSubsection(sectionElement);
 
-        Object.keys(targets).forEach(function (sectionNumber) {
-            var parentLinks = courseIndex.querySelectorAll(
-                '.courseindex-section-title a.courseindex-link[href*="/course/view.php"][href*="section=' + sectionNumber + '"], ' +
-                '[data-for="section_title"] a.courseindex-link[href*="/course/view.php"][href*="section=' + sectionNumber + '"]'
-            );
+        if (!ownLink || !firstSubsection) {
+            return null;
+        }
 
-            parentLinks.forEach(function (link) {
-                if (!link.dataset.gluOriginalHref) {
-                    link.dataset.gluOriginalHref = link.href;
-                }
+        var firstSubsectionLink = getOwnSectionLink(firstSubsection);
 
-                link.dataset.gluTargetHref = targets[sectionNumber];
-                link.href = targets[sectionNumber];
-                link.classList.add('glu-courseindex-parent-redirect');
-            });
+        if (!firstSubsectionLink) {
+            return null;
+        }
+
+        var ownSectionNumber = getSectionNumberFromUrl(ownLink.href);
+        var targetSectionNumber = getSectionNumberFromUrl(firstSubsectionLink.href);
+
+        if (!ownSectionNumber || !targetSectionNumber) {
+            return null;
+        }
+
+        if (ownSectionNumber === targetSectionNumber) {
+            return null;
+        }
+
+        return firstSubsectionLink.href;
+    }
+
+    function prepareCourseIndexParentLinks() {
+        var sections = courseIndex.querySelectorAll('.courseindex-section[data-number]');
+
+        sections.forEach(function (sectionElement) {
+            var ownLink = getOwnSectionLink(sectionElement);
+            var targetHref = getRedirectTargetForSection(sectionElement);
+
+            if (!ownLink || !targetHref) {
+                return;
+            }
+
+            ownLink.dataset.gluTargetHref = targetHref;
+            ownLink.classList.add('glu-courseindex-parent-redirect');
+            ownLink.setAttribute('title', 'Go to first subsection');
         });
     }
 
-    function handleCourseIndexParentClick(event) {
+    function handleCourseIndexClick(event) {
         var link = event.target.closest(
-            '.courseindex .courseindex-section-title a.courseindex-link, ' +
-            '.courseindex [data-for="section_title"] a.courseindex-link'
+            '.courseindex a.courseindex-link[href*="/course/view.php"][href*="section="]'
         );
 
-        if (!link || !link.dataset.gluTargetHref) {
+        if (!link) {
+            return;
+        }
+
+        var sectionElement = link.closest('.courseindex-section[data-number]');
+
+        if (!sectionElement) {
+            return;
+        }
+
+        /*
+         * Importante:
+         * solo actúa cuando el clic es sobre el link propio de la sección padre.
+         * No toca actividades, recursos ni subsections internas.
+         */
+        var ownLink = getOwnSectionLink(sectionElement);
+
+        if (link !== ownLink) {
+            return;
+        }
+
+        var targetHref = getRedirectTargetForSection(sectionElement);
+
+        if (!targetHref) {
             return;
         }
 
         event.preventDefault();
-        window.location.href = link.dataset.gluTargetHref;
+        window.location.href = targetHref;
     }
 
     renameSectionNavigation();
-    rewriteCourseIndexParentLinks();
+    prepareCourseIndexParentLinks();
 
-    /*
-     * Corre una segunda vez por si Moodle terminó de renderizar
-     * el Course Index unos milisegundos después.
-     * No usamos MutationObserver para evitar ralentización.
-     */
-    window.setTimeout(rewriteCourseIndexParentLinks, 500);
+    // Segunda pasada liviana por si el índice terminó de renderizar unos ms después.
+    window.setTimeout(prepareCourseIndexParentLinks, 500);
 
-    document.addEventListener('click', handleCourseIndexParentClick, true);
+    courseIndex.addEventListener('click', handleCourseIndexClick, true);
 });
