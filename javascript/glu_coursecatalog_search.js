@@ -51,6 +51,9 @@ document.addEventListener('DOMContentLoaded', function () {
         { label: 'Union transformation', slug: 'uniontransformation' }
     ];
 
+    catalogTabs.sort((a, b) => a.label.localeCompare(b.label));
+    
+
     function getCurrentSlug() {
         return params.get('slug') || 'courses';
     }
@@ -93,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (isAllCourses) {
             allCoursesLink.classList.add('is-active');
             allCoursesLink.setAttribute('aria-current', 'page');
-            allCoursesLink.textContent = 'Viewing all courses';
+            allCoursesLink.textContent = 'Viewing all';
         } else {
             allCoursesLink.textContent = '← Back to all courses';
         }
