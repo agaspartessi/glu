@@ -2853,71 +2853,60 @@ body.path-course-view #theme_boost-drawers-courseindex .courseindex .courseindex
 
 
 /* =========================================
-   COURSE INDEX - Child tabs de OneTopic
-   Versión prudente: no mueve elementos, solo jerarquiza visualmente
+   COURSE INDEX - Child tabs reales dentro de padre
 ========================================= */
 
-/* Tabs padre detectados desde OneTopic */
-body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-parent-tab>.courseindex-item {
-    margin: 0.45rem 0 0.25rem !important;
-    padding: 0.55rem 0.7rem !important;
-    border-radius: 0.65rem !important;
+body.path-course-view #theme_boost-drawers-courseindex .courseindex .text-truncate,
+body.path-course-view #theme_boost-drawers-courseindex .courseindex .courseindex-link,
+body.path-course-view #theme_boost-drawers-courseindex .courseindex .courseindex-link.text-truncate {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+    line-height: 1.25 !important;
 }
 
-body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-parent-tab>.courseindex-item .courseindex-link {
-    font-weight: 800 !important;
-    color: #0D445D !important;
+body.path-course-view #theme_boost-drawers-courseindex .courseindex .courseindex-item {
+    align-items: flex-start !important;
 }
 
-/* Hover del padre */
-body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-parent-tab>.courseindex-item:hover {
-    background: rgba(13, 68, 93, 0.06) !important;
-}
-
-/* Child tabs: Welcome to the course, Pin, Associational Power, etc. */
-body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-child-tab {
-    margin-left: 1rem !important;
-    padding-left: 0.75rem !important;
+body.path-course-view #theme_boost-drawers-courseindex .glu-onetopic-child-tabs-wrapper {
+    margin: 0.25rem 0 0.4rem 0.85rem !important;
+    padding-left: 0.85rem !important;
     border-left: 2px solid rgba(13, 68, 93, 0.16) !important;
 }
 
-body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-child-tab>.courseindex-item {
+body.path-course-view #theme_boost-drawers-courseindex .glu-onetopic-child-tabs-wrapper>.courseindex-section {
     margin: 0.25rem 0 !important;
+}
+
+body.path-course-view #theme_boost-drawers-courseindex .glu-onetopic-child-tabs-wrapper>.courseindex-section>.courseindex-item {
     padding: 0.45rem 0.55rem !important;
     border-radius: 0.55rem !important;
     background: rgba(13, 68, 93, 0.035) !important;
 }
 
-body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-child-tab>.courseindex-item .courseindex-link {
+body.path-course-view #theme_boost-drawers-courseindex .glu-onetopic-child-tabs-wrapper>.courseindex-section>.courseindex-item .courseindex-link {
     font-weight: 700 !important;
     color: #0D445D !important;
 }
 
-/* Child tab activa / seleccionada */
-body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-child-tab>.courseindex-item.pageitem,
-body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-child-tab>.courseindex-item:hover {
+body.path-course-view #theme_boost-drawers-courseindex .glu-onetopic-child-tabs-wrapper>.courseindex-section>.courseindex-item.pageitem,
+body.path-course-view #theme_boost-drawers-courseindex .glu-onetopic-child-tabs-wrapper>.courseindex-section>.courseindex-item:hover {
     background: #0D445D !important;
 }
 
-body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-child-tab>.courseindex-item.pageitem .courseindex-link,
-body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-child-tab>.courseindex-item:hover .courseindex-link {
+body.path-course-view #theme_boost-drawers-courseindex .glu-onetopic-child-tabs-wrapper>.courseindex-section>.courseindex-item.pageitem .courseindex-link,
+body.path-course-view #theme_boost-drawers-courseindex .glu-onetopic-child-tabs-wrapper>.courseindex-section>.courseindex-item:hover .courseindex-link {
     color: #ffffff !important;
 }
 
-/* Recursos / actividades dentro de child tabs */
-body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-child-tab .courseindex-item-content {
-    margin-left: 0.65rem !important;
-    padding-left: 0.65rem !important;
+body.path-course-view #theme_boost-drawers-courseindex .glu-onetopic-child-tabs-wrapper .courseindex-item-content {
+    margin-left: 0.6rem !important;
+    padding-left: 0.6rem !important;
     border-left: 1px solid rgba(13, 68, 93, 0.08) !important;
 }
 
-body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-child-tab .courseindex-item-content .courseindex-link {
+body.path-course-view #theme_boost-drawers-courseindex .glu-onetopic-child-tabs-wrapper .courseindex-item-content .courseindex-link {
     font-weight: 500 !important;
     color: #0D445D !important;
-}
-
-/* Evitar que la child tab activa quede azul Bootstrap si Moodle aplica pageitem */
-body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-child-tab>.courseindex-item.pageitem a,
-body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-child-tab>.courseindex-item.pageitem .courseindex-link {
-    color: #ffffff !important;
 }

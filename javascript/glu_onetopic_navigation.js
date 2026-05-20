@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.id.indexOf('page-course-view') !== -1 ||
         document.body.classList.contains('path-course-view');
 
-    var courseIndex = document.querySelector('.courseindex');
+    var courseIndex = document.querySelector('#theme_boost-drawers-courseindex .courseindex, .courseindex');
 
     if (!isCoursePage || !courseIndex) {
         return;
@@ -18,10 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        if (link.textContent.trim() !== text) {
-            link.textContent = text;
-        }
-
+        link.textContent = text;
         link.setAttribute('title', text);
         link.setAttribute('aria-label', text);
         link.classList.add('glu-unit-navigation-link');
@@ -58,6 +55,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    function cleanText(text) {
+        return (text || '').replace(/\s+/g, ' ').trim();
+    }
+
     function getOwnCourseIndexItem(sectionElement) {
         if (!sectionElement) {
             return null;
@@ -84,87 +85,76 @@ document.addEventListener('DOMContentLoaded', function () {
         );
     }
 
-    function cleanText(text) {
-        return (text || '').replace(/\s+/g, ' ').trim();
+    function getCourseIndexSection(sectionNumber) {
+        return courseIndex.querySelector(
+            '.courseindex-section[data-number="' + sectionNumber + '"]'
+        );
     }
 
-    /*
-     * Marca en el Course Index qué secciones son tabs padre o child tabs
-     * según la estructura real de OneTopic.
-     *
-     * No mueve elementos: solo agrega clases para poder maquetar con CSS.
-     */
-    function markOnetopicChildTabsInCourseIndex() {
-        var levelBySection = {};
+    function getCollapseContent(sectionElement) {
+        var ownItem = getOwnCourseIndexItem(sectionElement);
 
-        var tabLinks = document.querySelectorAll(
-            '#tabs-tree-start li[class*="tab_level_"] a[href*="/course/view.php"][href*="section="], ' +
-            '.format-onetopic-tabs li[class*="tab_level_"] a[href*="/course/view.php"][href*="section="], ' +
-            '.format-onetopic li[class*="tab_level_"] a[href*="/course/view.php"][href*="section="], ' +
-            'ul[class*="onetopic"] li[class*="tab_level_"] a[href*="/course/view.php"][href*="section="]'
+        if (!ownItem) {
+            return null;
+        }
+
+        var toggle = ownItem.querySelector(
+            '[aria-controls], [aria-owns], a[href^="#courseindexcollapse"]'
         );
 
-        tabLinks.forEach(function (link) {
-            var tabItem = link.closest('li[class*="tab_level_"]');
+        var collapseId = null;
 
-            if (!tabItem) {
-                return;
+        if (toggle) {
+            collapseId =
+                toggle.getAttribute('aria-controls') ||
+                toggle.getAttribute('aria-owns') ||
+                (toggle.getAttribute('href') || '').replace('#', '');
+        }
+
+        if (collapseId) {
+            var contentById = document.getElementById(collapseId);
+
+            if (contentById) {
+                return contentById;
             }
+        }
 
-            var match = tabItem.className.match(/tab_level_(\d+)/);
-            var sectionNumber = getSectionNumberFromUrl(link.href);
+        var children = Array.from(sectionElement.children);
 
-            if (!match || !sectionNumber) {
-                return;
-            }
-
-            levelBySection[sectionNumber] = parseInt(match[1], 10);
-        });
-
-        Object.keys(levelBySection).forEach(function (sectionNumber) {
-            var level = levelBySection[sectionNumber];
-
-            var courseIndexSections = courseIndex.querySelectorAll(
-                '.courseindex-section[data-number="' + sectionNumber + '"]'
-            );
-
-            courseIndexSections.forEach(function (sectionElement) {
-                sectionElement.classList.add('glu-onetopic-tab-level-' + level);
-
-                if (level > 0) {
-                    sectionElement.classList.add('glu-onetopic-child-tab');
-                } else {
-                    sectionElement.classList.add('glu-onetopic-parent-tab');
-                }
-            });
-        });
+        return children.find(function (child) {
+            return child.classList.contains('courseindex-item-content') ||
+                child.classList.contains('collapse') ||
+                child.classList.contains('show') ||
+                (child.id && child.id.indexOf('courseindexcollapse') === 0);
+        }) || null;
     }
 
-    /*
-     * Obtiene el primer child tab de un tab padre.
-     *
-     * Esto se basa en el orden que entrega OneTopic:
-     * un padre tab_level_0 seguido por sus child tabs tab_level_1.
-     */
-    function buildParentToFirstChildMapFromOnetopicTabs() {
-        var targets = {};
-        var currentParentSection = null;
-
-        var tabItems = document.querySelectorAll(
+    function getOnetopicTabItems() {
+        return Array.from(document.querySelectorAll(
             '#tabs-tree-start li[class*="tab_level_"], ' +
             '.format-onetopic-tabs li[class*="tab_level_"], ' +
             '.format-onetopic li[class*="tab_level_"], ' +
             'ul[class*="onetopic"] li[class*="tab_level_"]'
-        );
+        )).filter(function (item) {
+            return item.querySelector('a[href*="/course/view.php"][href*="section="]');
+        });
+    }
 
-        tabItems.forEach(function (tabItem) {
+    function buildOnetopicMap() {
+        var map = {
+            levelBySection: {},
+            parentByChild: {},
+            firstChildByParent: {},
+            hrefBySection: {},
+            labelBySection: {}
+        };
+
+        var currentByLevel = {};
+
+        getOnetopicTabItems().forEach(function (tabItem) {
             var link = tabItem.querySelector(
                 'a[href*="/course/view.php"][href*="section="]'
             );
-
-            if (!link) {
-                return;
-            }
 
             var match = tabItem.className.match(/tab_level_(\d+)/);
             var sectionNumber = getSectionNumberFromUrl(link.href);
@@ -175,52 +165,118 @@ document.addEventListener('DOMContentLoaded', function () {
 
             var level = parseInt(match[1], 10);
 
+            map.levelBySection[sectionNumber] = level;
+            map.hrefBySection[sectionNumber] = link.href;
+            map.labelBySection[sectionNumber] = cleanText(link.textContent);
+
             if (level === 0) {
-                currentParentSection = sectionNumber;
+                currentByLevel = {};
+                currentByLevel[0] = sectionNumber;
                 return;
             }
 
-            if (level > 0 && currentParentSection && !targets[currentParentSection]) {
-                targets[currentParentSection] = {
-                    href: link.href,
-                    label: cleanText(link.textContent)
-                };
+            var parentSection = currentByLevel[level - 1] || currentByLevel[0];
+
+            if (parentSection) {
+                map.parentByChild[sectionNumber] = parentSection;
+
+                if (!map.firstChildByParent[parentSection]) {
+                    map.firstChildByParent[parentSection] = sectionNumber;
+                }
             }
+
+            currentByLevel[level] = sectionNumber;
+
+            Object.keys(currentByLevel).forEach(function (storedLevel) {
+                if (parseInt(storedLevel, 10) > level) {
+                    delete currentByLevel[storedLevel];
+                }
+            });
         });
 
-        return targets;
+        return map;
     }
 
-    /*
-     * Solo modifica links del Course Index lateral.
-     * No toca tabs superiores, recursos ni actividades.
-     */
-    function prepareCourseIndexParentLinks() {
-        var targets = buildParentToFirstChildMapFromOnetopicTabs();
+    function markOnetopicLevels() {
+        var map = buildOnetopicMap();
 
-        Object.keys(targets).forEach(function (sectionNumber) {
-            var sectionElement = courseIndex.querySelector(
-                '.courseindex-section[data-number="' + sectionNumber + '"]'
-            );
+        Object.keys(map.levelBySection).forEach(function (sectionNumber) {
+            var level = map.levelBySection[sectionNumber];
+            var sectionElement = getCourseIndexSection(sectionNumber);
 
             if (!sectionElement) {
                 return;
             }
 
-            var ownLink = getOwnSectionLink(sectionElement);
+            sectionElement.classList.add('glu-onetopic-tab-level-' + level);
 
-            if (!ownLink) {
+            if (level > 0) {
+                sectionElement.classList.add('glu-onetopic-child-tab');
+            } else {
+                sectionElement.classList.add('glu-onetopic-parent-tab');
+            }
+        });
+    }
+
+    function moveChildTabsInsideParents() {
+        var map = buildOnetopicMap();
+
+        Object.keys(map.parentByChild).forEach(function (childSectionNumber) {
+            var parentSectionNumber = map.parentByChild[childSectionNumber];
+
+            var parentSection = getCourseIndexSection(parentSectionNumber);
+            var childSection = getCourseIndexSection(childSectionNumber);
+
+            if (!parentSection || !childSection) {
                 return;
             }
 
-            ownLink.dataset.gluTargetHref = targets[sectionNumber].href;
-            ownLink.classList.add('glu-courseindex-parent-redirect');
+            if (parentSection.contains(childSection)) {
+                return;
+            }
 
-            if (targets[sectionNumber].label) {
-                ownLink.setAttribute(
-                    'title',
-                    'Go to first child tab: ' + targets[sectionNumber].label
-                );
+            var parentContent = getCollapseContent(parentSection);
+
+            if (!parentContent) {
+                return;
+            }
+
+            var wrapper = Array.from(parentContent.children).find(function (child) {
+                return child.classList.contains('glu-onetopic-child-tabs-wrapper');
+            });
+
+            if (!wrapper) {
+                wrapper = document.createElement('div');
+                wrapper.className = 'glu-onetopic-child-tabs-wrapper';
+                parentContent.insertBefore(wrapper, parentContent.firstChild);
+            }
+
+            childSection.classList.add('glu-onetopic-child-tab-moved');
+            wrapper.appendChild(childSection);
+        });
+    }
+
+    function prepareCourseIndexParentLinks() {
+        var map = buildOnetopicMap();
+
+        Object.keys(map.firstChildByParent).forEach(function (parentSectionNumber) {
+            var firstChildSectionNumber = map.firstChildByParent[parentSectionNumber];
+
+            var parentSection = getCourseIndexSection(parentSectionNumber);
+            var parentLink = getOwnSectionLink(parentSection);
+
+            var targetHref = map.hrefBySection[firstChildSectionNumber];
+            var targetLabel = map.labelBySection[firstChildSectionNumber];
+
+            if (!parentLink || !targetHref) {
+                return;
+            }
+
+            parentLink.dataset.gluTargetHref = targetHref;
+            parentLink.classList.add('glu-courseindex-parent-redirect');
+
+            if (targetLabel) {
+                parentLink.setAttribute('title', 'Go to first child tab: ' + targetLabel);
             }
         });
     }
@@ -238,18 +294,16 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = link.dataset.gluTargetHref;
     }
 
-    renameSectionNavigation();
-    markOnetopicChildTabsInCourseIndex();
-    prepareCourseIndexParentLinks();
-
-    /*
-     * Segunda pasada liviana por si Moodle termina de renderizar el índice
-     * unos milisegundos después. No usamos MutationObserver.
-     */
-    window.setTimeout(function () {
-        markOnetopicChildTabsInCourseIndex();
+    function applyCourseIndexFixes() {
+        markOnetopicLevels();
+        moveChildTabsInsideParents();
         prepareCourseIndexParentLinks();
-    }, 500);
+    }
+
+    renameSectionNavigation();
+    applyCourseIndexFixes();
+
+    window.setTimeout(applyCourseIndexFixes, 500);
 
     courseIndex.addEventListener('click', handleCourseIndexClick, true);
 });
