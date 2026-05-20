@@ -2795,14 +2795,15 @@ body.path-enrol #region-main div[role="main"]>h2:first-of-type {
     display: none !important;
 }
 
+
 /* =========================================
    ONETOPIC - Previous / Next Unit links
 ========================================= */
 
-body.format-onetopic .section-navigation .prevsection a.glu-unit-navigation-link,
-body.format-onetopic .section-navigation .nextsection a.glu-unit-navigation-link,
 body.path-course-view .section-navigation .prevsection a.glu-unit-navigation-link,
-body.path-course-view .section-navigation .nextsection a.glu-unit-navigation-link {
+body.path-course-view .section-navigation .nextsection a.glu-unit-navigation-link,
+body.format-onetopic .section-navigation .prevsection a.glu-unit-navigation-link,
+body.format-onetopic .section-navigation .nextsection a.glu-unit-navigation-link {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -2817,21 +2818,22 @@ body.path-course-view .section-navigation .nextsection a.glu-unit-navigation-lin
     text-decoration: none !important;
 }
 
-body.format-onetopic .section-navigation .prevsection a.glu-unit-navigation-link:hover,
-body.format-onetopic .section-navigation .nextsection a.glu-unit-navigation-link:hover,
 body.path-course-view .section-navigation .prevsection a.glu-unit-navigation-link:hover,
-body.path-course-view .section-navigation .nextsection a.glu-unit-navigation-link:hover {
+body.path-course-view .section-navigation .nextsection a.glu-unit-navigation-link:hover,
+body.format-onetopic .section-navigation .prevsection a.glu-unit-navigation-link:hover,
+body.format-onetopic .section-navigation .nextsection a.glu-unit-navigation-link:hover {
     background: #CD0A30;
     color: #ffffff !important;
 }
 
+
 /* =========================================
-   COURSE INDEX - Evitar recorte de títulos
+   COURSE INDEX - Evitar recorte de textos
 ========================================= */
 
+body.path-course-view #theme_boost-drawers-courseindex .courseindex .text-truncate,
 body.path-course-view #theme_boost-drawers-courseindex .courseindex .courseindex-link,
-body.path-course-view #theme_boost-drawers-courseindex .courseindex .courseindex-link.text-truncate,
-body.path-course-view #theme_boost-drawers-courseindex .courseindex .text-truncate {
+body.path-course-view #theme_boost-drawers-courseindex .courseindex .courseindex-link.text-truncate {
     white-space: normal !important;
     overflow: visible !important;
     text-overflow: unset !important;
@@ -2845,6 +2847,77 @@ body.path-course-view #theme_boost-drawers-courseindex .courseindex .courseindex
 body.path-course-view #theme_boost-drawers-courseindex .courseindex .courseindex-link {
     display: block !important;
     max-width: 100% !important;
-    padding-top: 0.35rem;
-    padding-bottom: 0.35rem;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+}
+
+
+/* =========================================
+   COURSE INDEX - Child tabs de OneTopic
+   Versión prudente: no mueve elementos, solo jerarquiza visualmente
+========================================= */
+
+/* Tabs padre detectados desde OneTopic */
+body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-parent-tab>.courseindex-item {
+    margin: 0.45rem 0 0.25rem !important;
+    padding: 0.55rem 0.7rem !important;
+    border-radius: 0.65rem !important;
+}
+
+body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-parent-tab>.courseindex-item .courseindex-link {
+    font-weight: 800 !important;
+    color: #0D445D !important;
+}
+
+/* Hover del padre */
+body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-parent-tab>.courseindex-item:hover {
+    background: rgba(13, 68, 93, 0.06) !important;
+}
+
+/* Child tabs: Welcome to the course, Pin, Associational Power, etc. */
+body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-child-tab {
+    margin-left: 1rem !important;
+    padding-left: 0.75rem !important;
+    border-left: 2px solid rgba(13, 68, 93, 0.16) !important;
+}
+
+body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-child-tab>.courseindex-item {
+    margin: 0.25rem 0 !important;
+    padding: 0.45rem 0.55rem !important;
+    border-radius: 0.55rem !important;
+    background: rgba(13, 68, 93, 0.035) !important;
+}
+
+body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-child-tab>.courseindex-item .courseindex-link {
+    font-weight: 700 !important;
+    color: #0D445D !important;
+}
+
+/* Child tab activa / seleccionada */
+body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-child-tab>.courseindex-item.pageitem,
+body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-child-tab>.courseindex-item:hover {
+    background: #0D445D !important;
+}
+
+body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-child-tab>.courseindex-item.pageitem .courseindex-link,
+body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-child-tab>.courseindex-item:hover .courseindex-link {
+    color: #ffffff !important;
+}
+
+/* Recursos / actividades dentro de child tabs */
+body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-child-tab .courseindex-item-content {
+    margin-left: 0.65rem !important;
+    padding-left: 0.65rem !important;
+    border-left: 1px solid rgba(13, 68, 93, 0.08) !important;
+}
+
+body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-child-tab .courseindex-item-content .courseindex-link {
+    font-weight: 500 !important;
+    color: #0D445D !important;
+}
+
+/* Evitar que la child tab activa quede azul Bootstrap si Moodle aplica pageitem */
+body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-child-tab>.courseindex-item.pageitem a,
+body.path-course-view #theme_boost-drawers-courseindex .courseindex-section.glu-onetopic-child-tab>.courseindex-item.pageitem .courseindex-link {
+    color: #ffffff !important;
 }
