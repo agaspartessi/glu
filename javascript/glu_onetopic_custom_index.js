@@ -1,18 +1,19 @@
 document.addEventListener('DOMContentLoaded', function () {
-    var isCoursePage =
-        document.body.id.indexOf('page-course-view') !== -1 ||
-        document.body.classList.contains('path-course-view');
+    var tabsRoot = document.querySelector('#tabs-tree-start');
+    var drawer = document.querySelector('#theme_boost-drawers-courseindex');
+    var nativeCourseIndex = drawer ? drawer.querySelector('.courseindex') : null;
 
-    var courseIndexDrawer = document.querySelector('#theme_boost-drawers-courseindex');
-    var nativeCourseIndex = document.querySelector('#theme_boost-drawers-courseindex .courseindex');
-
-    if (!isCoursePage || !courseIndexDrawer || !nativeCourseIndex) {
+    if (!tabsRoot || !drawer || !nativeCourseIndex) {
         return;
     }
 
     var wwwroot = window.M && M.cfg && M.cfg.wwwroot
         ? M.cfg.wwwroot
         : window.location.origin;
+
+    function cleanText(text) {
+        return (text || '').replace(/\s+/g, ' ').trim();
+    }
 
     function getSectionNumberFromUrl(url) {
         if (!url) {
@@ -27,114 +28,189 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function cleanText(text) {
-        return (text || '').replace(/\s+/g, ' ').trim();
-    }
-
     function getCurrentSectionNumber() {
         return getSectionNumberFromUrl(window.location.href);
     }
 
-    function getOnetopicTabs() {
-        var tabItems = Array.from(document.querySelectorAll(
-            '#tabs-tree-start li[class*="tab_level_"], ' +
-            '.format-onetopic-tabs li[class*="tab_level_"], ' +
-            '.format-onetopic li[class*="tab_level_"], ' +
-            'ul[class*="onetopic"] li[class*="tab_level_"]'
-        ));
+    function getDirectLink(tabItem) {
+        var children = Array.from(tabItem.children);
 
-        return tabItems.map(function (item) {
-            var link = item.querySelector('a[href*="/course/view.php"][href*="section="]');
-            var match = item.className.match(/tab_level_(\d+)/);
+        return children.find(function (child) {
+            return child.matches &&
+                child.matches('a.nav-link[href*="/course/view.php"][href*="section="]');
+        }) || null;
+    }
 
-            if (!link || !match) {
+    function getTabLevel(tabItem) {
+        var match = tabItem.className.match(/tab_level_(\d+)/);
+        return match ? parseInt(match[1], 10) : null;
+    }
+
+    function tabIsActive(tabItem, link) {
+        return tabItem.classList.contains('active') ||
+            link.classList.contains('active') ||
+            link.getAttribute('aria-selected') === 'true' ||
+            !!tabItem.querySelector(':scope > a.nav-link.active');
+    }
+
+    function readTabs() {
+        var allItems = Array.from(
+            tabsRoot.querySelectorAll('li[class*="tab_level_"]')
+        );
+
+        return allItems.map(function (tabItem, index) {
+            var link = getDirectLink(tabItem);
+            var level = getTabLevel(tabItem);
+
+            if (!link || level === null) {
                 return null;
             }
 
-            var sectionNumber = getSectionNumberFromUrl(link.href);
+            var section = getSectionNumberFromUrl(link.href);
 
-            if (!sectionNumber) {
+            if (!section) {
                 return null;
             }
 
             return {
-                level: parseInt(match[1], 10),
-                section: sectionNumber,
+                domIndex: index,
+                level: level,
+                section: section,
                 title: cleanText(link.textContent),
-                href: link.href
+                href: link.href,
+                active: tabIsActive(tabItem, link),
+                children: []
             };
         }).filter(Boolean);
     }
 
-    function buildTree(items) {
-        var root = [];
-        var stack = [];
-
-        items.forEach(function (item) {
-            item.children = [];
-
-            if (item.level === 0) {
-                root.push(item);
-                stack = [item];
-                return;
-            }
-
-            var parent = stack[item.level - 1] || stack[0];
-
-            if (parent) {
-                parent.children.push(item);
-            } else {
-                root.push(item);
-            }
-
-            stack[item.level] = item;
-
-            stack = stack.slice(0, item.level + 1);
+    function findActiveRoot(roots, children, currentSection) {
+        var activeRoot = roots.find(function (item) {
+            return item.active;
         });
 
-        return root;
-    }
-
-    function createLink(item, currentSection) {
-        var link = document.createElement('a');
-        link.className = 'glu-custom-courseindex__link';
-        link.href = item.href;
-        link.textContent = item.title;
-
-        if (String(item.section) === String(currentSection)) {
-            link.classList.add('is-active');
-            link.setAttribute('aria-current', 'page');
+        if (activeRoot) {
+            return activeRoot;
         }
 
-        return link;
+        /*
+         * En Onetopic, cuando el primer subtab se llama Index,
+         * muchas veces tiene el mismo section que el padre.
+         */
+        var activeChild = children.find(function (item) {
+            return item.active;
+        });
+
+        if (activeChild) {
+            activeRoot = roots.find(function (root) {
+                return String(root.section) === String(activeChild.section);
+            });
+
+            if (activeRoot) {
+                return activeRoot;
+            }
+        }
+
+        if (currentSection) {
+            activeRoot = roots.find(function (item) {
+                return String(item.section) === String(currentSection);
+            });
+
+            if (activeRoot) {
+                return activeRoot;
+            }
+        }
+
+        return roots[0] || null;
+    }
+
+    function buildTree(items) {
+        var currentSection = getCurrentSectionNumber();
+
+        var roots = items.filter(function (item) {
+            item.children = [];
+            return item.level === 0;
+        });
+
+        var children = items.filter(function (item) {
+            item.children = [];
+            return item.level > 0;
+        });
+
+        var activeRoot = findActiveRoot(roots, children, currentSection);
+
+        if (!activeRoot) {
+            return roots;
+        }
+
+        var rootInTree = roots.find(function (item) {
+            return String(item.section) === String(activeRoot.section);
+        });
+
+        if (!rootInTree) {
+            return roots;
+        }
+
+        /*
+         * Importante:
+         * Onetopic renderiza SOLO los hijos del padre activo.
+         * Por eso todos los tab_level_1 visibles deben ir debajo del padre activo,
+         * no debajo del último tab_level_0 del DOM.
+         */
+        var stack = {
+            0: rootInTree
+        };
+
+        children.forEach(function (child) {
+            var parent = stack[child.level - 1] || rootInTree;
+
+            parent.children.push(child);
+            stack[child.level] = child;
+
+            Object.keys(stack).forEach(function (level) {
+                if (parseInt(level, 10) > child.level) {
+                    delete stack[level];
+                }
+            });
+        });
+
+        return roots;
+    }
+
+    function itemOrDescendantIsActive(item, currentSection) {
+        if (item.active || String(item.section) === String(currentSection)) {
+            return true;
+        }
+
+        return item.children.some(function (child) {
+            return itemOrDescendantIsActive(child, currentSection);
+        });
     }
 
     function createTreeItem(item, currentSection) {
-        var itemEl = document.createElement('li');
-        itemEl.className = 'glu-custom-courseindex__item';
+        var li = document.createElement('li');
+        li.className = 'glu-custom-courseindex__item';
 
-        if (item.children && item.children.length) {
-            itemEl.classList.add('has-children');
+        var hasChildren = item.children && item.children.length;
+        var isActive = item.active || String(item.section) === String(currentSection);
+        var hasActiveDescendant = itemOrDescendantIsActive(item, currentSection);
+
+        if (hasChildren) {
+            li.classList.add('has-children');
         }
 
-        if (String(item.section) === String(currentSection)) {
-            itemEl.classList.add('is-active');
+        if (isActive) {
+            li.classList.add('is-active');
+        }
+
+        if (hasActiveDescendant) {
+            li.classList.add('has-active-descendant');
         }
 
         var row = document.createElement('div');
         row.className = 'glu-custom-courseindex__row';
 
-        var link = createLink(item, currentSection);
-
-        if (item.children && item.children.length) {
-            /*
-             * Si la pestaña padre tiene hijos, el link lleva al primer hijo.
-             * Esto respeta la lógica que veníamos trabajando:
-             * Chapter 1 -> Welcome to the course
-             * Chapter 2 -> primera child tab de Chapter 2
-             */
-            link.href = item.children[0].href;
-
+        if (hasChildren) {
             var toggle = document.createElement('button');
             toggle.type = 'button';
             toggle.className = 'glu-custom-courseindex__toggle';
@@ -146,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 event.preventDefault();
                 event.stopPropagation();
 
-                var collapsed = itemEl.classList.toggle('is-collapsed');
+                var collapsed = li.classList.toggle('is-collapsed');
                 toggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
                 toggle.innerHTML = collapsed ? '▸' : '▾';
             });
@@ -158,29 +234,44 @@ document.addEventListener('DOMContentLoaded', function () {
             row.appendChild(spacer);
         }
 
-        row.appendChild(link);
-        itemEl.appendChild(row);
+        var link = document.createElement('a');
+        link.className = 'glu-custom-courseindex__link';
+        link.href = hasChildren ? item.children[0].href : item.href;
+        link.textContent = item.title;
 
-        if (item.children && item.children.length) {
-            var childList = document.createElement('ul');
-            childList.className = 'glu-custom-courseindex__children';
-
-            item.children.forEach(function (child) {
-                childList.appendChild(createTreeItem(child, currentSection));
-            });
-
-            itemEl.appendChild(childList);
+        if (isActive) {
+            link.classList.add('is-active');
+            link.setAttribute('aria-current', 'page');
         }
 
-        return itemEl;
+        row.appendChild(link);
+        li.appendChild(row);
+
+        if (hasChildren) {
+            var ul = document.createElement('ul');
+            ul.className = 'glu-custom-courseindex__children';
+
+            item.children.forEach(function (child) {
+                ul.appendChild(createTreeItem(child, currentSection));
+            });
+
+            li.appendChild(ul);
+        }
+
+        return li;
     }
 
-    function renderCustomIndex(tree) {
+    function render(tree) {
         var currentSection = getCurrentSectionNumber();
 
-        var wrapper = document.createElement('nav');
-        wrapper.className = 'glu-custom-courseindex';
-        wrapper.setAttribute('aria-label', 'Course index');
+        var old = drawer.querySelector('.glu-custom-courseindex');
+        if (old) {
+            old.remove();
+        }
+
+        var nav = document.createElement('nav');
+        nav.className = 'glu-custom-courseindex';
+        nav.setAttribute('aria-label', 'Course index');
 
         var title = document.createElement('div');
         title.className = 'glu-custom-courseindex__title';
@@ -193,28 +284,20 @@ document.addEventListener('DOMContentLoaded', function () {
             list.appendChild(createTreeItem(item, currentSection));
         });
 
-        wrapper.appendChild(title);
-        wrapper.appendChild(list);
+        nav.appendChild(title);
+        nav.appendChild(list);
 
-        nativeCourseIndex.insertAdjacentElement('beforebegin', wrapper);
-
-        /*
-         * Solo ocultamos el índice nativo si el custom se pudo construir.
-         */
+        nativeCourseIndex.insertAdjacentElement('beforebegin', nav);
         nativeCourseIndex.classList.add('glu-native-courseindex-hidden');
+
+        document.body.classList.add('glu-onetopic-custom-index-ready');
     }
 
-    var items = getOnetopicTabs();
+    var items = readTabs();
 
     if (!items.length) {
         return;
     }
 
-    var tree = buildTree(items);
-
-    if (!tree.length) {
-        return;
-    }
-
-    renderCustomIndex(tree);
+    render(buildTree(items));
 });
