@@ -2961,3 +2961,1603 @@ body.path-course-view #theme_boost-drawers-courseindex .courseindex .courseindex
 #theme_boost-drawers-courseindex .glu-custom-courseindex__item.is-collapsed>.glu-custom-courseindex__children {
     display: none;
 }
+
+/************************************** ── FRONTPAGE: fix contenedores Moodle ──────────────── **********************/
+
+/*Ajusto diferencia de nuevo header para que no pise*/
+#page.drawers {
+    margin-top: 120px !important;
+}
+
+/*Ajusto titulos del site*/
+#page-header h1.h2,
+#page-header .h2.h1 {
+    font-weight: 900 !important;
+}
+
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3,
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6,
+.page-header-headings h1,
+.page-header-headings .h1,
+.block .card-title,
+.dashboard-card .multiline,
+.coursebox .coursename {
+    color: #0D445D;
+    font-family: "Poppins", Arial, sans-serif !important;
+}
+
+/* Oculto flecha arriba ala derecha (solo en vista pública, no en edición) */
+body#page-site-index:not(.editing) .btn,
+body#page-site-index:not(.editing) .singlebutton .btn,
+body#page-site-index:not(.editing) .buttons .btn {
+    display: none !important;
+}
+
+
+/* El .no-overflow de Moodle bloquea el width: 100vw trick */
+body#page-site-index .no-overflow {
+    overflow: visible !important;
+}
+
+/* FRONTPAGE FIX — Quitar padding de wrappers de actividades (solo home) */
+body#page-site-index .activity.label,
+body#page-site-index .activity-altcontent,
+body#page-site-index .activitycontent,
+body#page-site-index .activity-item,
+body#page-site-index .activity-grid {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Quita la línea gris entre actividades */
+body#page-site-index li.activity {
+    border: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Después (BIEN) */
+body#page-site-index .section,
+body#page-site-index .course-section {
+    border: none !important;
+    padding: 0 !important;
+}
+
+/* Quita el margin superior del contenido colapsable */
+body#page-site-index #coursecontentcollapse1>.my-3 {
+    margin: 0 !important;
+}
+
+/* EDIT MODE — Desactivar full-width trick para que aparezcan los controles */
+body#page-site-index.editing .glu-hero,
+body#page-site-index.editing .glu-stats,
+body#page-site-index.editing .glu-howtostudy,
+body#page-site-index.editing .glu-featured {
+    position: static !important;
+    left: auto !important;
+    transform: none !important;
+    width: 100% !important;
+}
+
+/* Restaurar overflow para que los action menus sean accesibles */
+body#page-site-index.editing .no-overflow {
+    overflow: visible !important;
+}
+
+/* Elevar z-index de los controles nativos de Moodle */
+body#page-site-index.editing .activity-item,
+body#page-site-index.editing [data-region="activity-actions"],
+body#page-site-index.editing .action-menu,
+body#page-site-index.editing .section-actions {
+    position: relative !important;
+    z-index: 9999 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* EDIT MODE — Mostrar controles ocultos con clase bulk-hidden */
+body#page-site-index.editing .bulk-hidden {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+body#page-site-index.editing li.activity>.divider.bulk-hidden {
+    display: flex !important;
+    justify-content: center !important;
+}
+
+body#page-site-index.editing .activity-grid>.actions.bulk-hidden {
+    display: flex !important;
+    align-items: flex-start !important;
+}
+
+/* ================================================
+   BODY — FONDO PLENO, SIN IMAGEN
+   ================================================ */
+
+body {
+    background-color: #ffffff !important;
+    background-image: none !important;
+    background-repeat: no-repeat !important;
+    background-position: center top !important;
+    background-size: cover !important;
+    color: #545454 !important;
+    font-family: "Lexend Deca", Arial, sans-serif !important;
+    min-height: 100vh !important;
+}
+
+/* Evita scroll horizontal al romper el contenedor del footer */
+body {
+    overflow-x: hidden;
+}
+
+/* ================================================
+   HOME — ELIMINA LOS BLOBS DE FONDO
+   El repo usa body#page-site-index::before/::after para los backgrounds
+   ================================================ */
+
+body#page-site-index::before,
+body#page-site-index::after {
+    content: none !important;
+    display: none !important;
+    background: none !important;
+}
+
+/* Color de fondo pleno en el home */
+body#page-site-index {
+    background-color: #ffffff !important;
+}
+
+/* Permite que el fondo del body se vea a través */
+body#page-site-index #page,
+body#page-site-index #page.drawers,
+body#page-site-index #page-wrapper {
+    background: transparent !important;
+}
+
+/*Oculto en el home el boton de buscar que aparece al final*/
+body#page-site-index .box.py-3.d-flex.justify-content-center {
+    display: none !important;
+}
+
+
+/* ================================================
+   HOME — SECCIÓN 1: HERO
+   ================================================ */
+
+/* Sección full width con fondo blanco */
+.glu-hero {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw !important;
+    background: #f9f9f9 !important;
+    padding: 4rem 0;
+    box-sizing: border-box;
+    margin-top: -5rem !important;
+}
+
+/* Contenedor interno centrado con max-width 1366px */
+.glu-hero__inner {
+    max-width: 1366px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+/* Etiqueta pequeña roja arriba del título */
+.glu-hero__eyebrow {
+    color: #CD0A30;
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
+}
+
+/* Título principal */
+.glu-hero__title {
+    font-family: "Poppins", Arial, sans-serif;
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 900;
+    line-height: 1.15;
+    color: #0D445D;
+    margin: 0 0 1.25rem;
+}
+
+/* Subtítulo */
+.glu-hero__subtitle {
+    font-size: 1rem;
+    color: #545454;
+    line-height: 1.65;
+    max-width: 480px;
+    margin: 0 0 2rem;
+}
+
+/* Fila de botones */
+.glu-hero__actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* Base de botones */
+.glu-hero__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0.75rem 1.75rem;
+    border-radius: 8px;
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+/* Botón primario: rojo relleno */
+.glu-hero__btn--primary {
+    background: #CD0A30 !important;
+    color: #ffffff !important;
+    border: 2px solid #CD0A30;
+}
+
+.glu-hero__btn--primary:hover {
+    background: #a60827 !important;
+    border-color: #a60827;
+    color: #ffffff !important;
+}
+
+/* Botón secundario: contorno oscuro */
+.glu-hero__btn--outline {
+    background: transparent !important;
+    color: #0D445D !important;
+    border: 2px solid #0D445D;
+}
+
+.glu-hero__btn--outline:hover {
+    background: #0D445D !important;
+    color: #ffffff !important;
+}
+
+/* Columna de la imagen */
+.glu-hero__media {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+/* ================================================
+   HOME — HERO: RESPONSIVE
+   ================================================ */
+
+@media (max-width: 768px) {
+    .glu-hero {
+        padding: 2.5rem 0;
+    }
+
+    .glu-hero__inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    /* La imagen va arriba en mobile */
+    .glu-hero__media {
+        order: -1;
+    }
+
+    .glu-hero__image-wrapper {
+        width: 240px;
+        height: 240px;
+    }
+
+    .glu-hero__subtitle {
+        max-width: none;
+    }
+
+    .glu-hero__actions {
+        justify-content: center;
+    }
+}
+
+
+/* ── SECCIÓN 2: STATS BAR ─────────────────────────────── */
+.glu-stats {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    background-color: #0D445D;
+    padding: 48px 24px;
+    box-sizing: border-box;
+}
+
+.glu-stats__inner {
+    max-width: 1366px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    text-align: center;
+}
+
+.glu-stats__number {
+    display: block;
+    font-family: "Poppins", Arial, sans-serif;
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.glu-stats__label {
+    display: block;
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: 400;
+}
+
+/* Responsive: 2 columnas en mobile */
+@media (max-width: 640px) {
+    .glu-stats__inner {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px 16px;
+    }
+}
+
+/* ── SECCIÓN 3: WHO WE ARE ────────────────────────────── */
+
+/* WHO WE ARE — Botón "View more": alineado izquierda con espacio arriba */
+.glu-whoweare__actions {
+    display: flex !important;
+    justify-content: flex-start !important;
+    margin-top: 28px !important;
+}
+
+
+/* WHO WE ARE — imagen única sin borde punteado */
+.glu-whoweare__media {
+    height: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.glu-whoweare__image {
+    width: 100% !important;
+    height: auto !important;
+    display: block !important;
+    border-radius: 12px !important;
+}
+
+
+/* Contenedor full width, fondo blanco */
+.glu-whoweare {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    background-color: #ffffff;
+    padding: 80px 24px;
+    box-sizing: border-box;
+}
+
+/* Ancho máximo interno con 2 columnas */
+.glu-whoweare__inner {
+    max-width: 1366px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 64px;
+}
+
+/* ── MEDIA: área de los dos círculos ── */
+.glu-whoweare__media {
+    position: relative;
+    height: 420px;
+    /* altura del área de los círculos superpuestos */
+}
+
+/* Círculo base: borde rojo punteado, fondo blanco */
+.glu-whoweare__circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 3px dashed #CD0A30;
+    overflow: hidden;
+    background-color: #f0f0f0;
+}
+
+.glu-whoweare__circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Círculo de atrás (más grande, arriba-izquierda): zoom/videollamada */
+.glu-whoweare__circle--back {
+    width: 280px;
+    height: 280px;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+/* Círculo de adelante (más grande, abajo-derecha): presencial/taller */
+.glu-whoweare__circle--front {
+    width: 320px;
+    height: 320px;
+    bottom: 0;
+    right: 0;
+    z-index: 2;
+}
+
+/* ── CONTENT: columna de texto ── */
+
+/* Eyebrow: "WHO WE ARE" en rojo, uppercase, pequeño */
+.glu-whoweare__eyebrow {
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #CD0A30;
+    margin: 0 0 12px;
+}
+
+/* Título principal */
+.glu-whoweare__title {
+    font-family: "Poppins", Arial, sans-serif;
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: #0D445D;
+    line-height: 1.15;
+    margin: 0 0 24px;
+}
+
+/* Párrafo de texto */
+.glu-whoweare__text {
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: #545454;
+    margin: 0;
+}
+
+/* ── Responsive: una columna en mobile ── */
+@media (max-width: 768px) {
+    .glu-whoweare__inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .glu-whoweare__media {
+        height: 340px;
+    }
+
+    .glu-whoweare__circle--back {
+        width: 220px;
+        height: 220px;
+    }
+
+    .glu-whoweare__circle--front {
+        width: 260px;
+        height: 260px;
+    }
+}
+
+
+/* ── SECCIÓN 4: HOW TO STUDY ──────────────────────────── */
+
+/* Fondo azul oscuro, full width */
+.glu-howtostudy {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    background-color: #0D445D;
+    padding: 80px 24px;
+    box-sizing: border-box;
+}
+
+/* Ancho interno máximo */
+.glu-howtostudy__inner {
+    max-width: 1366px;
+    margin: 0 auto;
+}
+
+/* ── Encabezado centrado ── */
+.glu-howtostudy__header {
+    text-align: center;
+    max-width: 780px;
+    margin: 0 auto 56px;
+}
+
+/* Eyebrow amarillo uppercase */
+.glu-howtostudy__eyebrow {
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: #F7B713;
+    margin: 0 0 16px;
+}
+
+/* Título grande blanco */
+.glu-howtostudy__title {
+    font-family: "Poppins", Arial, sans-serif;
+    font-size: 2.6rem;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1.15;
+    margin: 0 0 20px;
+}
+
+/* Subtítulo muted blanco */
+.glu-howtostudy__subtitle {
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+}
+
+/* ── Grid de 3 cards ── */
+.glu-howtostudy__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    align-items: stretch !important;
+}
+
+/* Card: fondo azul medio, bordes redondeados */
+.glu-howtostudy__card {
+    background-color: #1a6b87;
+    border-radius: 16px;
+    padding: 36px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 100% !important;
+}
+
+/* Ícono: caja cuadrada redondeada oscura con ícono amarillo */
+.glu-howtostudy__icon {
+    width: 64px;
+    height: 64px;
+    background-color: #0d455e;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* Título de la card */
+.glu-howtostudy__card-title {
+    font-family: "Poppins", Arial, sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+    line-height: 1.3;
+}
+
+/* Texto de la card */
+.glu-howtostudy__card-text {
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+}
+
+/* CTA en cursiva negrita (links y texto) */
+.glu-howtostudy__card-cta {
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+    margin-top: auto;
+}
+
+.glu-howtostudy__card-cta a {
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+}
+
+.glu-howtostudy__card-cta a:hover {
+    color: #F7B713;
+}
+
+/* Botón amarillo (solo card 3) */
+.glu-howtostudy__btn {
+    display: inline-block;
+    background-color: #F7B713;
+    color: #0D445D;
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 10px 22px;
+    border-radius: 6px;
+    text-decoration: none;
+    margin-top: 8px;
+    transition: background-color 0.2s;
+    align-self: flex-start !important;
+    width: auto !important;
+}
+
+.glu-howtostudy__btn:hover {
+    background-color: #e0a410;
+    color: #0D445D;
+}
+
+/* ── Responsive: 1 columna en mobile ── */
+@media (max-width: 768px) {
+    .glu-howtostudy__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .glu-howtostudy__title {
+        font-size: 1.9rem;
+    }
+}
+
+
+/* ── SECCIÓN 5: FEATURED COURSES ─────────────────────── */
+
+/* FEATURED COURSES — Solo bordes redondeados arriba en las cards */
+.glu-featured__card {
+    border-radius: 12px 12px 0 0 !important;
+}
+
+/* Neutraliza el border-radius global que Moodle aplica a imágenes en activity content */
+.glu-featured__card-image {
+    border-radius: 0 !important;
+}
+
+/*Oculto el JS de gaspar*/
+
+body#page-site-index .glu-home-catalog-preview {
+    display: none !important;
+}
+
+/* Fondo blanco, full width */
+.glu-featured {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    background-color: #ffffff;
+    padding: 80px 24px;
+    box-sizing: border-box;
+    margin-bottom: -12rem;
+}
+
+/* Ancho interno */
+.glu-featured__inner {
+    max-width: 1366px;
+    margin: 0 auto;
+}
+
+/* ── Encabezado ── */
+.glu-featured__header {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.glu-featured__title {
+    font-family: "Poppins", Arial, sans-serif;
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: #0D445D;
+    margin: 0 0 12px;
+}
+
+/* "Browse all courses": link discreto debajo del título */
+.glu-featured__browse {
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 0.95rem;
+    color: #545454;
+    text-decoration: none;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.glu-featured__browse:hover {
+    color: #CD0A30;
+    border-color: #CD0A30;
+}
+
+/* ── Grid de 3 cards ── */
+.glu-featured__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    align-items: stretch !important;
+    margin-bottom: 48px;
+}
+
+/* Card: borde sutil, sombra suave, bordes redondeados */
+.glu-featured__card {
+    background: #ffffff;
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.2s;
+    height: 100% !important;
+    /* ← agregar esta línea */
+}
+
+.glu-featured__card:hover {
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* ── Imagen con badges ── */
+.glu-featured__card-image-wrap {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background-color: #eef4f7;
+}
+
+.glu-featured__card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Badge de categoría: esquina inferior derecha, fondo rojo */
+.glu-featured__card-badge {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background-color: #CD0A30;
+    color: #ffffff;
+    font-family: "Oswald", Arial, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+/* Badge GLU: esquina superior izquierda, fondo azul */
+.glu-featured__card-glu-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background-color: #0D445D;
+    color: #ffffff;
+    font-family: "Oswald", Arial, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+/* ── Cuerpo de la card ── */
+.glu-featured__card-body {
+    padding: 20px 20px 12px;
+    flex: 1;
+}
+
+/* Título del curso: rojo, sin subrayado */
+.glu-featured__card-title {
+    font-family: "Oswald", Arial, sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 10px;
+    line-height: 1.35;
+}
+
+.glu-featured__card-title a {
+    color: #CD0A30;
+    text-decoration: none;
+}
+
+.glu-featured__card-title a:hover {
+    color: #a00824;
+    text-decoration: underline;
+}
+
+/* "Course team:" label + nombres */
+.glu-featured__card-team {
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 0.85rem;
+    color: #CD0A30;
+    margin: 0 0 10px;
+}
+
+.glu-featured__card-team strong {
+    font-weight: 700;
+}
+
+/* Descripción opcional */
+.glu-featured__card-desc {
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.65;
+    color: #666666;
+    margin: 0;
+
+    /* Truncar a 4 líneas */
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ── Footer de la card: meta + botón ── */
+.glu-featured__card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px 16px;
+    border-top: 1px solid #f0f0f0;
+    margin-top: auto;
+}
+
+.glu-featured__card-meta {
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 0.8rem;
+    color: #999999;
+}
+
+/* Botón "View course": rojo, pequeño */
+.glu-featured__card-btn {
+    display: inline-block;
+    background-color: #CD0A30;
+    color: #ffffff;
+    font-family: "Lexend Deca", Arial, sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 7px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+}
+
+.glu-featured__card-btn:hover {
+    background-color: #a00824;
+    color: #ffffff;
+}
+
+/* ── Botón "View All courses" centrado ── */
+.glu-featured__cta {
+    text-align: center;
+}
+
+.glu-featured__cta-btn {
+    display: inline-block;
+    background-color: #CD0A30;
+    color: #ffffff;
+    font-family: "Oswald", Arial, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 14px 40px;
+    border-radius: 8px;
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: background-color 0.2s;
+}
+
+.glu-featured__cta-btn:hover {
+    background-color: #a00824;
+    color: #ffffff;
+}
+
+/* ── Responsive: 1 columna en mobile ── */
+@media (max-width: 768px) {
+    .glu-featured__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .glu-featured__title {
+        font-size: 1.9rem;
+    }
+}
+
+
+
+
+
+/* ================================================
+   LOGIN — ELIMINA LOS BLOBS DE FONDO
+   El repo usa body.path-login Y body.pagelayout-login para los backgrounds
+   ================================================ */
+
+body.path-login::before,
+body.path-login::after,
+body.pagelayout-login::before,
+body.pagelayout-login::after {
+    content: none !important;
+    display: none !important;
+    background: none !important;
+}
+
+/* Color de fondo pleno en el login */
+body.path-login,
+body.pagelayout-login {
+    background-color: #ffffff !important;
+    background-image: url('https://raw.githubusercontent.com/agaspartessi/glu/refs/heads/main/pix/back-img-login.png') !important;
+}
+
+/* Permite que el fondo del body se vea a través */
+body.path-login #page,
+body.path-login #page-wrapper,
+body.pagelayout-login #page,
+body.pagelayout-login #page-wrapper {
+    background: transparent !important;
+}
+
+/* ================================================
+   LOGIN — ESTILOS DE LA CARD Y FORMULARIO
+   ================================================ */
+
+/* Ajustes de textos*/
+
+.mb-3 {
+    text-align: center !important;
+}
+
+/* Centrado vertical del login en el viewport */
+body.path-login .login-wrapper,
+body.pagelayout-login .login-wrapper {
+    min-height: 100vh !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 24px !important;
+}
+
+/* Card principal */
+body.path-login .login-container,
+body.pagelayout-login .login-container {
+    background: #ffffff !important;
+    border-radius: 16px !important;
+    padding: 40px 36px !important;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18) !important;
+    width: 100% !important;
+    max-width: 400px !important;
+    margin: 0 auto !important;
+}
+
+/* Ocultar labels → los inputs muestran el placeholder 
+body.path-login .login-container label,
+body.pagelayout-login .login-container label {
+  display: none !important;
+}*/
+
+/* Inputs: Username y Password */
+body.path-login #username,
+body.path-login #password,
+body.pagelayout-login #username,
+body.pagelayout-login #password {
+    width: 100% !important;
+    border: 1.5px solid #e0e0e0 !important;
+    border-radius: 8px !important;
+    padding: 12px 16px !important;
+    font-family: "Lexend Deca", Arial, sans-serif !important;
+    font-size: 0.95rem !important;
+    color: #0D445D !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    margin-bottom: 16px !important;
+    transition: border-color 0.2s !important;
+}
+
+body.path-login #username:focus,
+body.path-login #password:focus,
+body.pagelayout-login #username:focus,
+body.pagelayout-login #password:focus {
+    border-color: #0D445D !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(13, 68, 93, 0.1) !important;
+}
+
+/* Placeholder */
+body.path-login #username::placeholder,
+body.path-login #password::placeholder,
+body.pagelayout-login #username::placeholder,
+body.pagelayout-login #password::placeholder {
+    color: #aaaaaa !important;
+    font-family: "Lexend Deca", Arial, sans-serif !important;
+}
+
+/* Botón LOG IN */
+body.path-login #loginbtn,
+body.pagelayout-login #loginbtn {
+    width: 100% !important;
+    background-color: #CD0A30 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 14px !important;
+    font-family: "Lexend Deca", Arial, sans-serif !important;
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    cursor: pointer !important;
+    transition: background-color 0.2s !important;
+    margin-top: 8px !important;
+    box-shadow: none !important;
+}
+
+body.path-login #loginbtn:hover,
+body.pagelayout-login #loginbtn:hover {
+    background-color: #a00824 !important;
+}
+
+/* "Lost password?" centrado en rojo */
+body.path-login .forgetpass,
+body.pagelayout-login .forgetpass {
+    display: block !important;
+    text-align: center !important;
+    color: #CD0A30 !important;
+    font-family: "Lexend Deca", Arial, sans-serif !important;
+    font-size: 0.88rem !important;
+    margin-top: 12px !important;
+    text-decoration: none !important;
+}
+
+body.path-login .forgetpass:hover,
+body.pagelayout-login .forgetpass:hover {
+    color: #a00824 !important;
+    text-decoration: underline !important;
+}
+
+/* Separador OR */
+body.path-login .login-divider,
+body.pagelayout-login .login-divider {
+    text-align: center !important;
+    color: #aaaaaa !important;
+    font-size: 0.85rem !important;
+    margin: 20px 0 !important;
+    position: relative !important;
+}
+
+/* Botones sociales: Google y Facebook */
+body.path-login .login-identityproviders .btn,
+body.pagelayout-login .login-identityproviders .btn {
+    width: 100% !important;
+    background: #ffffff !important;
+    border: 1.5px solid #e0e0e0 !important;
+    border-radius: 8px !important;
+    color: #333333 !important;
+    font-family: "Lexend Deca", Arial, sans-serif !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    padding: 11px 16px !important;
+    margin-bottom: 10px !important;
+    text-align: center !important;
+    transition: border-color 0.2s !important;
+}
+
+body.path-login .login-identityproviders .btn:hover,
+body.pagelayout-login .login-identityproviders .btn:hover {
+    border-color: #0D445D !important;
+    background: #ffffff !important;
+}
+
+/* Botón "Create a new account" — outline azul */
+body.path-login .login-signup-btn,
+body.pagelayout-login .login-signup-btn,
+body.path-login a[href*="signup"],
+body.pagelayout-login a[href*="signup"] {
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+    background: transparent !important;
+    border: 2px solid #0D445D !important;
+    border-radius: 8px !important;
+    color: #0D445D !important;
+    font-family: "Lexend Deca", Arial, sans-serif !important;
+    font-size: 0.9rem !important;
+    font-weight: 700 !important;
+    padding: 11px 16px !important;
+    margin-top: 8px !important;
+    text-decoration: none !important;
+    transition: background-color 0.2s, color 0.2s !important;
+}
+
+body.path-login .login-container .btn-secondary,
+body.pagelayout-login .login-container .btn-secondary {
+    border-radius: 10px !important;
+    background: #ffffff !important;
+    border: solid 2px #0D445D !important;
+    color: #0D445D !important;
+    min-height: 44px;
+    padding-inline: 1rem;
+}
+
+body.path-login a[href*="signup"]:hover,
+body.pagelayout-login a[href*="signup"]:hover {
+    background-color: #0D445D !important;
+    color: #ffffff !important;
+}
+
+
+
+/* ================================================
+   HEADER — NAVBAR
+   ================================================ */
+
+/* HEADER — Ocultar ítem Calendar del nav */
+.primary-navigation a[href*="calendar"],
+.primary-navigation li:has(a[href*="calendar"]) {
+    display: none !important;
+}
+
+/* Base: fondo blanco, borde suave, sombra */
+.navbar,
+.navbar.fixed-top {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #e8e8e8 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+    min-height: 90px !important;
+    /* +~25% sobre el default ~64px */
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* Contenedor interno: 3 zonas (logo | nav centrado | acciones) */
+.navbar .container-fluid,
+.navbar>.container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    min-height: 90px !important;
+}
+
+/* ── LOGO ── */
+.navbar-brand {
+    flex-shrink: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 !important;
+}
+
+/* Reemplaza la imagen del logo por el SVG del repo */
+.navbar-brand img,
+.logo img {
+    content: url('https://raw.githubusercontent.com/agaspartessi/glu/26c10b4b27e7e33b3b08d727270a362f5fc860d6/pix/logo%20home%20glu.svg') !important;
+    height: 72px !important;
+    width: auto !important;
+    max-width: none !important;
+    display: block !important;
+}
+
+/* ── NAV CENTRADO ── */
+.primary-navigation {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.primary-navigation .nav-link {
+    color: #0D445D !important;
+    font-family: "Lexend Deca", Arial, sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+    padding: 0.5rem 1.2rem !important;
+    transition: color 0.2s !important;
+}
+
+.primary-navigation .nav-link:hover,
+.primary-navigation .nav-link.active {
+    color: #CD0A30 !important;
+}
+
+/* Subrayado rojo en el link activo */
+.primary-navigation .nav-link.active {
+    border-bottom: 2px solid #CD0A30 !important;
+}
+
+/* ── ZONA DERECHA: idioma + login ── */
+.navbar .usermenu-container,
+.navbar .ml-auto,
+.navbar-nav.ml-auto {
+    display: flex !important;
+    align-items: center !important;
+    gap: 15px !important;
+    flex-shrink: 0 !important;
+}
+
+/* HEADER — Fila derecha: idioma + separador + login */
+#usernavigation.navbar-nav {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+/* Selector de idioma: toggle correcto */
+.navbar #usernavigation .langmenu {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.navbar #usernavigation .langmenu .dropdown-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    background: transparent !important;
+    border: 1.5px solid #dddddd !important;
+    border-radius: 8px !important;
+    color: #0D445D !important;
+    padding: 6px 12px !important;
+    font-size: 0.875rem !important;
+    white-space: nowrap !important;
+}
+
+.navbar #usernavigation .langmenu .dropdown-toggle:hover {
+    border-color: #0D445D !important;
+}
+
+/* ── Botón Log in: solo estiliza el <a>, no el span contenedor ── */
+span.login.ps-2>a {
+    display: inline-flex !important;
+    align-items: center !important;
+    background-color: #0D445D !important;
+    color: #ffffff !important;
+    border: 2px solid #0D445D !important;
+    border-radius: 5px !important;
+    font-family: "Lexend Deca", Arial, sans-serif !important;
+    font-size: 0.88rem !important;
+    font-weight: 700 !important;
+    padding: 5px 22px !important;
+    text-decoration: none !important;
+    transition: background-color 0.2s !important;
+    margin-left: 15px;
+}
+
+span.login.ps-2>a:hover {
+    background-color: #0a3347 !important;
+    border-color: #0a3347 !important;
+}
+
+/* Ocultar "You are currently using guest access" y limpiar el span */
+span.login.ps-2 {
+    font-size: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+}
+
+
+/* Ocultar los separadores verticales grises entre idioma y login */
+.navbar .divider.border-start,
+.divider.border-start.h-75.align-self-center {
+    display: none !important;
+}
+
+
+/* ================================================
+   FOOTER —  AJUSTES TEMPLATE
+   ================================================ */
+
+/*Ajuste tagline abajo logo*/
+.glu-footer__tagline {
+    font-weight: 800 !important;
+    letter-spacing: 0em !important;
+    color: #88a8b6 !important;
+    max-width: 200px !important;
+}
+
+/* Titulos en Footer cambios*/
+.glu-footer__title {
+    color: #f6b60f !important;
+    font-family: "Poppins", Arial, sans-serif !important;
+    font-weight: 900 !important;
+}
+
+/* Links en footer*/
+#page-footer a {
+    color: #a1adbf !important;
+}
+
+.glu-footer a {
+    font-family: "Lexend Deca", Arial, sans-serif !important;
+    font-weight: 100 !important;
+}
+
+
+/* Fuerza el footer a ancho de pantalla completo */
+#page-footer {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    background-color: #0D445D !important;
+    box-sizing: border-box;
+}
+
+
+#page-footer.glu-footer {
+    border-top: none !important;
+    padding-top: 20px !important;
+}
+
+/* Franja rojo / amarillo / verde / celeste en el tope */
+#page-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(to right,
+            #CD0A30 0% 25%,
+            #F7B713 25% 50%,
+            #8BB52C 50% 75%,
+            #24A1D8 75% 100%);
+    z-index: 2;
+}
+
+
+/* Puntos redondos en #F7B713 al 30% de opacidad, debajo de la franja */
+#page-footer::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background-image: radial-gradient(circle,
+            rgba(247, 184, 19, 0.3) 2px,
+            transparent 2px);
+    background-size: 12px 8px;
+    background-repeat: repeat-x;
+    z-index: 2;
+}
+
+/* Padding interno que empuja el contenido hacia abajo */
+.glu-footer__inner {
+    padding-top: 80px !important;
+}
+
+/*  Reemplazo de logo en footer  */
+
+/* Reemplaza el logo institucional por el sub-brand GLU Online Academy */
+.glu-footer__logo {
+    content: url('https://glu-online-academy.org/pluginfile.php/1/core_admin/logo/0x200/1779210391/footer%20logo%20glu-.png') !important;
+    width: 200px !important;
+    height: auto !important;
+}
+
+/*  GRID DE 4 COLUMNAS   Ahora .glu-footer__social es hijo directo del grid */
+
+.glu-footer__inner {
+    grid-template-columns: 1.6fr 1fr 1.4fr 1fr !important;
+}
+
+/* Columna 4: Follow Us como sección propia */
+.glu-footer__social {
+    display: flex;
+    flex-direction: column;
+}
+
+/* BARRA INFERIOR: 2 COLUMNAS   Login info izquierda / copyright derecha*/
+
+.glu-footer__system {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+.glu-footer__copyright {
+    text-align: right;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+}
+
+
+/* ================================================
+   END FOOTER —  AJUSTES TEMPLATE
+   ================================================ */
+
+
+/* ================================================
+   ALL CURSES - AJUSTES TEMPLATE
+   ================================================ */
+
+
+/*Ajustes sobre el cuerpo principal*/
+
+.card,
+.block,
+.dashboard-card,
+.coursebox,
+#region-main {
+    border: 0px !important;
+
+}
+
+/*Color de fondo de grilla cursos*/
+@media (min-width: 768px) {
+    #page.drawers div[role="main"] {
+        background-color: #f6f7f9 !important;
+    }
+}
+
+/* Enrrol bt custom*/
+
+.rounded-pill {
+    border-radius: 5px !important;
+}
+
+.text-bg-primary {
+    display: inline-block !important;
+    background-color: #CD0A30 !important;
+    color: #fff !important;
+    font-family: "Lexend Deca", Arial, sans-serif !important;
+    font-size: .82rem !important;
+    font-weight: 600 !important;
+    padding: 10px 20px !important;
+    text-decoration: none !important;
+    transition: background-color 0.2s !important;
+    white-space: nowrap !important;
+}
+
+
+/* Elimina el padding lateral del wrapper #page en la página de catálogo */
+body.path-local-coursecatalog #page.drawers {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    background-color: #f6f7f9 !important;
+}
+
+/* Quita restricciones de ancho en los contenedores Bootstrap */
+body.path-local-coursecatalog #page-content {
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+body.path-local-coursecatalog #region-main-box {
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    flex: 0 0 100% !important;
+}
+
+/* Centra el contenido interno con max-width controlado */
+body.path-local-coursecatalog #region-main {
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0px !important;
+    background: transparent !important;
+}
+
+/* ALL COURSES — [role="main"] full-width con fondo gris */
+body.path-local-coursecatalog #region-main [role="main"] {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw !important;
+    padding-top: 32px !important;
+    padding-bottom: 48px !important;
+    padding-left: max(24px, calc((100vw - 1366px) / 2)) !important;
+    padding-right: max(24px, calc((100vw - 1366px) / 2)) !important;
+    box-sizing: border-box !important;
+}
+
+/* Evitar que los padres corten el overflow */
+body.path-local-coursecatalog #page-content,
+body.path-local-coursecatalog #region-main-box,
+body.path-local-coursecatalog #region-main {
+    overflow: visible !important;
+}
+
+/*Ajustes espacios ceranos al footer*/
+.pb-3 {
+    padding-bottom: 0rem !important;
+}
+
+@media (min-width: 768px) {
+    #page.drawers .main-inner {
+        padding: 0rem !important;
+    }
+}
+
+@media (min-width: 576px) {
+    #page.drawers .main-inner {
+        margin-top: 0rem !important;
+    }
+}
+
+/*Ajuste de barra de busqueda*/
+body.path-local-coursecatalog .glu-catalog-search__form,
+body#page-local-coursecatalog-view .glu-catalog-search__form,
+body[id*="page-local-coursecatalog"] .glu-catalog-search__form {
+    padding: .25rem !important;
+    border-radius: 8px !important;
+    margin-top: 3rem !important;
+}
+
+body.path-local-coursecatalog .glu-catalog-search__button,
+body#page-local-coursecatalog-view .glu-catalog-search__button,
+body[id*="page-local-coursecatalog"] .glu-catalog-search__button {
+    border-radius: 6px !important;
+    box-shadow: none !important;
+}
+
+/*Ajuste caja de botonera de cursos*/
+body.glu-coursecatalog-page .glu-catalog-navigation {
+    max-width: 100% !important;
+    margin: 3rem 0rem !important;
+    border-top: solid 0.2px !important;
+    border-bottom: solid 0.2px !important;
+    padding-top: 4rem !important;
+    padding-bottom: 1rem !important;
+    border-color: #dedede !important;
+}
+
+/*Ajuste BT VIEWING ALL COURSES*/
+body.glu-coursecatalog-page .glu-catalog-allcourses__link.is-active {
+    background: #CD0A30 !important;
+    box-shadow: none !important;
+}
+
+body.glu-coursecatalog-page .glu-catalog-allcourses__link {
+    border-radius: 6px !important;
+}
+
+body.glu-coursecatalog-page .glu-catalog-tabs__link {
+    border-radius: 8px !important;
+}
+
+/*Oculti BROWSE ALL COURSES*/
+body.path-local-coursecatalog .glu-catalog-search__eyebrow,
+body#page-local-coursecatalog-view .glu-catalog-search__eyebrow,
+body[id*="page-local-coursecatalog"] .glu-catalog-search__eyebrow {
+    display: none !important;
+}
+
+
+/* ================================================
+   END ALL CURSES - AJUSTES TEMPLATE
+   ================================================ */
