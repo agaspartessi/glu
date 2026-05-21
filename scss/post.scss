@@ -2910,3 +2910,114 @@ body.path-course-view #theme_boost-drawers-courseindex .glu-onetopic-child-tabs-
     font-weight: 500 !important;
     color: #0D445D !important;
 }
+
+/* =========================================
+   ONETOPIC - Custom Course Index jerárquico
+========================================= */
+
+body.path-course-view #theme_boost-drawers-courseindex .glu-native-courseindex-hidden {
+    display: none !important;
+}
+
+body.path-course-view #theme_boost-drawers-courseindex .glu-custom-courseindex {
+    padding: 0.5rem 0.65rem 1rem;
+    font-family: "Lexend Deca", Arial, sans-serif;
+}
+
+body.path-course-view #theme_boost-drawers-courseindex .glu-custom-courseindex__title {
+    margin: 0 0 0.75rem;
+    padding: 0.45rem 0.35rem;
+    color: #0D445D;
+    font-size: 0.95rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+body.path-course-view #theme_boost-drawers-courseindex .glu-custom-courseindex__list,
+body.path-course-view #theme_boost-drawers-courseindex .glu-custom-courseindex__children {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+body.path-course-view #theme_boost-drawers-courseindex .glu-custom-courseindex__item {
+    margin: 0.2rem 0;
+}
+
+body.path-course-view #theme_boost-drawers-courseindex .glu-custom-courseindex__row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.35rem;
+}
+
+body.path-course-view #theme_boost-drawers-courseindex .glu-custom-courseindex__toggle,
+body.path-course-view #theme_boost-drawers-courseindex .glu-custom-courseindex__toggle-spacer {
+    width: 1.35rem;
+    min-width: 1.35rem;
+    height: 1.35rem;
+    margin-top: 0.25rem;
+}
+
+body.path-course-view #theme_boost-drawers-courseindex .glu-custom-courseindex__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(13, 68, 93, 0.08);
+    color: #0D445D;
+    font-size: 0.85rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+body.path-course-view #theme_boost-drawers-courseindex .glu-custom-courseindex__toggle:hover {
+    background: #0D445D;
+    color: #ffffff;
+}
+
+body.path-course-view #theme_boost-drawers-courseindex .glu-custom-courseindex__link {
+    display: block;
+    flex: 1;
+    padding: 0.45rem 0.55rem;
+    border-radius: 0.65rem;
+    color: #0D445D !important;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.25;
+    text-decoration: none !important;
+    white-space: normal;
+}
+
+body.path-course-view #theme_boost-drawers-courseindex .glu-custom-courseindex__link:hover {
+    background: rgba(13, 68, 93, 0.08);
+    color: #0D445D !important;
+}
+
+body.path-course-view #theme_boost-drawers-courseindex .glu-custom-courseindex__link.is-active {
+    background: #0D445D;
+    color: #ffffff !important;
+}
+
+/* Hijos */
+body.path-course-view #theme_boost-drawers-courseindex .glu-custom-courseindex__children {
+    margin: 0.15rem 0 0.45rem 1.25rem;
+    padding-left: 0.75rem;
+    border-left: 2px solid rgba(13, 68, 93, 0.14);
+}
+
+/* Tercer nivel, por si hubiera más niveles en Onetopic */
+body.path-course-view #theme_boost-drawers-courseindex .glu-custom-courseindex__children .glu-custom-courseindex__children {
+    margin-left: 1rem;
+    border-left-color: rgba(13, 68, 93, 0.09);
+}
+
+body.path-course-view #theme_boost-drawers-courseindex .glu-custom-courseindex__children .glu-custom-courseindex__link {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+body.path-course-view #theme_boost-drawers-courseindex .glu-custom-courseindex__item.is-collapsed>.glu-custom-courseindex__children {
+    display: none;
+}
