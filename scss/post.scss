@@ -2853,13 +2853,23 @@ body.path-course-view #theme_boost-drawers-courseindex .courseindex .courseindex
 
 
 /* =========================================
-   ONETOPIC - Ocultar pestañas nativas cuando existe índice custom
+   ONETOPIC - Ocultar solo tabs nativas,
+   sin ocultar el contenido de la sección
 ========================================= */
 
-body.glu-onetopic-custom-index-ready #tabs-tree-start {
+/* Oculta la barra principal de pestañas */
+body.glu-onetopic-custom-index-ready #tabs-tree-start>.tabs-wrapper,
+body.glu-onetopic-custom-index-ready #tabs-tree-start>ul.format_onetopic-tabs,
+body.glu-onetopic-custom-index-ready #tabs-tree-start ul.nav-tabs.format_onetopic-tabs {
     display: none !important;
 }
 
+/* Oculta la segunda fila de pestañas hijas si Onetopic la renderiza aparte */
+body.glu-onetopic-custom-index-ready #tabs-tree-start .onetopic-tab-body-secondrow,
+body.glu-onetopic-custom-index-ready #tabs-tree-start .hassecondrow>ul.nav-tabs,
+body.glu-onetopic-custom-index-ready #tabs-tree-start .onetopic-tab-body>ul.nav-tabs {
+    display: none !important;
+}
 
 /* =========================================
    COURSE INDEX - Índice custom jerárquico para Onetopic
