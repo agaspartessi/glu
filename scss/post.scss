@@ -2970,3 +2970,48 @@ body.path-course-view #theme_boost-drawers-courseindex .courseindex .courseindex
 body.format-onetopic:not(.editing) .format_onetopic-tabs .nav-link {
     display: none !important;
 }
+
+/* =========================================
+   COURSE DASHBOARD / SECTION 0
+========================================= */
+
+body.format-onetopic .glu-course-dashboard-summary {
+    max-width: 760px;
+    font-size: 0.95rem;
+    line-height: 1.45;
+}
+
+body.format-onetopic .glu-course-dashboard-summary p {
+    margin-bottom: 0.75rem;
+}
+
+body.format-onetopic .glu-course-dashboard-summary h3 {
+    margin: 1rem 0 0.75rem;
+    color: #0D445D;
+    font-size: 1.35rem;
+    line-height: 1.25;
+    font-weight: 600;
+}
+
+body.format-onetopic .glu-course-dashboard-summary .progress,
+body.format-onetopic .glu-course-dashboard-summary .progressbar {
+    max-width: 100%;
+}
+
+/* =========================================
+   ANNOUNCEMENTS / AVISOS EN NAV SUPERIOR
+========================================= */
+
+body.format-onetopic .glu-announcements-original-hidden {
+    display: none !important;
+}
+
+body.format-onetopic .secondary-navigation .glu-announcements-navitem .nav-link {
+    color: #CD0A30;
+    font-weight: 700;
+}
+
+body.format-onetopic .secondary-navigation .glu-announcements-navitem .nav-link:hover,
+body.format-onetopic .secondary-navigation .glu-announcements-navitem .nav-link:focus {
+    color: #0D445D;
+}
