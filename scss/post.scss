@@ -2972,40 +2972,67 @@ body.format-onetopic:not(.editing) .format_onetopic-tabs .nav-link {
 }
 
 /* =========================================
-   COURSE DASHBOARD / SECTION 0
+   COURSE DASHBOARD / SECTION 0 - Compacto
 ========================================= */
 
 body.format-onetopic .glu-course-dashboard-summary {
-    max-width: 760px;
-    font-size: 0.95rem;
-    line-height: 1.45;
+    max-width: 680px;
+    margin: 0 0 1.5rem;
+    font-size: 0.88rem;
+    line-height: 1.35;
 }
 
 body.format-onetopic .glu-course-dashboard-summary p {
-    margin-bottom: 0.75rem;
+    margin: 0 0 0.45rem;
 }
 
 body.format-onetopic .glu-course-dashboard-summary h3 {
-    margin: 1rem 0 0.75rem;
+    margin: 0.85rem 0 0.55rem;
     color: #0D445D;
-    font-size: 1.35rem;
-    line-height: 1.25;
-    font-weight: 600;
+    font-size: 1.15rem;
+    line-height: 1.2;
+    font-weight: 700;
 }
 
-body.format-onetopic .glu-course-dashboard-summary .progress,
-body.format-onetopic .glu-course-dashboard-summary .progressbar {
-    max-width: 100%;
+body.format-onetopic .glu-course-dashboard-summary .progress {
+    height: 0.65rem;
+    margin-top: 0.35rem;
+    border-radius: 999px;
+}
+
+body.format-onetopic .glu-course-dashboard-summary>*:last-child {
+    margin-bottom: 0;
 }
 
 /* =========================================
    ANNOUNCEMENTS / AVISOS EN NAV SUPERIOR
+   Desktop: ocultar original
+   Mobile/resoluciones bajas: mostrar original
 ========================================= */
 
-body.format-onetopic .glu-announcements-original-hidden {
-    display: none !important;
+/* Desktop: ocultamos el foro original porque ya está arriba */
+@media (min-width: 992px) {
+
+    body.format-onetopic li.activity.glu-announcements-original-hidden,
+    body.format-onetopic .activity.glu-announcements-original-hidden,
+    body.format-onetopic [data-for="cmitem"].glu-announcements-original-hidden,
+    body.format-onetopic .activity-item.glu-announcements-original-hidden {
+        display: none !important;
+    }
 }
 
+/* Resolución baja: lo volvemos a mostrar para que no desaparezca */
+@media (max-width: 991.98px) {
+
+    body.format-onetopic li.activity.glu-announcements-original-hidden,
+    body.format-onetopic .activity.glu-announcements-original-hidden,
+    body.format-onetopic [data-for="cmitem"].glu-announcements-original-hidden,
+    body.format-onetopic .activity-item.glu-announcements-original-hidden {
+        display: block !important;
+    }
+}
+
+/* Estilo del link agregado en navegación superior */
 body.format-onetopic .secondary-navigation .glu-announcements-navitem .nav-link {
     color: #CD0A30;
     font-weight: 700;

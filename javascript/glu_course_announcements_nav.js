@@ -33,14 +33,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function findFirstForumLinkInDocument(doc) {
-        /*
-         * Busca el primer foro del curso sin depender del idioma.
-         * Prioridad:
-         * 1. Foro dentro de la sección 0 / General / Course dashboard.
-         * 2. Primer foro visible dentro de region-main.
-         * 3. Primer foro de toda la página.
-         */
-
         var preferredContainers = [
             '#section-0',
             '[data-sectionid="0"]',
@@ -49,8 +41,8 @@ document.addEventListener('DOMContentLoaded', function () {
         ];
 
         var forumSelectors =
-            '.modtype_forum a[href*="/mod/forum/view.php"], ' +
             'li.activity.modtype_forum a[href*="/mod/forum/view.php"], ' +
+            'li.activity.forum a[href*="/mod/forum/view.php"], ' +
             '.activity.modtype_forum a[href*="/mod/forum/view.php"], ' +
             '[data-modname="forum"] a[href*="/mod/forum/view.php"], ' +
             'a[href*="/mod/forum/view.php"]';
@@ -72,21 +64,47 @@ document.addEventListener('DOMContentLoaded', function () {
         return doc.querySelector('a[href*="/mod/forum/view.php"]');
     }
 
+    function getForumText(link) {
+        var text = cleanText(link.textContent);
+
+        if (!text) {
+            return 'Announcements';
+        }
+
+        /* Limpieza por si Moodle concatena tipo "Avisos Forum". */
+        text = text.replace(/\s+forum$/i, '');
+        text = text.replace(/\s+foro$/i, '');
+
+        return cleanText(text) || 'Announcements';
+    }
+
     function hideOriginalForum(link) {
         if (!link || typeof link.closest !== 'function') {
             return;
         }
 
-        var activity = link.closest(
-            'li.activity, ' +
-            '.activity, ' +
-            '.activity-item, ' +
-            '[data-for="cmitem"], ' +
-            '.modtype_forum'
-        );
+        /*
+         * Importante: priorizamos el li.activity completo.
+         * Si ocultamos un div interno, queda visible el icono.
+         */
+        var activityLi = link.closest('li.activity');
 
-        if (activity) {
-            activity.classList.add('glu-announcements-original-hidden');
+        if (activityLi) {
+            activityLi.classList.add('glu-announcements-original-hidden');
+            return;
+        }
+
+        var cmItem = link.closest('[data-for="cmitem"]');
+
+        if (cmItem) {
+            cmItem.classList.add('glu-announcements-original-hidden');
+            return;
+        }
+
+        var activityItem = link.closest('.activity-item');
+
+        if (activityItem) {
+            activityItem.classList.add('glu-announcements-original-hidden');
         }
     }
 
@@ -107,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var navLink = document.createElement('a');
         navLink.className = 'nav-link';
         navLink.href = linkData.href;
-        navLink.textContent = cleanText(linkData.textContent) || 'Announcements';
+        navLink.textContent = linkData.textContent || 'Announcements';
 
         item.appendChild(navLink);
 
@@ -120,6 +138,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    function hideCurrentPageForum() {
+        var currentForum = findFirstForumLinkInDocument(document);
+
+        if (currentForum) {
+            hideOriginalForum(currentForum);
+        }
+    }
+
     function applyForumLink(link) {
         if (!link || !link.href) {
             return;
@@ -127,16 +153,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
         addForumToTopNav({
             href: link.href,
-            textContent: link.textContent || 'Announcements'
+            textContent: getForumText(link)
         });
 
         hideOriginalForum(link);
+        hideCurrentPageForum();
     }
 
     var currentLink = findFirstForumLinkInDocument(document);
 
     if (currentLink) {
         applyForumLink(currentLink);
+        window.setTimeout(hideCurrentPageForum, 500);
         return;
     }
 
@@ -156,6 +184,8 @@ document.addEventListener('DOMContentLoaded', function () {
             textContent: cachedText || 'Announcements'
         });
 
+        hideCurrentPageForum();
+        window.setTimeout(hideCurrentPageForum, 500);
         return;
     }
 
@@ -177,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            var linkText = cleanText(link.textContent) || 'Announcements';
+            var linkText = getForumText(link);
 
             window.sessionStorage.setItem(cacheKey, link.href);
             window.sessionStorage.setItem(cacheKey + '_text', linkText);
@@ -186,6 +216,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 href: link.href,
                 textContent: linkText
             });
+
+            hideCurrentPageForum();
+            window.setTimeout(hideCurrentPageForum, 500);
         })
         .catch(function () {
             return;
