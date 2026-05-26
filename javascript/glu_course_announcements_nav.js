@@ -32,26 +32,57 @@ document.addEventListener('DOMContentLoaded', function () {
         );
     }
 
-    function findAnnouncementsLinkInDocument(doc) {
-        var links = Array.from(doc.querySelectorAll('a[href*="/mod/forum/view.php"]'));
+    function findFirstForumLinkInDocument(doc) {
+        /*
+         * Busca el primer foro del curso sin depender del idioma.
+         * Prioridad:
+         * 1. Foro dentro de la sección 0 / General / Course dashboard.
+         * 2. Primer foro visible dentro de region-main.
+         * 3. Primer foro de toda la página.
+         */
 
-        return links.find(function (link) {
-            var text = cleanText(link.textContent).toLowerCase();
+        var preferredContainers = [
+            '#section-0',
+            '[data-sectionid="0"]',
+            '[data-number="0"]',
+            '#region-main'
+        ];
 
-            return text === 'avisos' ||
-                text === 'anuncios' ||
-                text === 'announcements' ||
-                text === 'news forum';
-        }) || null;
+        var forumSelectors =
+            '.modtype_forum a[href*="/mod/forum/view.php"], ' +
+            'li.activity.modtype_forum a[href*="/mod/forum/view.php"], ' +
+            '.activity.modtype_forum a[href*="/mod/forum/view.php"], ' +
+            '[data-modname="forum"] a[href*="/mod/forum/view.php"], ' +
+            'a[href*="/mod/forum/view.php"]';
+
+        for (var i = 0; i < preferredContainers.length; i++) {
+            var container = doc.querySelector(preferredContainers[i]);
+
+            if (!container) {
+                continue;
+            }
+
+            var forumLink = container.querySelector(forumSelectors);
+
+            if (forumLink) {
+                return forumLink;
+            }
+        }
+
+        return doc.querySelector('a[href*="/mod/forum/view.php"]');
     }
 
-    function hideOriginalAnnouncements(link) {
-        if (!link) {
+    function hideOriginalForum(link) {
+        if (!link || typeof link.closest !== 'function') {
             return;
         }
 
         var activity = link.closest(
-            'li.activity, .activity, .activity-item, [data-for="cmitem"], .modtype_forum'
+            'li.activity, ' +
+            '.activity, ' +
+            '.activity-item, ' +
+            '[data-for="cmitem"], ' +
+            '.modtype_forum'
         );
 
         if (activity) {
@@ -59,10 +90,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function addAnnouncementsToTopNav(link) {
+    function addForumToTopNav(linkData) {
         var topNav = getTopCourseNav();
 
-        if (!topNav || !link || !link.href) {
+        if (!topNav || !linkData || !linkData.href) {
             return;
         }
 
@@ -75,8 +106,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var navLink = document.createElement('a');
         navLink.className = 'nav-link';
-        navLink.href = link.href;
-        navLink.textContent = cleanText(link.textContent) || 'Avisos';
+        navLink.href = linkData.href;
+        navLink.textContent = cleanText(linkData.textContent) || 'Announcements';
 
         item.appendChild(navLink);
 
@@ -89,19 +120,23 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function apply(link) {
-        if (!link) {
+    function applyForumLink(link) {
+        if (!link || !link.href) {
             return;
         }
 
-        addAnnouncementsToTopNav(link);
-        hideOriginalAnnouncements(link);
+        addForumToTopNav({
+            href: link.href,
+            textContent: link.textContent || 'Announcements'
+        });
+
+        hideOriginalForum(link);
     }
 
-    var currentLink = findAnnouncementsLinkInDocument(document);
+    var currentLink = findFirstForumLinkInDocument(document);
 
     if (currentLink) {
-        apply(currentLink);
+        applyForumLink(currentLink);
         return;
     }
 
@@ -116,35 +151,41 @@ document.addEventListener('DOMContentLoaded', function () {
     var cachedText = window.sessionStorage.getItem(cacheKey + '_text');
 
     if (cachedUrl) {
-        apply({
+        addForumToTopNav({
             href: cachedUrl,
-            textContent: cachedText || 'Avisos'
+            textContent: cachedText || 'Announcements'
         });
+
         return;
     }
 
-    fetch(wwwroot + '/course/view.php?id=' + courseId, {
+    fetch(wwwroot + '/course/view.php?id=' + courseId + '&section=0', {
         credentials: 'same-origin'
     })
         .then(function (response) {
             if (!response.ok) {
-                throw new Error('Could not load course page');
+                throw new Error('Could not load course section 0');
             }
 
             return response.text();
         })
         .then(function (html) {
             var doc = new DOMParser().parseFromString(html, 'text/html');
-            var link = findAnnouncementsLinkInDocument(doc);
+            var link = findFirstForumLinkInDocument(doc);
 
-            if (!link) {
+            if (!link || !link.href) {
                 return;
             }
 
-            window.sessionStorage.setItem(cacheKey, link.href);
-            window.sessionStorage.setItem(cacheKey + '_text', cleanText(link.textContent));
+            var linkText = cleanText(link.textContent) || 'Announcements';
 
-            apply(link);
+            window.sessionStorage.setItem(cacheKey, link.href);
+            window.sessionStorage.setItem(cacheKey + '_text', linkText);
+
+            addForumToTopNav({
+                href: link.href,
+                textContent: linkText
+            });
         })
         .catch(function () {
             return;
