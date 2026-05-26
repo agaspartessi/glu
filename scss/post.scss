@@ -2972,119 +2972,119 @@ body.format-onetopic:not(.editing) .format_onetopic-tabs .nav-link {
 }
 
 /* =========================================
-   COURSE DASHBOARD / SECTION 0
+   COURSE DASHBOARD / SECTION 0 - Full width compacto
 ========================================= */
 
 body.format-onetopic .glu-course-dashboard-summary {
-    max-width: 760px;
-    margin: 1.25rem 0 2rem;
-    padding: 1.4rem 1.6rem;
-    border-radius: 1.4rem;
-    border: 1px solid rgba(13, 68, 93, 0.12);
-    border-left: 6px solid #CD0A30;
-    background: linear-gradient(135deg, rgba(13, 68, 93, 0.045), rgba(255, 255, 255, 0.96));
-    box-shadow: 0 14px 34px rgba(13, 68, 93, 0.08);
-    font-family: "Lexend Deca", Arial, sans-serif;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0.75rem 0 1rem !important;
+    padding: 0.65rem 0.85rem !important;
+    border-radius: 0.9rem !important;
+    border: 1px solid rgba(13, 68, 93, 0.12) !important;
+    border-left: 4px solid #CD0A30 !important;
+    background: linear-gradient(135deg, rgba(13, 68, 93, 0.035), rgba(255, 255, 255, 0.98)) !important;
+    box-shadow: 0 6px 16px rgba(13, 68, 93, 0.05) !important;
+
+    display: grid !important;
+    grid-template-columns: 1.25fr 1.4fr 1.35fr 0.95fr !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
 }
 
+/* Header */
 body.format-onetopic .glu-course-dashboard-summary__header {
-    margin-bottom: 1.1rem;
+    margin: 0 !important;
 }
 
 body.format-onetopic .glu-course-dashboard-summary__eyebrow {
-    margin: 0 0 0.35rem;
-    color: #CD0A30;
-    font-size: 0.76rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+    margin: 0 0 0.15rem !important;
+    font-size: 0.58rem !important;
+    line-height: 1 !important;
+    letter-spacing: 0.08em !important;
 }
 
 body.format-onetopic .glu-course-dashboard-summary__title {
-    margin: 0;
-    color: #0D445D;
-    font-size: 1.45rem;
-    line-height: 1.18;
-    font-weight: 800;
+    margin: 0 !important;
+    font-size: 0.95rem !important;
+    line-height: 1.15 !important;
+    font-weight: 800 !important;
 }
 
+/* Progress */
 body.format-onetopic .glu-course-dashboard-summary__progress {
-    margin: 1rem 0 1.15rem;
+    margin: 0 !important;
 }
 
 body.format-onetopic .glu-course-dashboard-summary__label {
-    margin-bottom: 0.45rem;
-    color: #0D445D;
-    font-size: 0.9rem;
-    font-weight: 700;
+    margin: 0 0 0.2rem !important;
+    font-size: 0.68rem !important;
+    line-height: 1 !important;
 }
 
 body.format-onetopic .glu-course-dashboard-summary__progress .progress {
-    height: 0.75rem;
-    border-radius: 999px;
-    background-color: rgba(13, 68, 93, 0.1);
-    overflow: hidden;
+    height: 0.38rem !important;
+    margin: 0 !important;
 }
 
-body.format-onetopic .glu-course-dashboard-summary__progress .progress-bar {
-    border-radius: 999px;
-}
-
+/* Stats */
 body.format-onetopic .glu-course-dashboard-summary__stats {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.85rem;
-    margin: 1rem 0;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.45rem !important;
+    margin: 0 !important;
 }
 
 body.format-onetopic .glu-course-dashboard-summary__stat {
-    padding: 0.9rem 1rem;
-    border-radius: 1rem;
-    background: #ffffff;
-    border: 1px solid rgba(13, 68, 93, 0.1);
+    padding: 0.4rem 0.55rem !important;
+    border-radius: 0.65rem !important;
 }
 
 body.format-onetopic .glu-course-dashboard-summary__stat-label {
-    display: block;
-    margin-bottom: 0.25rem;
-    color: rgba(13, 68, 93, 0.72);
-    font-size: 0.78rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
+    margin: 0 0 0.1rem !important;
+    font-size: 0.56rem !important;
+    line-height: 1.1 !important;
 }
 
 body.format-onetopic .glu-course-dashboard-summary__stat-value {
-    display: block;
-    color: #0D445D;
-    font-size: 1rem;
-    font-weight: 800;
+    font-size: 0.78rem !important;
+    line-height: 1.1 !important;
 }
 
+/* Contacts */
 body.format-onetopic .glu-course-dashboard-summary__contacts {
-    margin-top: 1rem;
-    padding-top: 0.85rem;
-    border-top: 1px solid rgba(13, 68, 93, 0.12);
-    color: #0D445D;
-    font-size: 0.9rem;
+    margin: 0 !important;
+    padding: 0 0 0 0.75rem !important;
+    border-top: 0 !important;
+    border-left: 1px solid rgba(13, 68, 93, 0.12) !important;
+    font-size: 0.72rem !important;
+    line-height: 1.25 !important;
 }
 
 body.format-onetopic .glu-course-dashboard-summary__contacts p {
-    margin: 0;
+    margin: 0 !important;
 }
 
-@media (max-width: 767.98px) {
+/* Responsive */
+@media (max-width: 991.98px) {
     body.format-onetopic .glu-course-dashboard-summary {
-        padding: 1.1rem;
-        border-radius: 1rem;
+        grid-template-columns: 1fr 1fr !important;
     }
 
-    body.format-onetopic .glu-course-dashboard-summary__title {
-        font-size: 1.2rem;
+    body.format-onetopic .glu-course-dashboard-summary__contacts {
+        border-left: 0 !important;
+        padding-left: 0 !important;
+        grid-column: 1 / -1 !important;
+    }
+}
+
+@media (max-width: 575.98px) {
+    body.format-onetopic .glu-course-dashboard-summary {
+        grid-template-columns: 1fr !important;
     }
 
     body.format-onetopic .glu-course-dashboard-summary__stats {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
     }
 }
 
@@ -3119,4 +3119,24 @@ body.format-onetopic .secondary-navigation .glu-announcements-navitem .nav-link 
 body.format-onetopic .secondary-navigation .glu-announcements-navitem .nav-link:hover,
 body.format-onetopic .secondary-navigation .glu-announcements-navitem .nav-link:focus {
     color: #0D445D;
+}
+
+/* =========================================
+   COURSE INDEX CUSTOM - Pesos tipográficos
+   Padre en negrita / hijos sin negrita
+========================================= */
+
+/* Nivel principal: capítulos / secciones madre */
+#theme_boost-drawers-courseindex .glu-custom-courseindex__list>.glu-custom-courseindex__item>.glu-custom-courseindex__row>.glu-custom-courseindex__link {
+    font-weight: 800 !important;
+}
+
+/* Niveles hijos: Index, subpestañas, unidades internas */
+#theme_boost-drawers-courseindex .glu-custom-courseindex__children .glu-custom-courseindex__link {
+    font-weight: 500 !important;
+}
+
+/* Hijo activo: mantiene el fondo pero sin negrita */
+#theme_boost-drawers-courseindex .glu-custom-courseindex__children .glu-custom-courseindex__link.is-active {
+    font-weight: 500 !important;
 }
