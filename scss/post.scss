@@ -2972,67 +2972,145 @@ body.format-onetopic:not(.editing) .format_onetopic-tabs .nav-link {
 }
 
 /* =========================================
-   COURSE DASHBOARD / SECTION 0 - Compacto
+   COURSE DASHBOARD / SECTION 0
 ========================================= */
 
 body.format-onetopic .glu-course-dashboard-summary {
-    max-width: 680px;
-    margin: 0 0 1.5rem;
-    font-size: 0.88rem;
-    line-height: 1.35;
+    max-width: 760px;
+    margin: 1.25rem 0 2rem;
+    padding: 1.4rem 1.6rem;
+    border-radius: 1.4rem;
+    border: 1px solid rgba(13, 68, 93, 0.12);
+    border-left: 6px solid #CD0A30;
+    background: linear-gradient(135deg, rgba(13, 68, 93, 0.045), rgba(255, 255, 255, 0.96));
+    box-shadow: 0 14px 34px rgba(13, 68, 93, 0.08);
+    font-family: "Lexend Deca", Arial, sans-serif;
 }
 
-body.format-onetopic .glu-course-dashboard-summary p {
-    margin: 0 0 0.45rem;
+body.format-onetopic .glu-course-dashboard-summary__header {
+    margin-bottom: 1.1rem;
 }
 
-body.format-onetopic .glu-course-dashboard-summary h3 {
-    margin: 0.85rem 0 0.55rem;
+body.format-onetopic .glu-course-dashboard-summary__eyebrow {
+    margin: 0 0 0.35rem;
+    color: #CD0A30;
+    font-size: 0.76rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+body.format-onetopic .glu-course-dashboard-summary__title {
+    margin: 0;
     color: #0D445D;
-    font-size: 1.15rem;
-    line-height: 1.2;
+    font-size: 1.45rem;
+    line-height: 1.18;
+    font-weight: 800;
+}
+
+body.format-onetopic .glu-course-dashboard-summary__progress {
+    margin: 1rem 0 1.15rem;
+}
+
+body.format-onetopic .glu-course-dashboard-summary__label {
+    margin-bottom: 0.45rem;
+    color: #0D445D;
+    font-size: 0.9rem;
     font-weight: 700;
 }
 
-body.format-onetopic .glu-course-dashboard-summary .progress {
-    height: 0.65rem;
-    margin-top: 0.35rem;
+body.format-onetopic .glu-course-dashboard-summary__progress .progress {
+    height: 0.75rem;
+    border-radius: 999px;
+    background-color: rgba(13, 68, 93, 0.1);
+    overflow: hidden;
+}
+
+body.format-onetopic .glu-course-dashboard-summary__progress .progress-bar {
     border-radius: 999px;
 }
 
-body.format-onetopic .glu-course-dashboard-summary>*:last-child {
-    margin-bottom: 0;
+body.format-onetopic .glu-course-dashboard-summary__stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.85rem;
+    margin: 1rem 0;
+}
+
+body.format-onetopic .glu-course-dashboard-summary__stat {
+    padding: 0.9rem 1rem;
+    border-radius: 1rem;
+    background: #ffffff;
+    border: 1px solid rgba(13, 68, 93, 0.1);
+}
+
+body.format-onetopic .glu-course-dashboard-summary__stat-label {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: rgba(13, 68, 93, 0.72);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+body.format-onetopic .glu-course-dashboard-summary__stat-value {
+    display: block;
+    color: #0D445D;
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+body.format-onetopic .glu-course-dashboard-summary__contacts {
+    margin-top: 1rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid rgba(13, 68, 93, 0.12);
+    color: #0D445D;
+    font-size: 0.9rem;
+}
+
+body.format-onetopic .glu-course-dashboard-summary__contacts p {
+    margin: 0;
+}
+
+@media (max-width: 767.98px) {
+    body.format-onetopic .glu-course-dashboard-summary {
+        padding: 1.1rem;
+        border-radius: 1rem;
+    }
+
+    body.format-onetopic .glu-course-dashboard-summary__title {
+        font-size: 1.2rem;
+    }
+
+    body.format-onetopic .glu-course-dashboard-summary__stats {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* =========================================
    ANNOUNCEMENTS / AVISOS EN NAV SUPERIOR
-   Desktop: ocultar original
-   Mobile/resoluciones bajas: mostrar original
+   Solo ocultar el foro original con edición OFF
 ========================================= */
 
-/* Desktop: ocultamos el foro original porque ya está arriba */
 @media (min-width: 992px) {
 
-    body.format-onetopic li.activity.glu-announcements-original-hidden,
-    body.format-onetopic .activity.glu-announcements-original-hidden,
-    body.format-onetopic [data-for="cmitem"].glu-announcements-original-hidden,
-    body.format-onetopic .activity-item.glu-announcements-original-hidden {
+    body.format-onetopic:not(.editing) li.activity.glu-announcements-original-hidden,
+    body.format-onetopic:not(.editing) .activity.glu-announcements-original-hidden,
+    body.format-onetopic:not(.editing) [data-for="cmitem"].glu-announcements-original-hidden,
+    body.format-onetopic:not(.editing) .activity-item.glu-announcements-original-hidden {
         display: none !important;
     }
 }
 
-/* Resolución baja: lo volvemos a mostrar para que no desaparezca */
-@media (max-width: 991.98px) {
-
-    body.format-onetopic li.activity.glu-announcements-original-hidden,
-    body.format-onetopic .activity.glu-announcements-original-hidden,
-    body.format-onetopic [data-for="cmitem"].glu-announcements-original-hidden,
-    body.format-onetopic .activity-item.glu-announcements-original-hidden {
-        display: block !important;
-    }
+/* En edición o pantallas chicas, el foro queda visible */
+body.format-onetopic.editing li.activity.glu-announcements-original-hidden,
+body.format-onetopic.editing .activity.glu-announcements-original-hidden,
+body.format-onetopic.editing [data-for="cmitem"].glu-announcements-original-hidden,
+body.format-onetopic.editing .activity-item.glu-announcements-original-hidden {
+    display: list-item !important;
 }
 
-/* Estilo del link agregado en navegación superior */
 body.format-onetopic .secondary-navigation .glu-announcements-navitem .nav-link {
     color: #CD0A30;
     font-weight: 700;
