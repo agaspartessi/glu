@@ -207,6 +207,39 @@ document.addEventListener('DOMContentLoaded', function () {
         return cleanText(value);
     }
 
+    function removeLanguageFromCardDescription(card, language) {
+        if (!card || !language) {
+            return;
+        }
+
+        var desc = card.querySelector('.card-text');
+
+        if (!desc) {
+            return;
+        }
+
+        var currentText = cleanText(desc.textContent);
+        var cleanLanguage = cleanText(language);
+
+        if (!currentText || !cleanLanguage) {
+            return;
+        }
+
+        /*
+         * El Course Catalog convierte el summary a texto plano.
+         * Entonces:
+         * <p class="glu-course-language-meta">English</p>
+         * puede quedar visible como:
+         * "English What is the course about?..."
+         */
+        var escapedLanguage = cleanLanguage.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        var pattern = new RegExp('^' + escapedLanguage + '\\s+', 'i');
+
+        if (pattern.test(currentText)) {
+            desc.textContent = currentText.replace(pattern, '');
+        }
+    }
+
     function uniqueTeachers(teachers) {
         var seen = {};
         var result = [];
@@ -232,6 +265,10 @@ document.addEventListener('DOMContentLoaded', function () {
             return [];
         }
 
+        /*
+         * Primero intenta leer el bloque dinámico de Course Instructors
+         * que ya se muestra en enrol/index.php.
+         */
         var preferredSelectors = [
             '.glu-course-instructors a[href*="/user/view.php"]',
             '.glu-enrol-instructors a[href*="/user/view.php"]',
@@ -248,6 +285,10 @@ document.addEventListener('DOMContentLoaded', function () {
             links = links.concat(Array.from(region.querySelectorAll(selector)));
         });
 
+        /*
+         * Fallback: si no encuentra por clase custom,
+         * busca links a perfiles dentro del contenido principal.
+         */
         if (!links.length) {
             links = Array.from(region.querySelectorAll('a[href*="/user/view.php"]'));
         }
@@ -343,6 +384,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         card.dataset.gluLanguage = language;
+
+        removeLanguageFromCardDescription(card, language);
 
         var oldLanguage = card.querySelector('.glu-catalog-card__language');
 

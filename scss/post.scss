@@ -3146,20 +3146,25 @@ body.format-onetopic .secondary-navigation .glu-announcements-navitem .nav-link:
    Se carga en Course summary y se renderiza en Course Catalog
 ========================================= */
 
-/* Oculta la marca técnica en cards, curso y enrol */
+/* Oculta la marca técnica en curso y enrol cuando conserva la clase */
 body.glu-coursecatalog-page .glu-course-language-meta,
 body.path-course-view .glu-course-language-meta,
 body#page-enrol-index .glu-course-language-meta {
     display: none !important;
 }
 
+/* Ajuste de separación entre Course team y Course language */
+body.glu-coursecatalog-page .glu-catalog-card__team {
+    margin-bottom: 0.15rem !important;
+}
+
 /* Línea renderizada en la card */
 body.glu-coursecatalog-page .glu-catalog-card__language {
-    margin: 0.15rem 0 0.75rem;
+    margin: 0 0 0.65rem !important;
     color: #0D445D;
     font-family: "Lexend Deca", Arial, sans-serif;
     font-size: 0.88rem;
-    line-height: 1.45;
+    line-height: 1.35;
     font-weight: 700;
 }
 
@@ -3169,8 +3174,8 @@ body.glu-coursecatalog-page .glu-catalog-card__language-label {
 }
 
 body.glu-coursecatalog-page .glu-catalog-card__language-value {
-    color: #0D445D;
-    font-weight: 700;
+    color: #5D821A !important;
+    font-weight: 800 !important;
 }
 
 @media (max-width: 575.98px) {
