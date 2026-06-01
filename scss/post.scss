@@ -3183,3 +3183,127 @@ body.glu-coursecatalog-page .glu-catalog-card__language-value {
         font-size: 0.84rem;
     }
 }
+
+/* =========================================
+   BOARD - Ocultar logo Powered by Brickfield
+   No usar display:none porque el plugin usa inline display:block!important
+========================================= */
+
+body#page-mod-board-view .mod_board_wrapper>a[href*="brickfield.ie/docs/mod_board"] {
+    position: absolute !important;
+    width: 0 !important;
+    max-width: 0 !important;
+    height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    clip-path: inset(50%) !important;
+}
+
+body#page-mod-board-view .mod_board_wrapper>a[href*="brickfield.ie/docs/mod_board"] img {
+    width: 0 !important;
+    max-width: 0 !important;
+    height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    opacity: 0 !important;
+}
+
+/* =========================================
+   Ocultar títulos principales en páginas específicas
+   My courses / All courses
+========================================= */
+
+/* =========================================
+   Ocultar título principal en My courses
+========================================= */
+
+body.path-my #page-header .page-header-headings h1,
+body.path-my #page-header .page-header-headings .h2,
+body.path-my #page-header h1.h2,
+body.path-my .page-header-headings h1,
+body.path-my .page-header-headings .h2 {
+    display: none !important;
+}
+
+/* All courses / Course catalog: /local/coursecatalog/view.php */
+body[id^="page-local-coursecatalog"] #page-header .page-header-headings h1,
+body[id^="page-local-coursecatalog"] .page-context-header .page-header-headings h1,
+body[id^="page-local-coursecatalog"] .page-header-headings h1,
+body.path-local-coursecatalog #page-header .page-header-headings h1,
+body.path-local-coursecatalog .page-context-header .page-header-headings h1,
+body.path-local-coursecatalog .page-header-headings h1 {
+    display: none !important;
+}
+
+/* =========================================
+   Ocultar Jump to... en navegación de secciones
+========================================= */
+
+body.format-onetopic.path-course-view .section-navigation .jumpmenu,
+body.format-onetopic.path-course-view .section-navigation form#sectionmenu {
+    display: none !important;
+}
+
+/* =========================================
+   Floating FAQ button - Home deslogueada
+   Inyectado por JS directo en body
+========================================= */
+
+.glu-faq-fixed {
+    position: fixed !important;
+    right: 22px !important;
+    bottom: 22px !important;
+    z-index: 2147483647 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 58px !important;
+    height: 58px !important;
+    border-radius: 50% !important;
+
+    background: #CD0A30 !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+
+    font-family: "Lexend Deca", Arial, sans-serif !important;
+    font-size: 2rem !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+
+    box-shadow: 0 14px 34px rgba(205, 10, 48, 0.32) !important;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.glu-faq-fixed__icon {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    color: #ffffff !important;
+}
+
+.glu-faq-fixed:hover,
+.glu-faq-fixed:focus {
+    background: #0D445D !important;
+    color: #ffffff !important;
+    transform: translateY(-3px);
+    box-shadow: 0 18px 38px rgba(13, 68, 93, 0.28) !important;
+}
+
+@media (max-width: 575.98px) {
+    .glu-faq-fixed {
+        width: 50px !important;
+        height: 50px !important;
+        right: 14px !important;
+        bottom: 14px !important;
+        font-size: 1.75rem !important;
+    }
+}
