@@ -271,11 +271,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var nav = document.createElement('nav');
         nav.className = 'glu-custom-courseindex';
-        nav.setAttribute('aria-label', 'Course index');
+        nav.setAttribute('aria-label', 'Course chapters');
 
         var title = document.createElement('div');
         title.className = 'glu-custom-courseindex__title';
-        title.textContent = 'Course index';
+        title.textContent = 'Course chapters';
 
         var list = document.createElement('ul');
         list.className = 'glu-custom-courseindex__list';
