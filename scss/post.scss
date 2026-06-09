@@ -3317,3 +3317,126 @@ body.format-onetopic.path-course-view .section-navigation form#sectionmenu {
 #theme_boost-drawers-courseindex .courseindexdrawercontrols {
     display: none !important;
 }
+
+/* =========================================
+   COURSE INDEX - Más ancho + menos cortes de texto
+========================================= */
+
+@media (min-width: 1200px) {
+    body.path-course-view.glu-onetopic-custom-index-ready {
+        --drawer-left-width: 430px;
+        --drawer-width: 430px;
+    }
+
+    body.path-course-view.glu-onetopic-custom-index-ready #theme_boost-drawers-courseindex,
+    body.path-course-view.glu-onetopic-custom-index-ready #theme_boost-drawers-courseindex .drawercontent {
+        width: 430px !important;
+        max-width: 430px !important;
+        min-width: 430px !important;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    body.path-course-view.glu-onetopic-custom-index-ready {
+        --drawer-left-width: 390px;
+        --drawer-width: 390px;
+    }
+
+    body.path-course-view.glu-onetopic-custom-index-ready #theme_boost-drawers-courseindex,
+    body.path-course-view.glu-onetopic-custom-index-ready #theme_boost-drawers-courseindex .drawercontent {
+        width: 390px !important;
+        max-width: 390px !important;
+        min-width: 390px !important;
+    }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    body.path-course-view.glu-onetopic-custom-index-ready {
+        --drawer-left-width: 340px;
+        --drawer-width: 340px;
+    }
+
+    body.path-course-view.glu-onetopic-custom-index-ready #theme_boost-drawers-courseindex,
+    body.path-course-view.glu-onetopic-custom-index-ready #theme_boost-drawers-courseindex .drawercontent {
+        width: 340px !important;
+        max-width: 340px !important;
+        min-width: 340px !important;
+    }
+}
+
+/* Mobile: mantener comportamiento tipo drawer */
+@media (max-width: 767.98px) {
+
+    body.path-course-view.glu-onetopic-custom-index-ready #theme_boost-drawers-courseindex,
+    body.path-course-view.glu-onetopic-custom-index-ready #theme_boost-drawers-courseindex .drawercontent {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+    }
+}
+
+/* Contenedor custom */
+body.path-course-view .glu-custom-courseindex {
+    padding: 0.7rem 0.85rem !important;
+}
+
+/* Título superior: Course index / Course chapters */
+body.path-course-view .glu-custom-courseindex__title {
+    font-size: 0.84rem !important;
+    line-height: 1.1 !important;
+    margin-bottom: 0.75rem !important;
+    letter-spacing: 0.08em !important;
+}
+
+/* Links generales */
+body.path-course-view .glu-custom-courseindex__link {
+    display: block !important;
+    width: 100% !important;
+
+    font-size: 0.82rem !important;
+    line-height: 1.13 !important;
+
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    hyphens: none !important;
+}
+
+/* Capítulos principales */
+body.path-course-view .glu-custom-courseindex__item.has-children>.glu-custom-courseindex__row .glu-custom-courseindex__link {
+    font-size: 0.78rem !important;
+    line-height: 1.08 !important;
+    font-weight: 800 !important;
+}
+
+/* Unidades internas */
+body.path-course-view .glu-custom-courseindex__children .glu-custom-courseindex__link {
+    font-size: 0.8rem !important;
+    line-height: 1.12 !important;
+    font-weight: 500 !important;
+}
+
+/* Menos aire interno para aprovechar más ancho */
+body.path-course-view .glu-custom-courseindex__list,
+body.path-course-view .glu-custom-courseindex__children {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+}
+
+body.path-course-view .glu-custom-courseindex__item {
+    margin-bottom: 0.24rem !important;
+}
+
+body.path-course-view .glu-custom-courseindex__row {
+    gap: 0.25rem !important;
+    align-items: flex-start !important;
+}
+
+/* El botón flecha ocupa menos espacio */
+body.path-course-view .glu-custom-courseindex__toggle,
+body.path-course-view .glu-custom-courseindex__toggle-spacer {
+    flex: 0 0 18px !important;
+    width: 18px !important;
+    min-width: 18px !important;
+}
