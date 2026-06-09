@@ -3,68 +3,35 @@ document.addEventListener('DOMContentLoaded', function () {
         ? M.cfg.wwwroot
         : window.location.origin;
 
-    var catalogUrl = wwwroot + '/local/coursecatalog/view.php?slug=courses&sort=name_asc&view=grid&perpage=100';
+    var homeUrl = wwwroot + '/';
 
-    function isAuthenticatedUser() {
-        if (window.M && M.cfg && Number(M.cfg.userid) > 1) {
-            return true;
-        }
-
-        if (document.body.classList.contains('notloggedin')) {
-            return false;
-        }
-
-        if (document.querySelector('a[href*="/login/index.php"]')) {
-            return false;
-        }
-
-        return Boolean(document.querySelector('.usermenu, [data-region="usermenu"], .userbutton'));
-    }
-
-    function isHomeLink(link) {
+    function isHomeNavLink(link) {
         var text = (link.textContent || '').trim().toLowerCase();
-        var href = link.getAttribute('href') || '';
 
         if (text !== 'home') {
             return false;
         }
 
-        var url;
-
-        try {
-            url = new URL(href, wwwroot);
-        } catch (error) {
-            return false;
-        }
-
-        return (
-            url.origin === window.location.origin &&
-            (
-                url.pathname === '/' ||
-                url.pathname === '/index.php'
-            )
-        );
+        return link.closest('.primary-navigation, .navbar-nav, nav.navbar, header') !== null;
     }
 
-    function rewriteHomeLink() {
-        if (!isAuthenticatedUser()) {
-            return;
-        }
-
+    function restoreHomeLink() {
         var links = document.querySelectorAll(
             '.primary-navigation a, .navbar-nav a, nav.navbar a, header a.nav-link'
         );
 
         links.forEach(function (link) {
-            if (isHomeLink(link)) {
-                link.href = catalogUrl;
-                link.setAttribute('title', 'All courses');
+            if (isHomeNavLink(link)) {
+                link.href = homeUrl;
+                link.setAttribute('title', 'Home');
+                link.setAttribute('aria-label', 'Home');
             }
         });
     }
 
-    rewriteHomeLink();
+    restoreHomeLink();
 
-    // Por si Moodle termina de renderizar algo después.
-    setTimeout(rewriteHomeLink, 500);
+    // Por si Moodle termina de renderizar la navegación después.
+    setTimeout(restoreHomeLink, 500);
+    setTimeout(restoreHomeLink, 1200);
 });
