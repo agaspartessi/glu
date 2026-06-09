@@ -3307,3 +3307,13 @@ body.format-onetopic.path-course-view .section-navigation form#sectionmenu {
         font-size: 1.75rem !important;
     }
 }
+
+/* =========================================
+   COURSE INDEX - Ocultar controles nativos del drawer
+========================================= */
+
+#theme_boost-drawers-courseindex #courseindexdrawercontrols,
+#theme_boost-drawers-courseindex [data-region="courseindex-drawer-controls"],
+#theme_boost-drawers-courseindex .courseindexdrawercontrols {
+    display: none !important;
+}
