@@ -3449,3 +3449,266 @@ body.path-course-view .glu-custom-courseindex__toggle-spacer {
     width: 18px !important;
     min-width: 18px !important;
 }
+
+/* =========================================
+   HSUFORUM / Forum advanced - Look & feel
+   Botones, jerarquía visual y responsive
+========================================= */
+
+/* Contenedor general dentro del curso */
+body.path-course-view .activity.modtype_hsuforum .activity-item,
+body.path-course-view li.modtype_hsuforum .activity-item {
+    border-radius: 1rem !important;
+    border: 1px solid rgba(13, 68, 93, 0.10) !important;
+    background: #f7f9fb !important;
+}
+
+/* -----------------------------------------
+   Start a discussion!
+----------------------------------------- */
+
+body.path-course-view .activity.modtype_hsuforum a[href*="/mod/hsuforum/post.php"],
+body.path-course-view li.modtype_hsuforum a[href*="/mod/hsuforum/post.php"] {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: fit-content !important;
+    max-width: 100% !important;
+
+    margin: 0.75rem 0 1rem !important;
+    padding: 0.55rem 0.9rem !important;
+
+    border-radius: 999px !important;
+    border: 1px solid #CD0A30 !important;
+
+    background: #CD0A30 !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+
+    font-weight: 800 !important;
+    line-height: 1.15 !important;
+
+    box-shadow: 0 8px 18px rgba(205, 10, 48, 0.18) !important;
+    transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+body.path-course-view .activity.modtype_hsuforum a[href*="/mod/hsuforum/post.php"]:hover,
+body.path-course-view li.modtype_hsuforum a[href*="/mod/hsuforum/post.php"]:hover,
+body.path-course-view .activity.modtype_hsuforum a[href*="/mod/hsuforum/post.php"]:focus,
+body.path-course-view li.modtype_hsuforum a[href*="/mod/hsuforum/post.php"]:focus {
+    background: #0D445D !important;
+    border-color: #0D445D !important;
+    color: #ffffff !important;
+    transform: translateY(-1px);
+}
+
+/* -----------------------------------------
+   Recent forum posts - Card visual
+----------------------------------------- */
+
+body.path-course-view .modtype_hsuforum .hsuforum-recent {
+    margin: 1rem 0 0 !important;
+    padding: 1rem 1.15rem !important;
+
+    border-radius: 0.9rem !important;
+    border: 1px solid rgba(13, 68, 93, 0.12) !important;
+    background: #ffffff !important;
+
+    box-shadow: 0 8px 20px rgba(13, 68, 93, 0.045) !important;
+}
+
+body.path-course-view .modtype_hsuforum .hsuforum-recent-heading {
+    margin: 0 0 0.85rem !important;
+    padding-bottom: 0.55rem !important;
+
+    border-bottom: 1px solid rgba(13, 68, 93, 0.12) !important;
+
+    color: #0D445D !important;
+    font-size: 1rem !important;
+    line-height: 1.2 !important;
+    font-weight: 800 !important;
+}
+
+/* Avatares */
+body.path-course-view .modtype_hsuforum .hsuforum-recent .userinitials,
+body.path-course-view .modtype_hsuforum .hsuforum-recent .userpicture {
+    box-shadow: 0 4px 12px rgba(13, 68, 93, 0.10) !important;
+}
+
+/* Links generales del bloque: no todo rojo */
+body.path-course-view .modtype_hsuforum .hsuforum-recent a {
+    color: #0D445D !important;
+    text-decoration: none !important;
+    font-weight: 700 !important;
+}
+
+body.path-course-view .modtype_hsuforum .hsuforum-recent a:hover,
+body.path-course-view .modtype_hsuforum .hsuforum-recent a:focus {
+    color: #CD0A30 !important;
+    text-decoration: underline !important;
+}
+
+/* Nombres/autores */
+body.path-course-view .modtype_hsuforum .hsuforum-recent .fullname,
+body.path-course-view .modtype_hsuforum .hsuforum-recent .author,
+body.path-course-view .modtype_hsuforum .hsuforum-recent [data-region="post-author"],
+body.path-course-view .modtype_hsuforum .hsuforum-recent a[href*="/user/view.php"] {
+    color: #0D445D !important;
+    font-weight: 800 !important;
+}
+
+/* Fechas y metadatos: más secundarios */
+body.path-course-view .modtype_hsuforum .hsuforum-recent time,
+body.path-course-view .modtype_hsuforum .hsuforum-recent .time,
+body.path-course-view .modtype_hsuforum .hsuforum-recent .date,
+body.path-course-view .modtype_hsuforum .hsuforum-recent .dimmed,
+body.path-course-view .modtype_hsuforum .hsuforum-recent .text-muted {
+    color: #6c757d !important;
+    font-size: 0.82rem !important;
+    font-weight: 500 !important;
+}
+
+/* Títulos de posts / discusiones: destacados pero no todos iguales */
+body.path-course-view .modtype_hsuforum .hsuforum-recent a[href*="/mod/hsuforum/discuss.php"] {
+    color: #CD0A30 !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+}
+
+body.path-course-view .modtype_hsuforum .hsuforum-recent a[href*="/mod/hsuforum/discuss.php"]:hover,
+body.path-course-view .modtype_hsuforum .hsuforum-recent a[href*="/mod/hsuforum/discuss.php"]:focus {
+    color: #0D445D !important;
+}
+
+/* Badge unread */
+body.path-course-view .modtype_hsuforum .hsuforum-recent .unread,
+body.path-course-view .modtype_hsuforum .hsuforum-recent [class*="unread"] {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 0.35rem 0.5rem !important;
+    border-radius: 0.55rem !important;
+
+    background: #fff6cc !important;
+    color: #0D445D !important;
+    border: 1px solid rgba(255, 193, 7, 0.45) !important;
+
+    font-size: 0.78rem !important;
+    line-height: 1.15 !important;
+    font-weight: 800 !important;
+}
+
+/* -----------------------------------------
+   Página de discusión - Reply destacado
+----------------------------------------- */
+
+body.path-mod-hsuforum .hsuforum-tools,
+body.path-mod-hsuforum [class*="hsuforum-tools"] {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 0.45rem !important;
+
+    margin-top: 1rem !important;
+}
+
+/* Reply como botón principal */
+body.path-mod-hsuforum .hsuforum-tools .hsuforum-reply-link,
+body.path-mod-hsuforum a.hsuforum-reply-link,
+body.path-mod-hsuforum a[href*="/mod/hsuforum/post.php"][href*="reply="] {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 0.5rem 0.9rem !important;
+    border-radius: 999px !important;
+
+    background: #CD0A30 !important;
+    border: 1px solid #CD0A30 !important;
+    color: #ffffff !important;
+
+    font-weight: 800 !important;
+    line-height: 1.15 !important;
+    text-decoration: none !important;
+
+    box-shadow: 0 8px 18px rgba(205, 10, 48, 0.18) !important;
+    transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+body.path-mod-hsuforum .hsuforum-tools .hsuforum-reply-link:hover,
+body.path-mod-hsuforum .hsuforum-tools .hsuforum-reply-link:focus,
+body.path-mod-hsuforum a.hsuforum-reply-link:hover,
+body.path-mod-hsuforum a.hsuforum-reply-link:focus,
+body.path-mod-hsuforum a[href*="/mod/hsuforum/post.php"][href*="reply="]:hover,
+body.path-mod-hsuforum a[href*="/mod/hsuforum/post.php"][href*="reply="]:focus {
+    background: #0D445D !important;
+    border-color: #0D445D !important;
+    color: #ffffff !important;
+    transform: translateY(-1px);
+}
+
+/* Edit/Delete/Pin como acciones secundarias */
+body.path-mod-hsuforum .hsuforum-tools a:not(.hsuforum-reply-link),
+body.path-mod-hsuforum [class*="hsuforum-tools"] a:not(.hsuforum-reply-link) {
+    color: #0D445D !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+}
+
+body.path-mod-hsuforum .hsuforum-tools a:not(.hsuforum-reply-link):hover,
+body.path-mod-hsuforum [class*="hsuforum-tools"] a:not(.hsuforum-reply-link):hover {
+    color: #CD0A30 !important;
+    text-decoration: underline !important;
+}
+
+/* Título de discusión */
+body.path-mod-hsuforum h1,
+body.path-mod-hsuforum h2,
+body.path-mod-hsuforum .hsuforum-thread-header h1,
+body.path-mod-hsuforum .hsuforum-thread-header h2 {
+    color: #0D445D !important;
+}
+
+/* Mensaje principal: más aire y lectura */
+body.path-mod-hsuforum article,
+body.path-mod-hsuforum .hsuforum-thread {
+    border-radius: 1rem !important;
+}
+
+/* -----------------------------------------
+   Responsive
+----------------------------------------- */
+
+@media (max-width: 767.98px) {
+    body.path-course-view .modtype_hsuforum .hsuforum-recent {
+        padding: 0.85rem !important;
+        border-radius: 0.75rem !important;
+    }
+
+    body.path-course-view .modtype_hsuforum .hsuforum-recent-heading {
+        font-size: 0.95rem !important;
+    }
+
+    body.path-course-view .modtype_hsuforum .hsuforum-recent a[href*="/mod/hsuforum/discuss.php"] {
+        font-size: 0.9rem !important;
+    }
+
+    body.path-mod-hsuforum .hsuforum-tools,
+    body.path-mod-hsuforum [class*="hsuforum-tools"] {
+        gap: 0.35rem !important;
+    }
+
+    body.path-mod-hsuforum .hsuforum-tools .hsuforum-reply-link,
+    body.path-mod-hsuforum a.hsuforum-reply-link,
+    body.path-mod-hsuforum a[href*="/mod/hsuforum/post.php"][href*="reply="] {
+        width: 100% !important;
+        padding: 0.65rem 0.9rem !important;
+    }
+
+    body.path-course-view .activity.modtype_hsuforum a[href*="/mod/hsuforum/post.php"],
+    body.path-course-view li.modtype_hsuforum a[href*="/mod/hsuforum/post.php"] {
+        width: 100% !important;
+    }
+}
