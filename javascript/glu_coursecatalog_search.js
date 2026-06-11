@@ -39,16 +39,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     var catalogTabs = [
-        { label: 'Worker rights', slug: 'workerrights' },
-        { label: 'Global supply chains', slug: 'globalsupplychains' },
-        { label: 'Labour history', slug: 'labourhistory' },
-        { label: 'Public services', slug: 'publicservices' },
-        { label: 'Labour and environment', slug: 'labourandenvironment' },
-        { label: 'Wages', slug: 'wages' },
-        { label: 'Collective bargaining', slug: 'collectivebargaining' },
-        { label: 'Labour and development', slug: 'labouranddevelopment' },
-        { label: 'Informal employment', slug: 'informalemployment' },
-        { label: 'Union transformation', slug: 'uniontransformation' }
+        { label: 'worker rights', slug: 'workerrights' },
+        { label: 'global supply chains', slug: 'globalsupplychains' },
+        { label: 'labour history', slug: 'labourhistory' },
+        { label: 'public services', slug: 'publicservices' },
+        { label: 'labour and environment', slug: 'labourandenvironment' },
+        { label: 'wages', slug: 'wages' },
+        { label: 'collective bargaining', slug: 'collectivebargaining' },
+        { label: 'labour and development', slug: 'labouranddevelopment' },
+        { label: 'informal employment', slug: 'informalemployment' },
+        { label: 'union transformation', slug: 'uniontransformation' }
     ];
 
     catalogTabs.sort((a, b) => a.label.localeCompare(b.label));
