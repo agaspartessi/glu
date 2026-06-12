@@ -3834,3 +3834,133 @@ body#page-login-signup .glu-password-toggle-button:focus {
         padding-right: 4.25rem !important;
     }
 }
+
+/* =========================================
+   MODULE PAGES - Jump oculto + Previous/Next por sección
+========================================= */
+
+/* Ocultar columna Jump to activity */
+body[id^="page-mod-"]:not(.editing) .activity-navigation.glu-activity-navigation-ready .glu-activity-navigation-jump,
+body[class*="path-mod-"]:not(.editing) .activity-navigation.glu-activity-navigation-ready .glu-activity-navigation-jump {
+    display: none !important;
+}
+
+/* Ocultar columnas vacías */
+body[id^="page-mod-"]:not(.editing) .activity-navigation.glu-activity-navigation-ready .glu-activity-navigation-empty,
+body[class*="path-mod-"]:not(.editing) .activity-navigation.glu-activity-navigation-ready .glu-activity-navigation-empty {
+    display: none !important;
+}
+
+/* Ocultar links duplicados detectados por JS */
+body .glu-unit-navigation-extra {
+    display: none !important;
+}
+
+/* Layout navegación en páginas de actividad */
+body[id^="page-mod-"]:not(.editing) .activity-navigation.glu-activity-navigation-ready .row,
+body[class*="path-mod-"]:not(.editing) .activity-navigation.glu-activity-navigation-ready .row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 1rem !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+/* Columnas prev/next */
+body[id^="page-mod-"]:not(.editing) .activity-navigation.glu-activity-navigation-ready .glu-activity-navigation-previous,
+body[id^="page-mod-"]:not(.editing) .activity-navigation.glu-activity-navigation-ready .glu-activity-navigation-next,
+body[class*="path-mod-"]:not(.editing) .activity-navigation.glu-activity-navigation-ready .glu-activity-navigation-previous,
+body[class*="path-mod-"]:not(.editing) .activity-navigation.glu-activity-navigation-ready .glu-activity-navigation-next {
+    width: auto !important;
+    max-width: none !important;
+    flex: 0 1 auto !important;
+
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+body[id^="page-mod-"]:not(.editing) .activity-navigation.glu-activity-navigation-ready .glu-activity-navigation-next,
+body[class*="path-mod-"]:not(.editing) .activity-navigation.glu-activity-navigation-ready .glu-activity-navigation-next {
+    margin-left: auto !important;
+    text-align: right !important;
+}
+
+/* Botones Previous / Next: curso y actividades */
+body.path-course-view .glu-unit-navigation-link,
+body[id^="page-mod-"] .glu-unit-navigation-link,
+body[class*="path-mod-"] .glu-unit-navigation-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.35rem !important;
+
+    width: auto !important;
+    max-width: 100% !important;
+
+    padding: 0.45rem 0.95rem !important;
+    border-radius: 999px !important;
+
+    background: rgba(205, 10, 48, 0.10) !important;
+    color: #CD0A30 !important;
+
+    font-weight: 800 !important;
+    line-height: 1.15 !important;
+    text-decoration: none !important;
+
+    white-space: nowrap !important;
+    text-align: center !important;
+}
+
+/* Anular flechas viejas por CSS, si quedaron de pruebas anteriores */
+body .glu-unit-navigation-link::before,
+body .glu-unit-navigation-link::after {
+    content: none !important;
+    display: none !important;
+}
+
+body.path-course-view .glu-unit-navigation-link:hover,
+body.path-course-view .glu-unit-navigation-link:focus,
+body[id^="page-mod-"] .glu-unit-navigation-link:hover,
+body[id^="page-mod-"] .glu-unit-navigation-link:focus,
+body[class*="path-mod-"] .glu-unit-navigation-link:hover,
+body[class*="path-mod-"] .glu-unit-navigation-link:focus {
+    background: #CD0A30 !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+body .glu-unit-navigation-arrow {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    font-size: 1.15em !important;
+    line-height: 1 !important;
+}
+
+/* Responsive */
+@media (max-width: 575.98px) {
+
+    body[id^="page-mod-"]:not(.editing) .activity-navigation.glu-activity-navigation-ready .row,
+    body[class*="path-mod-"]:not(.editing) .activity-navigation.glu-activity-navigation-ready .row {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.65rem !important;
+    }
+
+    body[id^="page-mod-"]:not(.editing) .activity-navigation.glu-activity-navigation-ready .glu-activity-navigation-previous,
+    body[id^="page-mod-"]:not(.editing) .activity-navigation.glu-activity-navigation-ready .glu-activity-navigation-next,
+    body[class*="path-mod-"]:not(.editing) .activity-navigation.glu-activity-navigation-ready .glu-activity-navigation-previous,
+    body[class*="path-mod-"]:not(.editing) .activity-navigation.glu-activity-navigation-ready .glu-activity-navigation-next {
+        width: 100% !important;
+        text-align: center !important;
+        margin-left: 0 !important;
+    }
+
+    body[id^="page-mod-"]:not(.editing) .glu-unit-navigation-link,
+    body[class*="path-mod-"]:not(.editing) .glu-unit-navigation-link {
+        width: 100% !important;
+    }
+}
