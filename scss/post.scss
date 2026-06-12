@@ -3964,3 +3964,62 @@ body .glu-unit-navigation-arrow {
         width: 100% !important;
     }
 }
+
+/* =========================================
+   COURSE CHAPTERS - Bloquear desplazamiento lateral
+   Evita que el índice se corra horizontalmente al scrollear
+========================================= */
+
+/* Evitar scroll horizontal general */
+html,
+body {
+    overflow-x: hidden !important;
+}
+
+/* Fijar drawer izquierdo y evitar desplazamiento horizontal */
+body.glu-onetopic-custom-index-ready #theme_boost-drawers-courseindex {
+    left: 0 !important;
+    right: auto !important;
+    transform: none !important;
+    overflow-x: hidden !important;
+}
+
+/* Evitar scroll horizontal dentro del drawer */
+body.glu-onetopic-custom-index-ready #theme_boost-drawers-courseindex .drawercontent,
+body.glu-onetopic-custom-index-ready #theme_boost-drawers-courseindex .drag-container,
+body.glu-onetopic-custom-index-ready #theme_boost-drawers-courseindex .glu-custom-courseindex {
+    overflow-x: hidden !important;
+    max-width: 100% !important;
+}
+
+/* El índice custom no debe generar ancho extra */
+body.glu-onetopic-custom-index-ready .glu-custom-courseindex,
+body.glu-onetopic-custom-index-ready .glu-custom-courseindex__list,
+body.glu-onetopic-custom-index-ready .glu-custom-courseindex__children,
+body.glu-onetopic-custom-index-ready .glu-custom-courseindex__item,
+body.glu-onetopic-custom-index-ready .glu-custom-courseindex__row {
+    box-sizing: border-box !important;
+    max-width: 100% !important;
+}
+
+/* Los textos largos deben cortar línea, no empujar el ancho */
+body.glu-onetopic-custom-index-ready .glu-custom-courseindex__link {
+    max-width: 100% !important;
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+}
+
+/* En páginas de actividad, mantener el drawer estable */
+body[id^="page-mod-"].glu-onetopic-custom-index-ready #theme_boost-drawers-courseindex,
+body[class*="path-mod-"].glu-onetopic-custom-index-ready #theme_boost-drawers-courseindex {
+    left: 0 !important;
+    transform: none !important;
+    overflow-x: hidden !important;
+}
+
+/* Evita desplazamiento horizontal accidental con touchpad */
+body.glu-onetopic-custom-index-ready #theme_boost-drawers-courseindex,
+body.glu-onetopic-custom-index-ready #theme_boost-drawers-courseindex .drawercontent {
+    overscroll-behavior-x: contain !important;
+}
