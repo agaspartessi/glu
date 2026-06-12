@@ -1,9 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
-    var tabsRoot = document.querySelector('#tabs-tree-start');
     var drawer = document.querySelector('#theme_boost-drawers-courseindex');
     var nativeCourseIndex = drawer ? drawer.querySelector('.courseindex') : null;
 
-    if (!tabsRoot || !drawer || !nativeCourseIndex) {
+    if (!drawer || !nativeCourseIndex) {
         return;
     }
 
@@ -13,6 +12,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function cleanText(text) {
         return (text || '').replace(/\s+/g, ' ').trim();
+    }
+
+    function absoluteUrl(url) {
+        try {
+            return new URL(url, wwwroot).href;
+        } catch (error) {
+            return url;
+        }
     }
 
     function getSectionNumberFromUrl(url) {
@@ -28,8 +35,100 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    function getCourseIdFromUrl(url) {
+        if (!url) {
+            return null;
+        }
+
+        try {
+            var parsedUrl = new URL(url, wwwroot);
+            return parsedUrl.searchParams.get('id');
+        } catch (error) {
+            return null;
+        }
+    }
+
+    function getCourseId() {
+        if (window.M && M.cfg) {
+            if (M.cfg.courseId) {
+                return M.cfg.courseId;
+            }
+
+            if (M.cfg.courseid) {
+                return M.cfg.courseid;
+            }
+        }
+
+        var courseLinks = Array.from(document.querySelectorAll('a[href*="/course/view.php?id="]'));
+
+        for (var i = 0; i < courseLinks.length; i++) {
+            var id = getCourseIdFromUrl(courseLinks[i].getAttribute('href'));
+
+            if (id) {
+                return id;
+            }
+        }
+
+        return null;
+    }
+
     function getCurrentSectionNumber() {
-        return getSectionNumberFromUrl(window.location.href);
+        var fromCurrentUrl = getSectionNumberFromUrl(window.location.href);
+
+        if (fromCurrentUrl) {
+            return fromCurrentUrl;
+        }
+
+        /*
+         * En páginas de actividad, la sección suele aparecer en breadcrumbs
+         * o links de navegación hacia el curso.
+         */
+        var courseLinks = Array.from(document.querySelectorAll('a[href*="/course/view.php?id="][href*="section="]'));
+
+        if (courseLinks.length) {
+            var lastSection = null;
+
+            courseLinks.forEach(function (link) {
+                var section = getSectionNumberFromUrl(link.getAttribute('href'));
+
+                if (section) {
+                    lastSection = section;
+                }
+            });
+
+            if (lastSection) {
+                return lastSection;
+            }
+        }
+
+        /*
+         * Fallback: intentar leer del course index nativo.
+         */
+        var activeLink = drawer.querySelector(
+            'a[aria-current="true"], ' +
+            'a.active, ' +
+            '.courseindex-link.active, ' +
+            '.courseindex-item.pageitem a, ' +
+            '.pageitem a'
+        );
+
+        if (activeLink) {
+            var fromActiveLink = getSectionNumberFromUrl(activeLink.getAttribute('href'));
+
+            if (fromActiveLink) {
+                return fromActiveLink;
+            }
+
+            var sectionNode = activeLink.closest('[data-number], [data-sectionnumber], [data-section-id]');
+
+            if (sectionNode) {
+                return sectionNode.getAttribute('data-number') ||
+                    sectionNode.getAttribute('data-sectionnumber') ||
+                    sectionNode.getAttribute('data-section-id');
+            }
+        }
+
+        return null;
     }
 
     function getDirectLink(tabItem) {
@@ -53,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
             !!tabItem.querySelector(':scope > a.nav-link.active');
     }
 
-    function readTabs() {
+    function readTabs(tabsRoot) {
         var allItems = Array.from(
             tabsRoot.querySelectorAll('li[class*="tab_level_"]')
         );
@@ -66,7 +165,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 return null;
             }
 
-            var section = getSectionNumberFromUrl(link.href);
+            var href = absoluteUrl(link.getAttribute('href'));
+            var section = getSectionNumberFromUrl(href);
 
             if (!section) {
                 return null;
@@ -77,14 +177,36 @@ document.addEventListener('DOMContentLoaded', function () {
                 level: level,
                 section: section,
                 title: cleanText(link.textContent),
-                href: link.href,
+                href: href,
                 active: tabIsActive(tabItem, link),
                 children: []
             };
         }).filter(Boolean);
     }
 
-    function findActiveRoot(roots, children, currentSection) {
+    function findRootByCurrentSectionInDom(items, currentSection) {
+        if (!currentSection) {
+            return null;
+        }
+
+        var matchIndex = items.findIndex(function (item) {
+            return String(item.section) === String(currentSection);
+        });
+
+        if (matchIndex === -1) {
+            return null;
+        }
+
+        for (var i = matchIndex; i >= 0; i--) {
+            if (items[i].level === 0) {
+                return items[i];
+            }
+        }
+
+        return null;
+    }
+
+    function findActiveRoot(items, roots, children, currentSection) {
         var activeRoot = roots.find(function (item) {
             return item.active;
         });
@@ -93,22 +215,22 @@ document.addEventListener('DOMContentLoaded', function () {
             return activeRoot;
         }
 
-        /*
-         * En Onetopic, cuando el primer subtab se llama Index,
-         * muchas veces tiene el mismo section que el padre.
-         */
         var activeChild = children.find(function (item) {
             return item.active;
         });
 
         if (activeChild) {
-            activeRoot = roots.find(function (root) {
-                return String(root.section) === String(activeChild.section);
-            });
+            activeRoot = findRootByCurrentSectionInDom(items, activeChild.section);
 
             if (activeRoot) {
                 return activeRoot;
             }
+        }
+
+        activeRoot = findRootByCurrentSectionInDom(items, currentSection);
+
+        if (activeRoot) {
+            return activeRoot;
         }
 
         if (currentSection) {
@@ -124,9 +246,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return roots[0] || null;
     }
 
-    function buildTree(items) {
-        var currentSection = getCurrentSectionNumber();
-
+    function buildTree(items, currentSection) {
         var roots = items.filter(function (item) {
             item.children = [];
             return item.level === 0;
@@ -137,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return item.level > 0;
         });
 
-        var activeRoot = findActiveRoot(roots, children, currentSection);
+        var activeRoot = findActiveRoot(items, roots, children, currentSection);
 
         if (!activeRoot) {
             return roots;
@@ -151,12 +271,6 @@ document.addEventListener('DOMContentLoaded', function () {
             return roots;
         }
 
-        /*
-         * Importante:
-         * Onetopic renderiza SOLO los hijos del padre activo.
-         * Por eso todos los tab_level_1 visibles deben ir debajo del padre activo,
-         * no debajo del último tab_level_0 del DOM.
-         */
         var stack = {
             0: rootInTree
         };
@@ -261,10 +375,9 @@ document.addEventListener('DOMContentLoaded', function () {
         return li;
     }
 
-    function render(tree) {
-        var currentSection = getCurrentSectionNumber();
-
+    function render(tree, currentSection) {
         var old = drawer.querySelector('.glu-custom-courseindex');
+
         if (old) {
             old.remove();
         }
@@ -293,11 +406,64 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.classList.add('glu-onetopic-custom-index-ready');
     }
 
-    var items = readTabs();
-
-    if (!items.length) {
-        return;
+    function getTabsRootFromCurrentPage() {
+        return document.querySelector('#tabs-tree-start');
     }
 
-    render(buildTree(items));
+    function loadTabsRootFromCoursePage(currentSection) {
+        var courseId = getCourseId();
+
+        if (!courseId) {
+            return Promise.resolve(null);
+        }
+
+        var url = wwwroot + '/course/view.php?id=' + encodeURIComponent(courseId);
+
+        if (currentSection) {
+            url += '&section=' + encodeURIComponent(currentSection);
+        }
+
+        return fetch(url, {
+            credentials: 'same-origin'
+        })
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error('Could not load course page');
+                }
+
+                return response.text();
+            })
+            .then(function (html) {
+                var doc = new DOMParser().parseFromString(html, 'text/html');
+                return doc.querySelector('#tabs-tree-start');
+            })
+            .catch(function () {
+                return null;
+            });
+    }
+
+    function init() {
+        var currentSection = getCurrentSectionNumber();
+        var localTabsRoot = getTabsRootFromCurrentPage();
+
+        var tabsRootPromise = localTabsRoot
+            ? Promise.resolve(localTabsRoot)
+            : loadTabsRootFromCoursePage(currentSection);
+
+        tabsRootPromise.then(function (tabsRoot) {
+            if (!tabsRoot) {
+                return;
+            }
+
+            var items = readTabs(tabsRoot);
+
+            if (!items.length) {
+                return;
+            }
+
+            render(buildTree(items, currentSection), currentSection);
+        });
+    }
+
+    init();
 });
