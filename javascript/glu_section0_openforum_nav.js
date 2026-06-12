@@ -15,6 +15,22 @@ document.addEventListener('DOMContentLoaded', function () {
         return (text || '').replace(/\s+/g, ' ').trim();
     }
 
+    function getVisibleText(element) {
+        if (!element) {
+            return '';
+        }
+
+        var clone = element.cloneNode(true);
+
+        clone.querySelectorAll(
+            '.accesshide, .sr-only, .visually-hidden, .visually-hidden-focusable, [aria-hidden="true"]'
+        ).forEach(function (hidden) {
+            hidden.remove();
+        });
+
+        return cleanText(clone.textContent);
+    }
+
     function getCourseId() {
         try {
             var params = new URLSearchParams(window.location.search);
@@ -64,10 +80,29 @@ document.addEventListener('DOMContentLoaded', function () {
                 continue;
             }
 
+            var nameElement =
+                activity.querySelector('.instancename') ||
+                activity.querySelector('.activityname') ||
+                activity.querySelector('.activity-name') ||
+                link;
+
             var title =
-                cleanText(link.textContent) ||
+                getVisibleText(nameElement) ||
                 cleanText(link.getAttribute('title')) ||
                 'Open forum';
+
+            /*
+             * Limpieza defensiva:
+             * Moodle puede agregar el tipo de actividad como texto oculto.
+             */
+            title = title
+                .replace(/\s*Open forum\s*$/i, '')
+                .replace(/\s*Forum\s*$/i, '')
+                .trim();
+
+            if (!title) {
+                title = 'Open forum';
+            }
 
             return {
                 activity: activity,
@@ -122,14 +157,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         li.appendChild(a);
 
-        /*
-         * Intentar ubicarlo al lado de Announcements/Avisos.
-         * Si no existe, lo pone antes del More o al final.
-         */
         var announcementsItem =
             navList.querySelector('.glu-announcements-navitem') ||
             Array.from(navList.querySelectorAll('li.nav-item')).find(function (item) {
                 var text = cleanText(item.textContent).toLowerCase();
+
                 return text.indexOf('announcements') !== -1 ||
                     text.indexOf('avisos') !== -1 ||
                     text.indexOf('novedades') !== -1;

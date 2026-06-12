@@ -4060,12 +4060,41 @@ body.path-course-view.editing .activity-item.glu-section0-openforum-original-hid
 }
 
 /* Link del Open Forum en navegación superior */
+body.path-course-view .secondary-navigation .glu-section0-openforum-navitem {
+    min-width: 0 !important;
+    max-width: 220px !important;
+}
+
 body.path-course-view .secondary-navigation .glu-section0-openforum-navitem .nav-link {
-    color: #CD0A30;
+    color: #0D445D;
     font-weight: 700;
+
+    max-width: 220px !important;
+    min-width: 0 !important;
+
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
 }
 
 body.path-course-view .secondary-navigation .glu-section0-openforum-navitem .nav-link:hover,
 body.path-course-view .secondary-navigation .glu-section0-openforum-navitem .nav-link:focus {
-    color: #0D445D;
+    color: #CD0A30;
+}
+
+/* Evitar que Announcements y Open Forum rompan la barra */
+body.path-course-view .secondary-navigation .glu-announcements-navitem,
+body.path-course-view .secondary-navigation .glu-section0-openforum-navitem {
+    flex: 0 1 auto !important;
+}
+
+/* Responsive */
+@media (max-width: 767.98px) {
+    body.path-course-view .secondary-navigation .glu-section0-openforum-navitem {
+        max-width: 160px !important;
+    }
+
+    body.path-course-view .secondary-navigation .glu-section0-openforum-navitem .nav-link {
+        max-width: 160px !important;
+    }
 }
