@@ -1,64 +1,19 @@
 document.addEventListener('DOMContentLoaded', function () {
-    var isCourseOrModulePage =
+    var isCoursePage =
         document.body.id.indexOf('page-course-view') !== -1 ||
-        document.body.classList.contains('path-course-view') ||
+        document.body.classList.contains('path-course-view');
+
+    var isModulePage =
         document.body.id.indexOf('page-mod-') === 0 ||
         Array.from(document.body.classList).some(function (className) {
             return className.indexOf('path-mod-') === 0;
         });
 
-    if (!isCourseOrModulePage) {
+    if (!isCoursePage && !isModulePage) {
         return;
     }
 
-    function cleanText(text) {
-        return (text || '').replace(/\s+/g, ' ').trim();
-    }
-
-    function getCombinedLinkText(link) {
-        return cleanText(
-            (link.textContent || '') + ' ' +
-            (link.getAttribute('title') || '') + ' ' +
-            (link.getAttribute('aria-label') || '') + ' ' +
-            (link.id || '') + ' ' +
-            (link.className || '')
-        ).toLowerCase();
-    }
-
-    function isPreviousLink(link) {
-        if (link.dataset.gluUnitNavigation === 'previous') {
-            return true;
-        }
-
-        var text = getCombinedLinkText(link);
-        var parent = link.closest(
-            '.prevsection, .activityprev, .previous, .prev, [class*="prev"], [id*="prev"]'
-        );
-
-        return (
-            text.indexOf('previous') !== -1 ||
-            text.indexOf('prev') !== -1 ||
-            parent !== null
-        );
-    }
-
-    function isNextLink(link) {
-        if (link.dataset.gluUnitNavigation === 'next') {
-            return true;
-        }
-
-        var text = getCombinedLinkText(link);
-        var parent = link.closest(
-            '.nextsection, .activitynext, .next, [class*="next"], [id*="next"]'
-        );
-
-        return (
-            text.indexOf('next') !== -1 ||
-            parent !== null
-        );
-    }
-
-    function setLinkText(link, text, type) {
+    function setUnitNavigationLink(link, text, type) {
         if (!link) {
             return;
         }
@@ -71,16 +26,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         link.appendChild(label);
 
-        /*
-         * Sacamos title para evitar el tooltip nativo del navegador,
-         * que aparecía como un cuadrito duplicado debajo del botón.
-         */
         link.removeAttribute('title');
-
         link.setAttribute('aria-label', text);
-        link.dataset.gluUnitNavigation = type;
 
         link.classList.add('glu-unit-navigation-link');
+        link.classList.remove('glu-unit-navigation-link--previous', 'glu-unit-navigation-link--next');
 
         if (type === 'previous') {
             link.classList.add('glu-unit-navigation-link--previous');
@@ -91,72 +41,99 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function normalizeLinkGroup(links, text, type) {
-        if (!links.length) {
-            return;
-        }
-
-        links.forEach(function (link, index) {
-            if (index === 0) {
-                link.classList.remove('glu-unit-navigation-extra');
-                link.removeAttribute('aria-hidden');
-                link.removeAttribute('tabindex');
-                setLinkText(link, text, type);
-            } else {
-                link.classList.add('glu-unit-navigation-extra');
-                link.setAttribute('aria-hidden', 'true');
-                link.setAttribute('tabindex', '-1');
-            }
+    function hideExtraLinks(links) {
+        links.forEach(function (link) {
+            link.classList.add('glu-unit-navigation-extra');
+            link.setAttribute('aria-hidden', 'true');
+            link.setAttribute('tabindex', '-1');
         });
     }
 
     function renameCourseSectionNavigation() {
-        var previousLinks = Array.from(document.querySelectorAll(
-            '.section-navigation .prevsection a, ' +
-            '.section-navigation .prevsection > a'
-        ));
+        if (!isCoursePage) {
+            return;
+        }
 
-        var nextLinks = Array.from(document.querySelectorAll(
-            '.section-navigation .nextsection a, ' +
-            '.section-navigation .nextsection > a'
-        ));
+        var previousLinks = document.querySelectorAll(
+            '.section-navigation .prevsection a, .section-navigation .prevsection > a'
+        );
+
+        var nextLinks = document.querySelectorAll(
+            '.section-navigation .nextsection a, .section-navigation .nextsection > a'
+        );
 
         previousLinks.forEach(function (link) {
-            setLinkText(link, 'Previous Unit', 'previous');
+            setUnitNavigationLink(link, 'Previous Unit', 'previous');
         });
 
         nextLinks.forEach(function (link) {
-            setLinkText(link, 'Next Unit', 'next');
+            setUnitNavigationLink(link, 'Next Unit', 'next');
         });
     }
 
-    function renameModuleActivityNavigation() {
-        var navigationAreas = document.querySelectorAll('.activity-navigation');
+    function normalizeModuleActivityNavigation() {
+        if (!isModulePage) {
+            return;
+        }
 
-        navigationAreas.forEach(function (nav) {
-            var links = Array.from(nav.querySelectorAll('a'));
+        var navigations = document.querySelectorAll('.activity-navigation');
 
-            var previousLinks = links.filter(function (link) {
-                return isPreviousLink(link);
+        navigations.forEach(function (nav) {
+            var row = nav.querySelector('.row') || nav;
+
+            nav.classList.add('glu-activity-navigation-ready');
+
+            var columns = Array.from(row.children).filter(function (child) {
+                return child.nodeType === 1;
             });
 
-            var nextLinks = links.filter(function (link) {
-                return isNextLink(link);
+            if (!columns.length) {
+                return;
+            }
+
+            var jumpColumn = columns.find(function (column) {
+                return column.querySelector(
+                    'select, .urlselect, form[action*="/course/jumpto.php"], form[action*="jumpto"]'
+                );
             });
 
-            normalizeLinkGroup(previousLinks, 'Previous Unit', 'previous');
-            normalizeLinkGroup(nextLinks, 'Next Unit', 'next');
+            if (jumpColumn) {
+                jumpColumn.classList.add('glu-activity-navigation-jump');
+            }
+
+            var previousColumn = columns[0];
+            var nextColumn = columns[columns.length - 1];
+
+            if (jumpColumn && columns.length >= 3) {
+                previousColumn = columns[0];
+                nextColumn = columns[columns.length - 1];
+            }
+
+            previousColumn.classList.add('glu-activity-navigation-previous');
+            nextColumn.classList.add('glu-activity-navigation-next');
+
+            var previousLinks = Array.from(previousColumn.querySelectorAll('a[href]'));
+            var nextLinks = Array.from(nextColumn.querySelectorAll('a[href]'));
+
+            if (previousLinks.length) {
+                setUnitNavigationLink(previousLinks[0], 'Previous Unit', 'previous');
+                hideExtraLinks(previousLinks.slice(1));
+            }
+
+            if (nextLinks.length) {
+                setUnitNavigationLink(nextLinks[0], 'Next Unit', 'next');
+                hideExtraLinks(nextLinks.slice(1));
+            }
         });
     }
 
-    function applyNavigationLabels() {
+    function applyNavigation() {
         renameCourseSectionNavigation();
-        renameModuleActivityNavigation();
+        normalizeModuleActivityNavigation();
     }
 
-    applyNavigationLabels();
+    applyNavigation();
 
-    // Por si Moodle termina de renderizar la navegación después.
-    window.setTimeout(applyNavigationLabels, 500);
-    window.setTimeout(applyNavigationLabels, 1200);
+    window.setTimeout(applyNavigation, 500);
+    window.setTimeout(applyNavigation, 1200);
 });
