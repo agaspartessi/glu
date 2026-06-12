@@ -3712,3 +3712,125 @@ body.path-mod-hsuforum .hsuforum-thread {
         width: 100% !important;
     }
 }
+
+/* =========================================
+   COURSE NAVIGATION - Ocultar Grades y Activities
+   Solo con Edit mode apagado
+========================================= */
+
+/* Grades */
+body.path-course-view:not(.editing) .secondary-navigation li.nav-item[data-key="grades"],
+body.path-course-view:not(.editing) .secondary-navigation li.nav-item:has(a[href*="/grade/report"]) {
+    display: none !important;
+}
+
+/* Activities / Course overview */
+body.path-course-view:not(.editing) .secondary-navigation li.nav-item[data-key="courseoverview"],
+body.path-course-view:not(.editing) .secondary-navigation li.nav-item:has(a[href*="/course/overview.php"]) {
+    display: none !important;
+}
+
+/* Fallback: ocultar el link directo si hiciera falta */
+body.path-course-view:not(.editing) .secondary-navigation a[href*="/grade/report"],
+body.path-course-view:not(.editing) .secondary-navigation a[href*="/course/overview.php"] {
+    display: none !important;
+}
+
+/* =========================================
+   HSUFORUM - Ocultar Export y View posters
+   Solo con Edit mode apagado
+========================================= */
+
+/* Oculta el ítem completo de navegación solo cuando NO está en edición */
+body.path-mod-hsuforum:not(.editing) .secondary-navigation li.nav-item:has(a[href*="/mod/hsuforum/export"]),
+body.path-mod-hsuforum:not(.editing) .secondary-navigation li.nav-item:has(a[href*="export"]),
+body.path-mod-hsuforum:not(.editing) .secondary-navigation li.nav-item:has(a[href*="viewposters"]),
+body.path-mod-hsuforum:not(.editing) .secondary-navigation li.nav-item:has(a[href*="posters"]) {
+    display: none !important;
+}
+
+/* Fallback: oculta el link directo si el navegador no aplica :has */
+body.path-mod-hsuforum:not(.editing) .secondary-navigation a[href*="/mod/hsuforum/export"],
+body.path-mod-hsuforum:not(.editing) .secondary-navigation a[href*="export"],
+body.path-mod-hsuforum:not(.editing) .secondary-navigation a[href*="viewposters"],
+body.path-mod-hsuforum:not(.editing) .secondary-navigation a[href*="posters"] {
+    display: none !important;
+}
+
+/* =========================================
+   HSUFORUM - Ocultar título duplicado en cuerpo
+========================================= */
+
+/* Oculta el título repetido debajo de la navegación del foro */
+body.path-mod-hsuforum#page-mod-hsuforum-view #region-main>h2:first-of-type,
+body.path-mod-hsuforum#page-mod-hsuforum-view #region-main div[role="main"]>h2:first-of-type,
+body.path-mod-hsuforum#page-mod-hsuforum-view #region-main .activity-header+h2,
+body.path-mod-hsuforum#page-mod-hsuforum-view #region-main h2.activityname {
+    display: none !important;
+}
+
+/* =========================================
+   Ocultar Dashboard de navegación principal
+   El dashboard se usa solo como landing técnica post-login
+========================================= */
+
+.primary-navigation a[href$="/my/"],
+.primary-navigation a[href*="/my/index.php"],
+.navbar-nav a[href$="/my/"],
+.navbar-nav a[href*="/my/index.php"] {
+    display: none !important;
+}
+
+/* =========================================
+   Signup password visibility toggle
+========================================= */
+
+body#page-login-signup .glu-password-toggle-wrapper {
+    position: relative !important;
+    display: flex !important;
+    align-items: stretch !important;
+    width: 100% !important;
+}
+
+body#page-login-signup .glu-password-toggle-wrapper input[type="password"],
+body#page-login-signup .glu-password-toggle-wrapper input[type="text"] {
+    padding-right: 4.75rem !important;
+    width: 100% !important;
+}
+
+body#page-login-signup .glu-password-toggle-button {
+    position: absolute !important;
+    right: 0.55rem !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+
+    border: 0 !important;
+    background: transparent !important;
+    color: #0D445D !important;
+
+    font-family: "Lexend Deca", Arial, sans-serif !important;
+    font-size: 0.82rem !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+
+    padding: 0.35rem 0.45rem !important;
+    cursor: pointer !important;
+}
+
+body#page-login-signup .glu-password-toggle-button:hover,
+body#page-login-signup .glu-password-toggle-button:focus {
+    color: #CD0A30 !important;
+    text-decoration: underline !important;
+}
+
+@media (max-width: 575.98px) {
+    body#page-login-signup .glu-password-toggle-button {
+        font-size: 0.78rem !important;
+        right: 0.45rem !important;
+    }
+
+    body#page-login-signup .glu-password-toggle-wrapper input[type="password"],
+    body#page-login-signup .glu-password-toggle-wrapper input[type="text"] {
+        padding-right: 4.25rem !important;
+    }
+}
