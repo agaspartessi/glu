@@ -16,4 +16,4 @@ $THEME->scss = function($theme) {
     return theme_glu_get_main_scss_content($theme);
 };
 
-$THEME->javascripts_footer = ['glu_coursecatalog_search','glu_home_catalog_preview','glu_loggedin_routes','glu_course_subsections','glu_onetopic_navigation','glu_onetopic_custom_index','glu_course_announcements_nav'];
+$THEME->javascripts_footer = ['glu_coursecatalog_search','glu_home_catalog_preview','glu_loggedin_routes','glu_course_subsections','glu_onetopic_navigation','glu_onetopic_custom_index','glu_course_announcements_nav','glu_section0_openforum_nav'];

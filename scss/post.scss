@@ -4023,3 +4023,49 @@ body.glu-onetopic-custom-index-ready #theme_boost-drawers-courseindex,
 body.glu-onetopic-custom-index-ready #theme_boost-drawers-courseindex .drawercontent {
     overscroll-behavior-x: contain !important;
 }
+
+/* =========================================
+   COURSE NAVIGATION - Ocultar Course completion
+   Solo con Edit mode apagado
+========================================= */
+
+body.path-course-view:not(.editing) .secondary-navigation li.nav-item[data-key="coursecompletion"],
+body.path-course-view:not(.editing) .secondary-navigation li.nav-item:has(a[href*="/course/completion.php"]) {
+    display: none !important;
+}
+
+/* Fallback: ocultar link directo */
+body.path-course-view:not(.editing) .secondary-navigation a[href*="/course/completion.php"] {
+    display: none !important;
+}
+
+/* =========================================
+   SECTION 0 OPEN FORUM EN NAV SUPERIOR
+   Ocultar original solo con edición apagada
+========================================= */
+
+body.path-course-view:not(.editing) li.activity.glu-section0-openforum-original-hidden,
+body.path-course-view:not(.editing) .activity.glu-section0-openforum-original-hidden,
+body.path-course-view:not(.editing) [data-for="cmitem"].glu-section0-openforum-original-hidden,
+body.path-course-view:not(.editing) .activity-item.glu-section0-openforum-original-hidden {
+    display: none !important;
+}
+
+/* En edición queda visible el recurso original */
+body.path-course-view.editing li.activity.glu-section0-openforum-original-hidden,
+body.path-course-view.editing .activity.glu-section0-openforum-original-hidden,
+body.path-course-view.editing [data-for="cmitem"].glu-section0-openforum-original-hidden,
+body.path-course-view.editing .activity-item.glu-section0-openforum-original-hidden {
+    display: list-item !important;
+}
+
+/* Link del Open Forum en navegación superior */
+body.path-course-view .secondary-navigation .glu-section0-openforum-navitem .nav-link {
+    color: #CD0A30;
+    font-weight: 700;
+}
+
+body.path-course-view .secondary-navigation .glu-section0-openforum-navitem .nav-link:hover,
+body.path-course-view .secondary-navigation .glu-section0-openforum-navitem .nav-link:focus {
+    color: #0D445D;
+}
