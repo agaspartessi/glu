@@ -4098,3 +4098,8 @@ body.path-course-view .secondary-navigation .glu-section0-openforum-navitem {
         max-width: 160px !important;
     }
 }
+
+/* Ocultar Course team en Course Catalog */
+body.glu-coursecatalog-page .glu-catalog-card__team {
+    display: none !important;
+}
