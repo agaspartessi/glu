@@ -4103,3 +4103,28 @@ body.path-course-view .secondary-navigation .glu-section0-openforum-navitem {
 body.glu-coursecatalog-page .glu-catalog-card__team {
     display: none !important;
 }
+
+/* =========================================
+   COURSE CATALOG - Ocultar sections / activities
+   Mantener botón Enroll/View course
+========================================= */
+
+body.glu-coursecatalog-page .glu-catalog-card .card-body>.d-flex.justify-content-between.align-items-center.pt-2.border-top.mt-auto,
+body.path-local-coursecatalog .glu-catalog-card .card-body>.d-flex.justify-content-between.align-items-center.pt-2.border-top.mt-auto,
+body[id^="page-local-coursecatalog"] .glu-catalog-card .card-body>.d-flex.justify-content-between.align-items-center.pt-2.border-top.mt-auto {
+    justify-content: flex-end !important;
+    font-size: 0 !important;
+    color: transparent !important;
+}
+
+/* Restaurar texto del botón */
+body.glu-coursecatalog-page .glu-catalog-card .card-body>.d-flex.justify-content-between.align-items-center.pt-2.border-top.mt-auto a,
+body.glu-coursecatalog-page .glu-catalog-card .card-body>.d-flex.justify-content-between.align-items-center.pt-2.border-top.mt-auto button,
+body.path-local-coursecatalog .glu-catalog-card .card-body>.d-flex.justify-content-between.align-items-center.pt-2.border-top.mt-auto a,
+body.path-local-coursecatalog .glu-catalog-card .card-body>.d-flex.justify-content-between.align-items-center.pt-2.border-top.mt-auto button,
+body[id^="page-local-coursecatalog"] .glu-catalog-card .card-body>.d-flex.justify-content-between.align-items-center.pt-2.border-top.mt-auto a,
+body[id^="page-local-coursecatalog"] .glu-catalog-card .card-body>.d-flex.justify-content-between.align-items-center.pt-2.border-top.mt-auto button {
+    font-size: 0.9rem !important;
+    color: #ffffff !important;
+    line-height: 1.2 !important;
+}
