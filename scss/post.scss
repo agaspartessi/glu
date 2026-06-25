@@ -4209,3 +4209,23 @@ body.path-mod-hsuforum .hsuforum-post-wrapper>.hsuforum-post-body>.hsuforum-tool
         padding: 0.28rem 0.55rem !important;
     }
 }
+
+/* =========================================
+   COURSE NAVIGATION
+   Announcements y Open Forum como tabs nativas
+========================================= */
+
+body.path-course-view .secondary-navigation .glu-announcements-navitem .nav-link,
+body.path-course-view .secondary-navigation .glu-section0-openforum-navitem .nav-link {
+    color: #0D445D !important;
+    font-weight: 400 !important;
+}
+
+/* Mantener el mismo criterio también en hover/focus */
+body.path-course-view .secondary-navigation .glu-announcements-navitem .nav-link:hover,
+body.path-course-view .secondary-navigation .glu-announcements-navitem .nav-link:focus,
+body.path-course-view .secondary-navigation .glu-section0-openforum-navitem .nav-link:hover,
+body.path-course-view .secondary-navigation .glu-section0-openforum-navitem .nav-link:focus {
+    color: #0D445D !important;
+    font-weight: 400 !important;
+}
