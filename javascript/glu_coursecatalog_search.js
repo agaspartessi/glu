@@ -329,6 +329,36 @@ document.addEventListener('DOMContentLoaded', function () {
         return normalizeLanguageText(languageMeta.textContent);
     }
 
+    function normalizePinOrder(value) {
+        var order = parseInt(value, 10);
+
+        if (isNaN(order) || order < 1) {
+            return null;
+        }
+
+        return order;
+    }
+
+    function extractPinOrderFromDocument(doc) {
+        var pinMeta = doc.querySelector('.glu-course-language-meta[data-glu-pin]');
+
+        if (!pinMeta) {
+            return null;
+        }
+
+        return normalizePinOrder(pinMeta.getAttribute('data-glu-pin'));
+    }
+
+    function extractPinOrderFromCard(card) {
+        var pinMeta = card.querySelector('.glu-course-language-meta[data-glu-pin]');
+
+        if (!pinMeta) {
+            return null;
+        }
+
+        return normalizePinOrder(pinMeta.getAttribute('data-glu-pin'));
+    }
+
     function renderTeachersInCard(card, teachers) {
         if (!teachers.length) {
             return;
@@ -429,6 +459,15 @@ document.addEventListener('DOMContentLoaded', function () {
         var localLanguage = extractLanguageFromCard(card);
         var language = metadata.language || localLanguage || '';
 
+        var localPinOrder = extractPinOrderFromCard(card);
+        var pinOrder = normalizePinOrder(metadata.pinOrder) || localPinOrder;
+
+        if (pinOrder) {
+            card.dataset.gluPinOrder = String(pinOrder);
+        } else {
+            delete card.dataset.gluPinOrder;
+        }
+
         if (metadata.teachers && metadata.teachers.length) {
             renderTeachersInCard(card, metadata.teachers);
         }
@@ -443,15 +482,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
         return {
             teachers: extractTeachersFromDocument(doc),
-            language: extractLanguageFromDocument(doc)
+            language: extractLanguageFromDocument(doc),
+            pinOrder: extractPinOrderFromDocument(doc)
         };
     }
 
     function loadMetadataForCard(card) {
         var courseId = getCourseIdFromCard(card);
         var localLanguage = extractLanguageFromCard(card);
+        var localPinOrder = extractPinOrderFromCard(card);
 
         if (!courseId) {
+            if (localPinOrder) {
+                card.dataset.gluPinOrder = String(localPinOrder);
+            }
+
             if (localLanguage) {
                 renderLanguageInCard(card, localLanguage);
             }
@@ -459,8 +504,8 @@ document.addEventListener('DOMContentLoaded', function () {
             return Promise.resolve();
         }
 
-        // v3 suma Course language además de Course team.
-        var cacheKey = 'gluCatalogMetadata:v3:' + courseId;
+        // v4 suma prioridad manual (data-glu-pin) además de Course language.
+        var cacheKey = 'gluCatalogMetadata:v4:' + courseId;
         var cached = sessionStorage.getItem(cacheKey);
 
         if (cached) {
@@ -469,6 +514,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 if (!cachedMetadata.language && localLanguage) {
                     cachedMetadata.language = localLanguage;
+                }
+
+                if (!cachedMetadata.pinOrder && localPinOrder) {
+                    cachedMetadata.pinOrder = localPinOrder;
                 }
 
                 applyMetadataToCard(card, cachedMetadata);
@@ -493,6 +542,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 if (!metadata.language && localLanguage) {
                     metadata.language = localLanguage;
+                }
+
+                if (!metadata.pinOrder && localPinOrder) {
+                    metadata.pinOrder = localPinOrder;
                 }
 
                 sessionStorage.setItem(cacheKey, JSON.stringify(metadata));
@@ -535,6 +588,72 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    function reorderPinnedCards(cards) {
+        // La prioridad manual se aplica solo en la vista general de All courses.
+        if (getCurrentSlug() !== 'courses') {
+            return;
+        }
+
+        var items = cards.map(function (card, index) {
+            var pinOrder = normalizePinOrder(card.dataset.gluPinOrder);
+
+            return {
+                card: card,
+                originalIndex: index,
+                pinOrder: pinOrder
+            };
+        });
+
+        var hasPinnedCourses = items.some(function (item) {
+            return item.pinOrder !== null;
+        });
+
+        if (!hasPinnedCourses) {
+            return;
+        }
+
+        items.sort(function (a, b) {
+            var aPinned = a.pinOrder !== null;
+            var bPinned = b.pinOrder !== null;
+
+            if (aPinned && !bPinned) {
+                return -1;
+            }
+
+            if (!aPinned && bPinned) {
+                return 1;
+            }
+
+            if (aPinned && bPinned && a.pinOrder !== b.pinOrder) {
+                return a.pinOrder - b.pinOrder;
+            }
+
+            // Mismo pin (por ejemplo dos cursos con data-glu-pin="1"):
+            // conserva entre ellos el orden que ya trae el catálogo.
+            return a.originalIndex - b.originalIndex;
+        });
+
+        var firstWrapper = getCardWrapper(items[0].card);
+
+        if (!firstWrapper || !firstWrapper.parentElement) {
+            return;
+        }
+
+        var parent = firstWrapper.parentElement;
+
+        var sameParent = items.every(function (item) {
+            return getCardWrapper(item.card).parentElement === parent;
+        });
+
+        if (!sameParent) {
+            return;
+        }
+
+        items.forEach(function (item) {
+            parent.appendChild(getCardWrapper(item.card));
+        });
+    }
+
     function prepareCards() {
         var cards = getCourseCards();
 
@@ -550,6 +669,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         loadMetadataInBatches(cards).then(function () {
+            reorderPinnedCards(cards);
+
             var input = document.querySelector('.glu-catalog-search__input');
 
             if (input && input.value) {
