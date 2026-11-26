@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
         ? M.cfg.wwwroot
         : window.location.origin;
 
-    var catalogUrl = wwwroot + '/local/coursecatalog/view.php?slug=courses&sort=name_asc&view=grid&perpage=100';
+    var catalogUrl = wwwroot + '/local/coursecatalog/view.php?slug=courses&sort=name_asc&view=grid&perpage=3&gluhomepreview=1';
 
     function absoluteUrl(url) {
         if (!url) {
