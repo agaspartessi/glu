@@ -1,41 +1,42 @@
 document.addEventListener('DOMContentLoaded', function () {
-    var isCatalogPage =
-        window.location.pathname.indexOf('/local/coursecatalog/view.php') !== -1 ||
-        document.body.classList.contains('path-local-coursecatalog') ||
-        document.body.id.indexOf('page-local-coursecatalog') !== -1;
-
-    if (!isCatalogPage) {
-        return;
-    }
-
-    document.body.classList.add('glu-coursecatalog-page');
-
     var wwwroot = window.M && M.cfg && M.cfg.wwwroot
         ? M.cfg.wwwroot
         : window.location.origin;
+    var catalogUrl = new URL(wwwroot + '/local/coursecatalog/view.php');
 
+    document.querySelectorAll('a[href*="coursecatalog/view.php"]').forEach(function (link) {
+        var url = new URL(link.href);
+        if (url.origin === catalogUrl.origin && url.pathname === catalogUrl.pathname &&
+                !url.searchParams.has('perpage')) {
+            url.searchParams.set('perpage', '100');
+            link.href = url.href;
+        }
+    });
+
+    if (window.location.pathname !== catalogUrl.pathname) {
+        return;
+    }
+    var main = document.querySelector('#region-main');
+    if (!main) {
+        return;
+    }
+    document.body.classList.add('glu-coursecatalog-page');
     var params = new URLSearchParams(window.location.search);
 
-    // Fuerza perpage=100 también cuando se llega desde menú o tabs.
-    if (params.get('perpage') !== '100') {
+    // Older bookmarks can still request a partial catalog.
+    if (params.get('perpage') !== '100' && main.querySelector('.pagination')) {
         params.set('perpage', '100');
-
-        if (!params.get('sort')) {
-            params.set('sort', 'name_asc');
-        }
-
-        if (!params.get('view')) {
-            params.set('view', 'grid');
-        }
-
+        params.set('page', '0');
         window.location.replace(window.location.pathname + '?' + params.toString());
         return;
     }
-
-    var main = document.querySelector('#region-main');
-
-    if (!main) {
-        return;
+    var sortSelect = main.querySelector('#sortby-select');
+    if (sortSelect && sortSelect.form && !sortSelect.form.elements.namedItem('perpage')) {
+        var size = document.createElement('input');
+        size.type = 'hidden';
+        size.name = 'perpage';
+        size.value = '100';
+        sortSelect.form.appendChild(size);
     }
 
     var catalogTabs = [
@@ -61,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var urlParams = new URLSearchParams(window.location.search);
 
         urlParams.set('slug', slug);
+        urlParams.delete('page');
         urlParams.set('perpage', '100');
 
         if (!urlParams.get('sort')) {
