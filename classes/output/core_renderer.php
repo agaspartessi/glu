@@ -6,7 +6,7 @@ defined('MOODLE_INTERNAL') || die();
 /** Adds GLU metadata only to the Course Catalog template. */
 class core_renderer extends \theme_boost\output\core_renderer {
     public function render_from_template($templatename, $context) {
-        global $DB;
+        global $CFG, $DB;
 
         if ($templatename !== 'local_coursecatalog/coursecatalog' || empty($context->courses)
                 || optional_param('gluhomepreview', false, PARAM_BOOL)) {
@@ -22,7 +22,7 @@ class core_renderer extends \theme_boost\output\core_renderer {
         $records = array_filter($records, static function ($course) {
             return $course->visible;
         });
-        $showcontacts = isloggedin() && !isguestuser();
+        $showcontacts = empty($CFG->forcelogin) || (isloggedin() && !isguestuser());
         if ($showcontacts) {
             \core_course_category::preload_course_contacts($records);
         }
